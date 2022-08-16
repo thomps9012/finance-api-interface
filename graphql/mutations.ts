@@ -1,1 +1,1 @@
-export const CREATE = 'create';
+export const CREATE = '?query=mutation{create';

@@ -1,11 +1,9 @@
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
+// this will need to generate a jwt for the backend api calls
+// return role, id
 export default function AccessToken() {
     const { data } = useSession();
-    if (data) {
-        const { accessToken } = data;
-        return <>Access Token: {accessToken}</>
-    } else {
-        return <div>No Access Token</div>
-    }
+    console.log(data)
+    
 }

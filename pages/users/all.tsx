@@ -1,12 +1,14 @@
-import AccessDenied from "../components/accessDenied";
-import { ALL_USERS } from "../graphql/queries";
+import { ALL_USERS } from "../../graphql/queries";
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { useSession } from "next-auth/react";
+import { authOptions } from ".././api/auth/[...nextauth]";
+import Link from "next/link";
+import { BASE_USER_API } from "../../graphql/bases";
+import { ALL_USERS_RES } from "../../graphql/responses";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const userdata = await fetch(ALL_USERS).then(res => res.json())
+    const api = `${BASE_USER_API}${ALL_USERS}${ALL_USERS_RES}}`
+    const userdata = await fetch(api).then(res => res.json())
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
@@ -36,7 +38,10 @@ export default function UsersInfo({ userdata }: any) {
                 <p>{name}</p>
                 <p>{email}</p>
                 <p>{role}</p>
-                <br />
+                <Link href={`/users/${id}/overview`}>
+                    <a>User Records</a>
+                </Link>
+                <hr />
             </div>
         })}
     </main>
