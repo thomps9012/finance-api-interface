@@ -1,14 +1,10 @@
-import { ALL_USERS } from "../../graphql/queries";
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from ".././api/auth/[...nextauth]";
 import Link from "next/link";
-import { BASE_USER_API } from "../../graphql/bases";
-import { ALL_USERS_RES } from "../../graphql/responses";
-
+import USER_API from '../../API/user';
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const api = `${BASE_USER_API}${ALL_USERS}${ALL_USERS_RES}}`
-    const userdata = await fetch(api).then(res => res.json())
+    const userdata = await USER_API.getAll()
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,

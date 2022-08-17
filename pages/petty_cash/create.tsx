@@ -4,7 +4,6 @@ import GrantSelect from "../../components/grantSelect";
 import { BASE_PETTY_CASH_API } from "../../graphql/bases";
 import { CREATE } from "../../graphql/mutations";
 import { CREATE_PETTY_CASH } from "../../graphql/responses";
-import inputDate from "../../utils/inputDate";
 export default function CreateRequest() {
     const [receipts, setReceipts] = useState([]);
     const [requestDate, setDate] = useState("")
@@ -32,9 +31,8 @@ export default function CreateRequest() {
         const receiptArr = receipts.map((receipt: any) => receipt.data_url)
         console.log(receiptArr)
         console.log(grantID)
-        let date = inputDate(requestDate);
         const testUserID = '68125e1f-21c1-4f60-aab0-8efff5dc158e'
-        const requestapi = `${BASE_PETTY_CASH_API}${CREATE}(user_id:${testUserID}, grant_id:${grantID}, request:{amount:${amount}, receipts:${JSON.stringify(receiptArr)}, date:${date}, description:${description}})${CREATE_PETTY_CASH}}`
+        const requestapi = `${BASE_PETTY_CASH_API}${CREATE}(user_id:${testUserID}, grant_id:${grantID}, request:{amount:${amount}, receipts:${JSON.stringify(receiptArr)}, date:${requestDate}, description:${description}})${CREATE_PETTY_CASH}}`
         console.log(requestapi)
         const res = await fetch(requestapi).then(res => res.json())
     }
@@ -46,7 +44,7 @@ export default function CreateRequest() {
         <h4>Amount</h4>
         <input type="number" onChange={(e: any) => setAmount(parseFloat(e.target.value))} />
         <h4>Date</h4>
-        <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} />
+        <input type="date" name="date" onChange={(e: any) => setDate(new Date(e.target.value).toISOString())} />
         <h4>Description</h4>
         <textarea rows={5} name="description" value={description} onChange={handleDescription} />
         <span>{description.length}/75 characters</span>

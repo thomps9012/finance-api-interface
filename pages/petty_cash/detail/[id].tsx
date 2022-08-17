@@ -1,19 +1,16 @@
 import { GetServerSidePropsContext } from "next"
 import { unstable_getServerSession } from "next-auth"
 import Link from "next/link"
-import { BASE_PETTY_CASH_API } from "../../../graphql/bases"
-import { RECORD_DETAIL } from "../../../graphql/queries"
-import { PETTY_CASH_DETAIL_RES } from "../../../graphql/responses"
 import { Action } from "../../../types/checkrequests"
 import { PettyCashDetail } from "../../../types/pettycash"
 import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
+import PETTY_CASH_API from '../../../API/petty_cash';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
-    const api = `${BASE_PETTY_CASH_API}${RECORD_DETAIL}"${id}")${PETTY_CASH_DETAIL_RES}}`
-    const pettycashdetail = await fetch(api).then(res => res.json())
+    const pettycashdetail = await PETTY_CASH_API.getOne(id as string)
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,

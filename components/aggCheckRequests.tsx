@@ -5,7 +5,7 @@ export default function AggCheckRequests({ check_requests }: { check_requests: C
     const { purchases, request_ids, receipts, total_amount, vendors } = check_requests;
     if (total_amount === 0) { return <h5>No Requests</h5> }
     return <>
-        <h5>Total Petty Cash Amount: {total_amount}</h5>
+        <h5>Total Check Request Amount: {total_amount}</h5>
         <h5>Requests</h5>
         {request_ids.map((id: string) => <><Link href={`/check_request/detail/${id}`}><a>Record Detail</a></Link><br /></>)}
         <h5>Receipts</h5>

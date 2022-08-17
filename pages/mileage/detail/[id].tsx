@@ -1,7 +1,4 @@
 import { GetServerSidePropsContext } from "next"
-import { BASE_MILEAGE_API } from "../../../graphql/bases"
-import { RECORD_DETAIL } from "../../../graphql/queries"
-import { MILEAGE_DETAIL_RES } from "../../../graphql/responses"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import { unstable_getServerSession } from "next-auth";
 import { MileageDetail } from "../../../types/mileage"
@@ -9,11 +6,11 @@ import Link from "next/link"
 import { Action } from "../../../types/checkrequests"
 import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
+import MILEAGE_API from '../../../API/mileage';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
-    const api = `${BASE_MILEAGE_API}${RECORD_DETAIL}"${id}")${MILEAGE_DETAIL_RES}}`
-    const mileagedetail = await fetch(api).then(res => res.json())
+    const mileagedetail = await MILEAGE_API.getOne(id as string);
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,

@@ -1,8 +1,5 @@
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { BASE_USER_API } from "../../../graphql/bases";
-import { USER_OVERVIEW } from "../../../graphql/queries";
-import { USER_OVERVIEW_RES } from "../../../graphql/responses";
 import { UserOverview } from "../../../types/users";
 import dateFormat from "../../../utils/dateformat";
 import titleCase from "../../../utils/titlecase";
@@ -10,11 +7,11 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import AggMileage from "../../../components/aggMileage";
 import AggCheckRequests from "../../../components/aggCheckRequests";
 import AggPettyCash from "../../../components/aggPettyCash";
+import USER_API from "../../../API/user";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
-    const api = `${BASE_USER_API}${USER_OVERVIEW}"${id}")${USER_OVERVIEW_RES}}`
-    const useroverview = await fetch(api).then(res => res.json())
+    const useroverview = await USER_API.getOverview(id as string)
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
