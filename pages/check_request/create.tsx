@@ -22,10 +22,6 @@ export default function CreateRequest() {
     const [requestDate, setDate] = useState("")
     const [rowCount, setRows] = useState(1)
     const [description, setDescription] = useState("")
-    const handleDescription = (e: any) => {
-        e.target.value.length < 76 &&
-            setDescription(e.target.value)
-    }
     const addPurchase = (e: any) => { e.preventDefault(); rowCount < 5 ? setRows(rowCount + 1) : null }
     const removePurchase = (e: any) => { e.preventDefault(); setRows(rowCount - 1) }
     if (loading) return 'Submitting...';
@@ -69,7 +65,7 @@ export default function CreateRequest() {
         <h4>Date</h4>
         <input type="date" name="date" onChange={(e: any) => setDate(new Date(e.target.value).toISOString())} />
         <h4>Description</h4>
-        <textarea rows={5} name="description" value={description} onChange={handleDescription} />
+        <textarea rows={5} maxLength={75} name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
         <span>{description.length}/75 characters</span>
         <VendorInput setAddress={setVendorAddress} setName={setVendorName} address={vendorAddress} />
         <h3>Purchases</h3>

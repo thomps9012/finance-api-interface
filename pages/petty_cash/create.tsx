@@ -12,10 +12,6 @@ export default function CreateRequest() {
     const [grantID, setGrantID] = useState("N/A")
     if (loading) return 'Submitting...';
     if (error) return `Submission error! ${error.message}`;
-    const handleDescription = (e: any) => {
-        e.target.value.length < 76 &&
-            setDescription(e.target.value)
-    }
     const submitRequest = async (e: any) => {
         e.preventDefault();
         const receiptArr: string[] = receipts.map((receipt: any) => receipt.data_url)
@@ -45,7 +41,7 @@ export default function CreateRequest() {
         <h4>Date</h4>
         <input type="date" name="date" onChange={(e: any) => setDate(new Date(e.target.value).toISOString())} />
         <h4>Description</h4>
-        <textarea rows={5} name="description" value={description} onChange={handleDescription} />
+        <textarea rows={5} maxLength={75} name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
         <span>{description.length}/75 characters</span>
         <h4>{receipts.length} Receipt{receipts.length > 1 && "s"} Attached</h4>
         <span className="description">Limit of 5 Receipts per Request</span>
