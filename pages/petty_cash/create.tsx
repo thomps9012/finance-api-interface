@@ -3,7 +3,9 @@ import { useMutation } from "@apollo/client";
 import GrantSelect from "../../components/grantSelect";
 import { CREATE_PETTY_CASH } from "../../graphql/mutations";
 import ReceiptUpload from "../../components/receiptUpload";
+import { useRouter } from "next/router";
 export default function CreateRequest() {
+    const router = useRouter();
     const [addRequest, { data, loading, error }] = useMutation(CREATE_PETTY_CASH)
     const [receipts, setReceipts] = useState([]);
     const [requestDate, setDate] = useState("")
@@ -32,7 +34,7 @@ export default function CreateRequest() {
                 }
             }
         })
-        console.log(data)
+        data && router.push("/")
     }
     return <form>
         <GrantSelect state={grantID} setState={setGrantID} />

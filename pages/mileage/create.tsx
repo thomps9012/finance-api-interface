@@ -1,15 +1,17 @@
 import { useMutation } from "@apollo/client"
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { CREATE_MILEAGE } from "../../graphql/mutations"
 
 export default function CreateRequest() {
+    const router = useRouter();
     const [addRequest, { data, loading, error }] = useMutation(CREATE_MILEAGE);
     const [requestDate, setDate] = useState("")
     const [purpose, setPurpose] = useState("")
     const [start_location, setTripStart] = useState("")
     const [destination, setDestination] = useState("")
     const [start_odometer, setStart] = useState(0)
-    const [end_odometer, setEnd] = useState(start_odometer+1)
+    const [end_odometer, setEnd] = useState(start_odometer + 1)
     const [tolls, setTolls] = useState(0.0)
     const [parking, setParking] = useState(0.0)
     if (loading) return 'Submitting...';
@@ -34,7 +36,7 @@ export default function CreateRequest() {
                 }
             }
         })
-        console.log(data)
+        data && router.push("/")
     }
     return <form id="mileage-form">
         <h4>Trip Date</h4>

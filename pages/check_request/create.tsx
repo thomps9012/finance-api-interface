@@ -6,7 +6,9 @@ import { useState } from "react";
 import ReceiptUpload from "../../components/receiptUpload";
 import VendorInput from "../../components/vendorInput";
 import PurchaseInput from "../../components/purchaseInput";
+import { useRouter } from "next/router";
 export default function CreateRequest() {
+    const router = useRouter();
     const [addRequest, { data, loading, error }] = useMutation(CREATE_CHECK_REQ)
     const [receipts, setReceipts] = useState([]);
     const [grantID, setGrantID] = useState("N/A")
@@ -56,7 +58,7 @@ export default function CreateRequest() {
                 }
             }
         })
-        console.log(data)
+        data && router.push("/")
     }
 
     return <form>
