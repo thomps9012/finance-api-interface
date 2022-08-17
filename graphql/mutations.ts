@@ -14,3 +14,10 @@ export const CREATE_PETTY_CASH = gql`mutation createRequest($user_id: ID!, $requ
   }`;
 
 // check request
+export const CREATE_CHECK_REQ = gql`mutation createRequest($user_id: ID!, $request: CheckRequestInput!, $vendor: VendorInput!) {
+  create_check_request(request: $request, user_id: $user_id, vendor: $vendor) {
+    id
+    created_at
+    current_status
+  }
+}`

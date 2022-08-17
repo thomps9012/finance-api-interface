@@ -66,6 +66,7 @@ export default function GrantSelect({ state, setState }: any) {
     }
     return <select name={state} onChange={handleChange} defaultValue="">
         <option value="" disabled hidden>Select Grant...</option>
+        <option value="N/A">None</option>
         {grants.map((grant: any) => {
             return <option key={grant.ID} value={grant.ID}>{grant.Name}</option>
         })}
