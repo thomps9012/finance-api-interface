@@ -18,3 +18,14 @@ export interface PettyCashOverview {
     request_ids: [string];
     total_amount: number;
 }
+interface PettyCashRequestInput {
+    amount: number;
+    date: string;
+    receipts: string[];
+    description: string;
+}
+export interface PettyCashInput {
+    user_id: string;
+    grant_id: string;
+    request: PettyCashRequestInput;
+}

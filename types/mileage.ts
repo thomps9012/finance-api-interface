@@ -1,10 +1,8 @@
 import { Action } from "./checkrequests";
-import { UserInfo } from "./users";
 
 export interface MileageDetail {
     id: string;
     user_id: string;
-    user: UserInfo;
     date: string;
     starting_location: string;
     destination: string;

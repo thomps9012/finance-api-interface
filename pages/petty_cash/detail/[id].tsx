@@ -6,11 +6,12 @@ import { PettyCashDetail } from "../../../types/pettycash"
 import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
-import PETTY_CASH_API from '../../../API/petty_cash';
+import client from "../../../graphql/client"
+import { PETTY_CASH_DETAIL } from "../../../graphql/queries"
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
-    const pettycashdetail = await PETTY_CASH_API.getOne(id as string)
+    const res = await client.query({query: PETTY_CASH_DETAIL, variables: {id}})
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
@@ -18,7 +19,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     )
     return {
         props: {
-            recorddata: sessionData ? pettycashdetail.data.detail : []
+            recorddata: sessionData ? res.data.petty_cash_detail : []
         }
     }
 }

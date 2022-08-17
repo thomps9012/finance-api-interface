@@ -1,15 +1,18 @@
 import { useState } from "react";
 import ImageUploading, { ImageListType } from "react-images-uploading";
+import { useMutation } from "@apollo/client";
 import GrantSelect from "../../components/grantSelect";
-import { BASE_PETTY_CASH_API } from "../../graphql/bases";
-import { CREATE } from "../../graphql/mutations";
-import { CREATE_PETTY_CASH } from "../../graphql/responses";
+import { CREATE_PETTY_CASH } from "../../graphql/mutations";
+import { PettyCashInput } from "../../types/pettycash";
 export default function CreateRequest() {
+    const [addRequest, { data, loading, error }] = useMutation(CREATE_PETTY_CASH)
     const [receipts, setReceipts] = useState([]);
     const [requestDate, setDate] = useState("")
     const [description, setDescription] = useState("")
     const [amount, setAmount] = useState(0.0)
     const [grantID, setGrantID] = useState("")
+    if (loading) return 'Submitting...';
+    if (error) return `Submission error! ${error.message}`;
     const handleDescription = (e: any) => {
         e.target.value.length < 76 &&
             setDescription(e.target.value)
@@ -26,15 +29,25 @@ export default function CreateRequest() {
     const maxNumber = 5;
     const submitRequest = async (e: any) => {
         e.preventDefault();
+        const receiptArr: string[] = receipts.map((receipt: any) => receipt.data_url)
         if (description.length === 0) { alert('add a description'); return }
+        if (grantID === "") { alert('select a grant'); return }
         if (amount === 0.0) { alert('add an amount'); return }
-        const receiptArr = receipts.map((receipt: any) => receipt.data_url)
-        console.log(receiptArr)
-        console.log(grantID)
         const testUserID = '68125e1f-21c1-4f60-aab0-8efff5dc158e'
-        const requestapi = `${BASE_PETTY_CASH_API}${CREATE}(user_id:${testUserID}, grant_id:${grantID}, request:{amount:${amount}, receipts:${JSON.stringify(receiptArr)}, date:${requestDate}, description:${description}})${CREATE_PETTY_CASH}}`
-        console.log(requestapi)
-        const res = await fetch(requestapi).then(res => res.json())
+        console.log(requestDate)
+        addRequest({
+            variables: {
+                user_id: testUserID,
+                grant_id: grantID,
+                request: {
+                    amount: amount,
+                    description: description,
+                    receipts: receiptArr,
+                    date: requestDate
+                }
+            }
+        })
+        console.log(data)
     }
     const onError = ({ errors, files }: any) => {
         console.log('Error', errors, files);
@@ -58,7 +71,7 @@ export default function CreateRequest() {
             onError={onError}
             dataURLKey="data_url">
             {({ imageList,
-                onImageUpload,
+                // onImageUpload,
                 onImageRemoveAll,
                 onImageUpdate,
                 onImageRemove,
@@ -67,10 +80,10 @@ export default function CreateRequest() {
                 errors
             }) => (
                 <div className="upload-image-wrapper">
-                    <button onClick={onImageUpload} className='upload-btn'>
+                    {/* <button onClick={onImageUpload} className='upload-btn'>
                         Click to Upload
                     </button>
-                    <p>or</p>
+                    <p>or</p> */}
                     {errors && (
                         <div className="error-container">
                             {errors.maxNumber && (

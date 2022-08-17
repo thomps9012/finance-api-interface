@@ -7,11 +7,13 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import AggMileage from "../../../components/aggMileage";
 import AggCheckRequests from "../../../components/aggCheckRequests";
 import AggPettyCash from "../../../components/aggPettyCash";
-import USER_API from "../../../API/user";
+import { USER_OVERVIEW } from "../../../graphql/queries";
+import client from "../../../graphql/client";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
-    const useroverview = await USER_API.getOverview(id as string)
+    const res = await client.query({ query: USER_OVERVIEW, variables: {id} })
+    console.log(res.data, 'user overview')
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
@@ -19,7 +21,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     )
     return {
         props: {
-            userdata: sessionData ? useroverview.data.overview : []
+            userdata: sessionData ? res.data.user_overview : []
         }
     }
 }
