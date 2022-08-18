@@ -1,31 +1,142 @@
 import { gql } from '@apollo/client';
 // user
+export const GET_ME = gql`query me($id:ID!){
+  me(id: $id){
+    id
+    name
+    manager_id
+    last_login
+    incomplete_action_count
+    incomplete_actions
+    vehicles {
+      id
+      name
+      description
+    }
+    mileage_requests {
+      mileage
+      parking
+      tolls
+      requests {
+        id
+        current_status
+        date
+      }
+      reimbursement
+    }
+    check_requests {
+      vendors {
+        name
+      }
+      requests {
+        id
+        current_status
+        date
+      }
+      total_amount
+    }
+    petty_cash_requests {
+      requests {
+        id
+        current_status
+        date
+      }
+      total_amount
+    }
+  }
+}`
+export const GET_MY_MILEAGE = gql`
+query me($id:ID!){
+  me(id: $id){
+    id
+    name
+    last_login
+    mileage_requests {
+      mileage
+      parking
+      tolls
+      requests {
+        id
+        current_status
+        date
+      }
+      reimbursement
+    }
+  }
+}
+`;
+export const GET_MY_PETTY_CASH = gql`query me($id:ID!){
+  me(id: $id){
+    id
+    name
+    last_login
+    petty_cash_requests {
+      requests {
+        id
+        current_status
+        date
+      }
+      total_amount
+    }
+  }
+}`;
+export const GET_MY_CHECKS = gql`query me($id:ID!){
+  me(id: $id){
+    id
+    name
+    last_login
+    check_requests {
+      vendors {
+        name
+      }
+      requests {
+        id
+        current_status
+        date
+      }
+      total_amount
+    }
+  }
+}
+`;
 export const ALL_USERS = gql`query{all_users{id manager_id name role email}}`;
-export const USER_OVERVIEW = gql`query userOverview($id: ID!){user_overview(id: $id){id name role manager_id incomplete_action_count last_login
+export const USER_OVERVIEW = gql`query userOverview($id: ID!){
+  user_overview(id: $id){
+    id
+    manager_id
+    name
+    role
+    last_login
+    incomplete_action_count
     mileage_requests {
         mileage
         parking
         tolls
-        request_ids
+        requests {
+          id
+          current_status
+          date
+        }
         reimbursement
       }
       check_requests {
         vendors {
           name
         }
-        receipts
-        request_ids
-        total_amount
-        purchases {
-            amount
-            grant_line_item
-            description
+        requests {
+          id
+          current_status
+          date
         }
+        total_amount
       }
       petty_cash_requests {
-        request_ids
+        requests {
+          id
+          current_status
+          date
+        }
         total_amount
-        receipts
       }
     }}`;
 

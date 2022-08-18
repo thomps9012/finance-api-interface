@@ -24,6 +24,7 @@ export interface MileageOverview {
     mileage: number;
     parking: number;
     reimbursement: number;
-    request_ids: [string];
+    requests: [MileageDetail];
+    last_request: MileageDetail;
     tolls: number;
 }

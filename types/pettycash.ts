@@ -15,7 +15,8 @@ export interface PettyCashDetail {
 }
 export interface PettyCashOverview {
     receipts: [string];
-    request_ids: [string];
+    requests: [PettyCashDetail];
+    last_request: PettyCashDetail;
     total_amount: number;
 }
 interface PettyCashRequestInput {

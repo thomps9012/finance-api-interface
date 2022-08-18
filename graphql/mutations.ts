@@ -2,6 +2,16 @@ import { gql } from '@apollo/client';
 
 // user
 // export const CREATE_USER = gql``;
+export const ADD_VEHICLE = gql`mutation addVehicle($user_id: ID!, $name: String!, $description: String!){
+  add_vehicle(user_id: $user_id, name: $name, description: $description) {
+    id
+    name
+    description
+  }
+}`;
+export const REMOVE_VEHICLE = gql`mutation removeVehicle($user_id: ID!, $vehicle_id: ID!){
+  remove_vehicle(user_id: $user_id, vehicle_id: $vehicle_id)
+}`;
 
 // mileage
 export const CREATE_MILEAGE = gql`mutation createRequest($user_id: ID!, $request: MileageInputType!) {

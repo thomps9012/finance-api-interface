@@ -28,7 +28,8 @@ export interface CheckRequestOverview {
     receipts: [string];
     total_amount: number;
     vendors: [Vendor];
-    request_ids: [string];
+    requests: [CheckDetail];
+    last_request: CheckDetail;
 }
 
 export interface CheckDetail {
