@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 // user
-export const GET_ME = gql`query me($id:ID!){
-  me(id: $id){
+export const GET_ME = gql`query me {
+  me {
     id
     name
     manager_id
@@ -46,8 +46,8 @@ export const GET_ME = gql`query me($id:ID!){
   }
 }`
 export const GET_MY_MILEAGE = gql`
-query me($id:ID!){
-  me(id: $id){
+query me {
+  me {
     id
     name
     last_login
@@ -65,8 +65,8 @@ query me($id:ID!){
   }
 }
 `;
-export const GET_MY_PETTY_CASH = gql`query me($id:ID!){
-  me(id: $id){
+export const GET_MY_PETTY_CASH = gql`query me {
+  me {
     id
     name
     last_login
@@ -80,8 +80,8 @@ export const GET_MY_PETTY_CASH = gql`query me($id:ID!){
     }
   }
 }`;
-export const GET_MY_CHECKS = gql`query me($id:ID!){
-  me(id: $id){
+export const GET_MY_CHECKS = gql`query me {
+  me {
     id
     name
     last_login

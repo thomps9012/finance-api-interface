@@ -10,10 +10,9 @@ import { UserOverview, Vehicle } from "../../types/users";
 import dateFormat from "../../utils/dateformat";
 import { useRouter } from "next/router";
 import Link from "next/link";
-const testUserID = '68125e1f-21c1-4f60-aab0-8efff5dc158e'
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     // update query to user specific
-    const res = await client.query({ query: GET_ME, variables: { id: testUserID }, fetchPolicy: 'no-cache' })
+    const res = await client.query({ query: GET_ME, fetchPolicy: 'no-cache' })
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,

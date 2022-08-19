@@ -1,6 +1,9 @@
 import { gql } from '@apollo/client';
 
 // user
+export const SIGN_IN = gql`mutation signIn($id: ID!, $email:String!, $name:String!) {
+  sign_in(id:$id, email:$email,name:$name)
+}`;
 // export const CREATE_USER = gql``;
 export const ADD_VEHICLE = gql`mutation addVehicle($user_id: ID!, $name: String!, $description: String!){
   add_vehicle(user_id: $user_id, name: $name, description: $description) {

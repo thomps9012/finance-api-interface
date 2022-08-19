@@ -2,6 +2,7 @@ import { Action } from "./checkrequests";
 
 export interface MileageDetail {
     id: string;
+    grant_id: string;
     user_id: string;
     date: string;
     starting_location: string;
