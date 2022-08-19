@@ -1,6 +1,7 @@
 import { useMutation } from "@apollo/client"
 import { useRouter } from "next/router";
 import { useState } from "react";
+import GrantSelect from "../../components/grantSelect";
 import { CREATE_MILEAGE } from "../../graphql/mutations"
 
 export default function CreateRequest() {
@@ -14,6 +15,7 @@ export default function CreateRequest() {
     const [end_odometer, setEnd] = useState(start_odometer + 1)
     const [tolls, setTolls] = useState(0.0)
     const [parking, setParking] = useState(0.0)
+    const [grantID, setGrantID] = useState("N/A")
     if (loading) return 'Submitting...';
     if (error) return `Submission error! ${error.message}`;
     const checkOdo = () => { start_odometer >= end_odometer && alert('start mileage is too high and/or end mileage is too low') }
@@ -22,7 +24,7 @@ export default function CreateRequest() {
         if (start_odometer >= end_odometer) { alert('start mileage is too high and/or end mileage is too low'); return }
         addRequest({
             variables: {
-                grant_id: "",
+                grant_id: grantID,
                 request: {
                     date: requestDate,
                     start_odometer: start_odometer,
@@ -38,6 +40,7 @@ export default function CreateRequest() {
         data && router.push("/")
     }
     return <form id="mileage-form">
+        <GrantSelect state={grantID} setState={setGrantID} />
         <h4>Trip Date</h4>
         <input type="date" name="date" onChange={(e: any) => setDate(new Date(e.target.value).toISOString())} />
         <h4>Starting Location</h4>
