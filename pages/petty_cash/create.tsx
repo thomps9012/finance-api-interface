@@ -20,11 +20,8 @@ export default function CreateRequest() {
         if (description.length === 0) { alert('add a description'); return }
         if (grantID === "") { alert('select a grant'); return }
         if (amount === 0.0) { alert('add an amount'); return }
-        const testUserID = '68125e1f-21c1-4f60-aab0-8efff5dc158e'
-        console.log(requestDate)
         addRequest({
             variables: {
-                user_id: testUserID,
                 grant_id: grantID,
                 request: {
                     amount: amount,

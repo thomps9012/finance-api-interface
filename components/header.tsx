@@ -19,7 +19,7 @@ export default function Header() {
                             className={styles.buttonPrimary}
                             onClick={(e: any) => {
                                 e.preventDefault()
-                                signIn()
+                                signIn("google")
                             }}>
                             Sign In
                         </a>

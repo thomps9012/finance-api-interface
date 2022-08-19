@@ -40,7 +40,6 @@ export default function MePage({ userdata }: { userdata: UserOverview }) {
         const vehicleData = Object.fromEntries(new FormData(e.target))
         await addVehicle({
             variables: {
-                user_id: testUserID,
                 name: vehicleData.name,
                 description: vehicleData.description
             }
@@ -65,7 +64,7 @@ export default function MePage({ userdata }: { userdata: UserOverview }) {
             return <div key={vehicle.id}>
                 <p>{vehicle.name}</p>
                 <p>{vehicle.description}</p>
-                <button onClick={() => removeVehicle({ variables: { vehicle_id: vehicle.id, user_id: testUserID } })}>X</button>
+                <button onClick={() => removeVehicle({ variables: { vehicle_id: vehicle.id } })}>X</button>
             </div>
         })}
         <form onSubmit={handleAdd}>

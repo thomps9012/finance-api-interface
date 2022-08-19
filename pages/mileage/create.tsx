@@ -20,10 +20,9 @@ export default function CreateRequest() {
     const handleSubmit = (e: any) => {
         e.preventDefault();
         if (start_odometer >= end_odometer) { alert('start mileage is too high and/or end mileage is too low'); return }
-        const testUserID = "68125e1f-21c1-4f60-aab0-8efff5dc158e";
         addRequest({
             variables: {
-                user_id: testUserID,
+                grant_id: "",
                 request: {
                     date: requestDate,
                     start_odometer: start_odometer,

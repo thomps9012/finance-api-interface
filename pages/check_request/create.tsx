@@ -32,7 +32,6 @@ export default function CreateRequest() {
         e.preventDefault();
         const receiptArr: string[] = receipts.map((receipt: any) => receipt.data_url)
         if (grantID === "") { alert('select a grant'); return }
-        const testUserID = '68125e1f-21c1-4f60-aab0-8efff5dc158e'
         console.log(requestDate)
         let purchaseArr = [];
         const purchaseRows = document.getElementsByClassName('purchase-row');
@@ -43,13 +42,12 @@ export default function CreateRequest() {
         }
         addRequest({
             variables: {
-                user_id: testUserID,
                 vendor: {
                     name: vendorName,
                     address: vendorAddress
                 },
+                grant_id: grantID,
                 request: {
-                    grant_id: grantID,
                     receipts: receiptArr,
                     date: requestDate,
                     purchases: purchaseArr,
