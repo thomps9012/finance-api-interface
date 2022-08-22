@@ -1,3 +1,5 @@
+import { UserInfo } from "./users";
+
 export interface Purchase {
     amount: number;
     description: string;
@@ -20,7 +22,9 @@ export interface Action {
     id: string;
     created_at: string;
     status: string;
-    user_id: string;
+    user: UserInfo;
+    request_id: string;
+    request_type: string;
 }
 
 export interface CheckRequestOverview {

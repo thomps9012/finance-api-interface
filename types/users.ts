@@ -1,4 +1,4 @@
-import { CheckRequestOverview } from "./checkrequests";
+import { Action, CheckRequestOverview } from "./checkrequests";
 import { MileageOverview } from "./mileage";
 import { PettyCashOverview } from "./pettycash";
 
@@ -23,7 +23,7 @@ export interface UserOverview {
     role: string;
     manager_id: string;
     incomplete_action_count: number;
-    incomplete_actions: [string];
+    incomplete_actions: [Action];
     last_login: string;
     mileage_requests: MileageOverview;
     check_requests: CheckRequestOverview;

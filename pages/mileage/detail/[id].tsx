@@ -45,9 +45,9 @@ export default function RecordDetail({ recorddata }: { recorddata: MileageDetail
         {/* <h5>Current Status: {titleCase(current_status)}</h5> */}
         <h5>Action History</h5>
         {action_history.map((action: Action) => {
-            const { id, user_id, created_at, status } = action;
+            const { id, user, created_at, status } = action;
             return <div key={id}>
-                <p>{user_id}</p>
+                <p>{user.name}</p>
                 <p>{created_at}</p>
                 <p>{titleCase(status)}</p>
             </div>

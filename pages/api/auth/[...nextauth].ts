@@ -2,7 +2,6 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { SIGN_IN } from '../../../graphql/mutations';
 import createClient from "../../../graphql/client";
-
 export const authOptions: NextAuthOptions = {
     providers: [
         GoogleProvider({
@@ -13,6 +12,7 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async signIn({ user, account, profile }) {
             profile.hd != 'norainc.org' && false;
+            const client = await createClient("");
             const res = await client.mutate({ mutation: SIGN_IN, variables: { name: user.name, email: user.email, id: user.id } });
             user.token = res.data.sign_in
             return true;

@@ -1,5 +1,25 @@
 import { gql } from '@apollo/client';
 // user
+export const GET_MY_INBOX = gql`query me {
+  me {
+    id
+    name
+    manager_id
+    last_login
+    incomplete_action_count
+    incomplete_actions {
+      id
+      status
+      user {
+        id
+        name
+      }
+      request_id
+      request_type
+      created_at
+    }
+    }
+}`
 export const GET_ME = gql`query me {
   me {
     id
@@ -7,7 +27,6 @@ export const GET_ME = gql`query me {
     manager_id
     last_login
     incomplete_action_count
-    incomplete_actions
     vehicles {
       id
       name
@@ -158,9 +177,12 @@ export const MILEAGE_DETAIL = gql`query mileageDetail($id: ID!) {
     created_at
     action_history {
       id
-      created_at
       status
-      user_id
+      user {
+        id
+        name
+      }
+      created_at
     }
     current_status
     is_active
@@ -180,9 +202,12 @@ export const PETTY_CASH_DETAIL = gql`query pettyCashDetail($id: ID!){
     created_at
     action_history {
       id
-      created_at
       status
-      user_id
+      user {
+        id
+        name
+      }
+      created_at
     }
     current_status
     is_active
@@ -218,9 +243,12 @@ export const CHECK_DETAIL = gql`query checkReqDetail($id: ID!) {
     created_at
     action_history {
       id
-      created_at
       status
-      user_id
+      user {
+        id
+        name
+      }
+      created_at
     }
     current_status
     is_active

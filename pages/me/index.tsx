@@ -52,13 +52,7 @@ export default function MePage({ userdata }: { userdata: UserOverview }) {
         <h2>{name}</h2>
         <h3>{role}</h3>
         <h3>{incomplete_action_count} New Item Actions Since Last Login on: {dateFormat(last_login)}</h3>
-        {/* {incomplete_actions?.map((action_id: string) => {
-            return <div key={action_id}>
-                <Link href={`/${item_type}/detail/${item_id}`}>
-                    <a>{item_type} {created_at}</a>
-                </Link>
-            </div>
-        })} */}
+        <Link href="/me/inbox"><a>My Inbox</a></Link>
         <h3>Current Vehicles</h3>
         {vehicles?.map((vehicle: Vehicle) => {
             return <div key={vehicle.id}>
