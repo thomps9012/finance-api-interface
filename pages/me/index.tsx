@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { ADD_VEHICLE, REMOVE_VEHICLE } from "../../graphql/mutations";
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
-import client from "../../graphql/client";
+import createClient from "../../graphql/client";
 import { GET_ME } from "../../graphql/queries";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { UserOverview, Vehicle } from "../../types/users";
@@ -11,13 +11,14 @@ import dateFormat from "../../utils/dateformat";
 import { useRouter } from "next/router";
 import Link from "next/link";
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    // update query to user specific
-    const res = await client.query({ query: GET_ME, fetchPolicy: 'no-cache' })
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
         authOptions
     )
+    console.log(sessionData?.Authorization, '\n sessionData JWT')
+    const client = await createClient(sessionData?.Authorization);
+    const res = await client.query({ query: GET_ME, fetchPolicy: 'no-cache'  })
     console.log(res.data, "userdata on server")
     return {
         props: {
@@ -73,11 +74,11 @@ export default function MePage({ userdata }: { userdata: UserOverview }) {
             <input type="text" max={40} name="description" />
             <button type="submit">Add Vehicle</button>
         </form>
-        
+
         <Link href="/me/mileage"><a><h1>My Mileage</h1></a></Link>
-        
+
         <Link href="/me/checkRequests"><a><h1>My Check Requests</h1></a></Link>
-        
+
         <Link href="/me/pettyCash"><a><h1>My Petty Cash</h1></a></Link>
     </>
 }

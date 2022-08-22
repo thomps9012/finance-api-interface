@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from "next"
 import { unstable_getServerSession } from "next-auth"
 import Link from "next/link"
-import client from "../../../graphql/client"
+import createClient from "../../../graphql/client"
 import { CHECK_DETAIL } from "../../../graphql/queries"
 import { Action, CheckDetail, Purchase } from "../../../types/checkrequests"
 import dateFormat from "../../../utils/dateformat"
@@ -10,12 +10,13 @@ import { authOptions } from "../../api/auth/[...nextauth]"
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
-    const res = await client.query({query: CHECK_DETAIL, variables: {id}})
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
         authOptions
     )
+    const client = await createClient(sessionData?.Authorization);
+    const res = await client.query({query: CHECK_DETAIL, variables: {id}})
     return {
         props: {
             recorddata: sessionData ? res.data.check_request_detail : []

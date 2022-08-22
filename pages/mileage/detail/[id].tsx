@@ -6,17 +6,18 @@ import Link from "next/link"
 import { Action } from "../../../types/checkrequests"
 import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
-import client from "../../../graphql/client";
+import createClient from "../../../graphql/client";
 import { MILEAGE_DETAIL } from "../../../graphql/queries";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const { id } = context.query
-    const res = await client.query({query: MILEAGE_DETAIL, variables: {id}})
+    const { id } = context.query 
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
         authOptions
     )
+    const client = await createClient(sessionData?.Authorization);
+    const res = await client.query({query: MILEAGE_DETAIL, variables: {id}})
     return {
         props: {
             recorddata: sessionData ? res.data.mileage_detail : []

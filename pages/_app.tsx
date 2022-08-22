@@ -1,47 +1,47 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { SessionProvider } from 'next-auth/react';
-import { setContext } from '@apollo/client/link/context';
 import {
   ApolloClient,
   ApolloProvider,
   InMemoryCache,
   createHttpLink,
-  from
 } from '@apollo/client';
 import Layout from '../components/layout';
+import { setContext } from '@apollo/client/link/context';
+
 
 const httpLink = createHttpLink({
-  uri: "https://agile-tundra-78417.herokuapp.com/graphql",
+  uri: process.env.GRAPHQL_URI,
   credentials: "include"
 })
 
-
-const authLink = setContext(async (_, { headers }: { headers: Headers }) => {
-  // const session = await getSession();
-  // console.log('header auth', session)
+const authLink = setContext((_, { headers }) => {
+  const token = sessionStorage.getItem('authToken');
+  console.log('token from authlink', token)
   return {
     headers: {
       ...headers,
-      // Authorization: session?.Authorization ? session.Authorization : "",
+      Authorization: token ? token : "",
     }
   }
 });
 
 const client = new ApolloClient({
-  link: from([authLink, httpLink]),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache,
   ssrMode: true
 })
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  return <SessionProvider session={session}>
-    <ApolloProvider client={client}>
+
+  return <ApolloProvider client={client}>
+    <SessionProvider session={session}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </ApolloProvider>
-  </SessionProvider>
+    </SessionProvider>
+  </ApolloProvider>
 }
 
 export default MyApp

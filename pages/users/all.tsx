@@ -3,14 +3,15 @@ import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from ".././api/auth/[...nextauth]";
 import Link from "next/link";
 import { ALL_USERS } from "../../graphql/queries";
-import client from "../../graphql/client";
+import createClient from "../../graphql/client";
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const res = await client.query({ query: ALL_USERS });
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
         authOptions
     )
+    const client = await createClient(sessionData?.Authorization);
+    const res = await client.query({ query: ALL_USERS });
     console.log(res.data, "userdata on server")
     return {
         props: {

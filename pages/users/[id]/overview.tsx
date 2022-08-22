@@ -8,17 +8,18 @@ import AggMileage from "../../../components/aggMileage";
 import AggCheckRequests from "../../../components/aggCheckRequests";
 import AggPettyCash from "../../../components/aggPettyCash";
 import { USER_OVERVIEW } from "../../../graphql/queries";
-import client from "../../../graphql/client";
+import createClient from "../../../graphql/client";
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
-    const res = await client.query({ query: USER_OVERVIEW, variables: {id} })
-    console.log(res.data, 'user overview')
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
         authOptions
     )
+    const client = await createClient(sessionData?.Authorization);
+    const res = await client.query({ query: USER_OVERVIEW, variables: {id} })
+    console.log(res.data, 'user overview')
     return {
         props: {
             userdata: sessionData ? res.data.user_overview : []
