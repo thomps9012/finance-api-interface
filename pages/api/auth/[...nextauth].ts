@@ -12,11 +12,23 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async signIn({ user, account, profile }) {
             profile.hd != 'norainc.org' && false;
-            const client = await createClient("");
+            return true
+            const client = createClient("");
+            console.log('email:', user.email)
+            console.log('id:', user.id)
+            console.log('name:', user.name)
             const res = await client.mutate({ mutation: SIGN_IN, variables: { name: user.name, email: user.email, id: user.id } });
+            console.log('user token', user.token)
             user.token = res.data.sign_in
             console.log('signin res', res)
-            return true;
+            if (!res) {
+                console.log('error')
+                console.error('trouble sign in');
+                return false
+            } else {
+                console.log('success')
+                return true
+            }
         },
         async jwt({ token, user }) {
             if (user) {

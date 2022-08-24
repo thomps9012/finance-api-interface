@@ -2,11 +2,11 @@ import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
-    uri: process.env.GRAPHQL_URI
+    uri: "https://agile-tundra-78417.herokuapp.com/graphql/"
 })
-const createClient = async (context: any) => {
+const createClient = (context: any) => {
     console.log('client context', context)
-    const authLink = setContext(async (_, { headers }) => {
+    const authLink = setContext((_, { headers }) => {
         return {
             headers: {
                 ...headers,

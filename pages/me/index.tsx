@@ -17,7 +17,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         authOptions
     )
     console.log(sessionData?.Authorization, '\n sessionData JWT')
-    const client = await createClient(sessionData?.Authorization);
+    const client = createClient(sessionData?.Authorization);
     const res = await client.query({ query: GET_ME, fetchPolicy: 'no-cache' })
     console.log(res.data, "userdata on server")
     return {

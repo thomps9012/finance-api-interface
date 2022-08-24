@@ -17,7 +17,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         context.res,
         authOptions
     )
-    const client = await createClient(sessionData?.Authorization);
+    const client = createClient(sessionData?.Authorization);
     const res = await client.query({ query: USER_OVERVIEW, variables: {id} })
     console.log(res.data, 'user overview')
     return {

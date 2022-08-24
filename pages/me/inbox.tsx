@@ -13,7 +13,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         context.res,
         authOptions
     )
-    const client = await createClient(sessionData?.Authorization);
+    const client = createClient(sessionData?.Authorization);
     const res = await client.query({ query: GET_MY_INBOX, fetchPolicy: 'no-cache' })
     console.log(res.data, "userdata on server")
     return {

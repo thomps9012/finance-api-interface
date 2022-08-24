@@ -12,8 +12,7 @@ import { setContext } from '@apollo/client/link/context';
 
 
 const httpLink = createHttpLink({
-  uri: "https://agile-tundra-78417.herokuapp.com/graphql/",
-
+  uri: "https://agile-tundra-78417.herokuapp.com/graphql/"
 })
 
 const authLink = setContext((_, { headers }) => {
@@ -34,13 +33,13 @@ const client = new ApolloClient({
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 
-  return <ApolloProvider client={client}>
-    <SessionProvider session={session}>
+  return <SessionProvider session={session}>
+    <ApolloProvider client={client}>
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </SessionProvider>
-  </ApolloProvider>
+    </ApolloProvider>
+  </SessionProvider>
 }
 
 export default MyApp

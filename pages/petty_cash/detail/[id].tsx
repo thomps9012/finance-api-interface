@@ -19,7 +19,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         context.res,
         authOptions
     )
-    const client = await createClient(sessionData?.Authorization);
+    const client = createClient(sessionData?.Authorization);
     const jwtToken = sessionData?.Authorization;
     const tokenData: { role: string, id: string } = await jwt_decode(jwtToken as string)
     const user_role = tokenData.role
