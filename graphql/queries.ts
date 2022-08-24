@@ -20,6 +20,14 @@ export const GET_MY_INBOX = gql`query me {
     }
     }
 }`
+export const GET_NOTIFICATIONS = gql`query me {
+  me {
+    id
+    name
+    last_login
+    incomplete_action_count
+    }
+}`
 export const GET_ME = gql`query me {
   me {
     id
@@ -184,6 +192,7 @@ export const MILEAGE_DETAIL = gql`query mileageDetail($id: ID!) {
       }
       created_at
     }
+    current_user
     current_status
     is_active
   }
@@ -209,6 +218,7 @@ export const PETTY_CASH_DETAIL = gql`query pettyCashDetail($id: ID!){
       }
       created_at
     }
+    current_user
     current_status
     is_active
   }
@@ -250,6 +260,7 @@ export const CHECK_DETAIL = gql`query checkReqDetail($id: ID!) {
       }
       created_at
     }
+    current_user
     current_status
     is_active
   }

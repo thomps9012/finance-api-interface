@@ -2,8 +2,7 @@ import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
-    uri: process.env.GRAPHQL_URI,
-    credentials: "include"
+    uri: process.env.GRAPHQL_URI
 })
 const createClient = async (context: any) => {
     console.log('client context', context)

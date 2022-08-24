@@ -1,6 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import styles from "./header.module.css"
 import NavLinks from "./navLinks";
+
 export default function Header() {
     const { data: session, status } = useSession();
     const loading = status === "loading";
@@ -41,10 +42,11 @@ export default function Header() {
                         <a href={`/api/auth/signout`}
                             className={styles.button} onClick={(e: any) => {
                                 e.preventDefault()
-                                signOut({callbackUrl: '/signOut'})
+                                signOut({ callbackUrl: '/signOut' })
                             }}>
                             Sign Out
                         </a>
+                       
                     </>
                 )}
             </p>

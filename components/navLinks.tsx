@@ -29,11 +29,11 @@ export default function NavLinks() {
                     <a>Create Check Request</a>
                 </Link>
             </li>
-            <li className={styles.navItem}>
+            {/* <li className={styles.navItem}>
                 <Link href="/petty_cash/create">
                     <a>Request Petty Cash</a>
                 </Link>
-            </li>
+            </li> */}
         </ul>
     </nav>
 }

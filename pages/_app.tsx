@@ -12,13 +12,12 @@ import { setContext } from '@apollo/client/link/context';
 
 
 const httpLink = createHttpLink({
-  uri: process.env.GRAPHQL_URI,
-  credentials: "include"
+  uri: "https://agile-tundra-78417.herokuapp.com/graphql/",
+
 })
 
 const authLink = setContext((_, { headers }) => {
   const token = sessionStorage.getItem('authToken');
-  console.log('token from authlink', token)
   return {
     headers: {
       ...headers,

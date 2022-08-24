@@ -51,7 +51,7 @@ export default function MyInbox({ userdata }: { userdata: UserOverview }) {
                 <br />
                 <p>{user.name}</p>
                 <p>{status}</p>
-                <small>{created_at}</small>
+                <small>{dateFormat(created_at)}</small>
             </div>
         })}
     </main>

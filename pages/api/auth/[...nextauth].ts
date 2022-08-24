@@ -15,6 +15,7 @@ export const authOptions: NextAuthOptions = {
             const client = await createClient("");
             const res = await client.mutate({ mutation: SIGN_IN, variables: { name: user.name, email: user.email, id: user.id } });
             user.token = res.data.sign_in
+            console.log('signin res', res)
             return true;
         },
         async jwt({ token, user }) {

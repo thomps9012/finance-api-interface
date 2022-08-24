@@ -50,5 +50,6 @@ export interface CheckDetail {
     created_at: string;
     action_history: [Action];
     current_status: string;
+    current_user: string;
     is_active: boolean;
 }

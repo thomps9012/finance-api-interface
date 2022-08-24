@@ -31,7 +31,7 @@ interface UserType {
 export default function UsersInfo({ userdata }: any) {
     return <main>
         <h1>User Data from All Query</h1>
-        {userdata.map((user: UserType) => {
+        {userdata.filter((user: UserType) => user.role != null).map((user: UserType) => {
             const { name, id, email, role } = user;
             return <div key={id}>
                 <p>{name}</p>

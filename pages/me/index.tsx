@@ -18,7 +18,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     )
     console.log(sessionData?.Authorization, '\n sessionData JWT')
     const client = await createClient(sessionData?.Authorization);
-    const res = await client.query({ query: GET_ME, fetchPolicy: 'no-cache'  })
+    const res = await client.query({ query: GET_ME, fetchPolicy: 'no-cache' })
     console.log(res.data, "userdata on server")
     return {
         props: {
@@ -44,16 +44,21 @@ export default function MePage({ userdata }: { userdata: UserOverview }) {
                 description: vehicleData.description
             }
         })
+        addData.add_vehicle.id && document.getElementById('vehicleInput')?.setAttribute('style', 'display: none')
         addData.add_vehicle.id && router.reload()
     }
     removeData?.remove_vehicle && router.reload();
+    const showDiv = (e: any) => {
+        e.preventDefault()
+        document.getElementById('vehicleInput')?.setAttribute('style', 'display: block')
+    }
     return <>
         <pre>{JSON.stringify(data, null, 2)}</pre>
         <h2>{name}</h2>
         <h3>{role}</h3>
-        <h3>{incomplete_action_count} New Item Actions Since Last Login on: {dateFormat(last_login)}</h3>
-        <Link href="/me/inbox"><a>My Inbox</a></Link>
-        <h3>Current Vehicles</h3>
+        <h3>Last Login on: {dateFormat(last_login)}</h3>
+        <Link href="/me/inbox"><a>{incomplete_action_count} Inbox</a></Link>
+        {vehicles.length > 0 && (<h3>Current Vehicles</h3>)}
         {vehicles?.map((vehicle: Vehicle) => {
             return <div key={vehicle.id}>
                 <p>{vehicle.name}</p>
@@ -61,18 +66,19 @@ export default function MePage({ userdata }: { userdata: UserOverview }) {
                 <button onClick={() => removeVehicle({ variables: { vehicle_id: vehicle.id } })}>X</button>
             </div>
         })}
-        <form onSubmit={handleAdd}>
+        <button onClick={showDiv}>Add Vehicle</button>
+        <form onSubmit={handleAdd} id='vehicleInput'>
             <label>Vehicle Name</label>
             <input type="text" max={20} name="name" />
             <label>Vehicle Name</label>
             <input type="text" max={40} name="description" />
-            <button type="submit">Add Vehicle</button>
+            <button type="submit">Add</button>
         </form>
 
         <Link href="/me/mileage"><a><h1>My Mileage</h1></a></Link>
 
         <Link href="/me/checkRequests"><a><h1>My Check Requests</h1></a></Link>
 
-        <Link href="/me/pettyCash"><a><h1>My Petty Cash</h1></a></Link>
+        {/* <Link href="/me/pettyCash"><a><h1>My Petty Cash</h1></a></Link> */}
     </>
 }
