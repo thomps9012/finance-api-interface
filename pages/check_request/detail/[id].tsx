@@ -1,6 +1,7 @@
 import { GetServerSidePropsContext } from "next"
 import { unstable_getServerSession } from "next-auth"
 import Link from "next/link"
+import Image from 'next/image'
 import createClient from "../../../graphql/client"
 import { CHECK_DETAIL } from "../../../graphql/queries"
 import { Action, CheckDetail, Purchase } from "../../../types/checkrequests"
@@ -17,7 +18,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     )
     const jwt = sessionData?.user.token
     const client = createClient(jwt);
-    const res = await client.query({query: CHECK_DETAIL, variables: {id}})
+    const res = await client.query({ query: CHECK_DETAIL, variables: { id } })
     return {
         props: {
             recorddata: sessionData ? res.data.check_request_detail : []
@@ -31,10 +32,10 @@ export default function RecordDetail({ recorddata }: { recorddata: CheckDetail }
     const vendorName = recorddata.vendor.name;
     const { website, street, city, zip, state } = recorddata.vendor.address;
     return <main className={styles.main} id={is_active ? `active` : `inactive`}>
-        <p>{dateFormat(date)} Check Request</p>
-        <p>for</p>
+        <h1 className={current_status}>{titleCase(current_status)} Check Request</h1 >
+        <h1>{dateFormat(date)}</h1>
         <h3>{description}</h3>
-        <h5>{order_total}</h5>
+        <h2>{order_total}</h2>
         {purchases.map((purchase: Purchase) => {
             const { amount, description, grant_line_item } = purchase;
             return <>
@@ -44,11 +45,14 @@ export default function RecordDetail({ recorddata }: { recorddata: CheckDetail }
             </>
         })}
         <hr />
-        <h5>Credit Card</h5>
-        {credit_card}
+        <h5>Company Credit Card {credit_card}</h5>
         <hr />
         <h5>Receipts</h5>
-        {receipts.map((receipt: string, i:number) => <img key={i}src={receipt} alt={`receipt ${i}`} />)}
+        {receipts.map((receipt: string, i: number) => <>
+            <Image key={i} src={receipt} height={300} width={300} alt={`receipt ${i}`} />
+            <br />
+        </>
+        )}
         <hr />
         <h3>{vendorName}</h3>
         <p>{website}</p>
@@ -61,14 +65,13 @@ export default function RecordDetail({ recorddata }: { recorddata: CheckDetail }
         <br />
         <Link href={`/user/detail/${user_id}`}><a>User Profile</a></Link>
         <p>Created on {dateFormat(created_at)}</p>
-        <h5>Current Status: {titleCase(current_status)}</h5>
         <h5>Action History</h5>
         {action_history.map((action: Action) => {
             const { id, user, created_at, status } = action;
             return <div key={id}>
                 <p>{user.name}</p>
-                <p>{created_at}</p>
                 <p>{titleCase(status)}</p>
+                <p>{dateFormat(created_at)}</p>
             </div>
         })}
     </main>

@@ -10,16 +10,16 @@ import createClient from "../../../graphql/client";
 import { MILEAGE_DETAIL } from "../../../graphql/queries";
 import styles from '../../../styles/Home.module.css'
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const { id } = context.query 
+    const { id } = context.query
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
         authOptions
     )
-     const jwt = sessionData?.user.token
+    const jwt = sessionData?.user.token
     const client = createClient(jwt);
     console.log(id)
-    const res = await client.query({query: MILEAGE_DETAIL, variables: {id}})
+    const res = await client.query({ query: MILEAGE_DETAIL, variables: { id } })
     return {
         props: {
             recorddata: sessionData ? res.data.mileage_detail : []
@@ -28,11 +28,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 }
 
 export default function RecordDetail({ recorddata }: { recorddata: MileageDetail }) {
-    const { is_active, created_at, user_id, trip_mileage, trip_purpose, tolls, start_odometer, starting_location, end_odometer, destination, parking, reimbursement, action_history, current_status } = recorddata;
+    const { is_active, created_at, user_id, date, trip_mileage, trip_purpose, tolls, start_odometer, starting_location, end_odometer, destination, parking, reimbursement, action_history, current_status } = recorddata;
     return <main className={styles.main} id={is_active ? `active` : `inactive`}>
+        <h2>{dateFormat(date)}</h2>
+        <h1 className={current_status}>Trip from</h1>
+        <h1 className={current_status}> {starting_location} to {destination}</h1>
         <h3>{trip_purpose}</h3>
-        <h5>From {starting_location} to {destination}</h5>
-        <h5>Trip Breakdown</h5>
         <table>
             <tr><th>Start Odometer</th><th>{start_odometer}</th></tr>
             <tr><th>End Odometer</th><th>{end_odometer}</th></tr>
@@ -42,16 +43,15 @@ export default function RecordDetail({ recorddata }: { recorddata: MileageDetail
             <tr><th>Reimbursement</th><th>{reimbursement}</th></tr>
         </table>
         <hr />
-        <Link href={`/user/detail/${user_id}`}><h3>Link to User Profile</h3></Link>
-        <p>Created on {dateFormat(created_at)}</p>
+
         {/* <h5>Current Status: {titleCase(current_status)}</h5> */}
         <h5>Action History</h5>
         {action_history.map((action: Action) => {
             const { id, user, created_at, status } = action;
             return <div key={id}>
                 <p>{user.name}</p>
-                <p>{created_at}</p>
                 <p>{titleCase(status)}</p>
+                <p>{dateFormat(created_at)}</p>
             </div>
         })}
     </main>
