@@ -4,11 +4,12 @@ import { useState } from "react";
 import ReceiptUpload from "../../components/receiptUpload";
 import VendorInput from "../../components/vendorInput";
 import PurchaseInput from "../../components/purchaseInput";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import createClient from "../../graphql/client";
 import { useSession } from "next-auth/react";
+import styles from '../../styles/Home.module.css';
 export default function CreateRequest() {
-    // const router = useRouter();
+    const router = useRouter();
     const { data } = useSession();
     const jwt = data?.user.token;
     const [receipts, setReceipts] = useState([]);
@@ -40,7 +41,8 @@ export default function CreateRequest() {
 
         }
         const client = createClient(jwt);
-        const res = await client.mutate({mutation: CREATE_CHECK_REQ,
+        const res = await client.mutate({
+            mutation: CREATE_CHECK_REQ,
             variables: {
                 vendor: {
                     name: vendorName,
@@ -56,39 +58,45 @@ export default function CreateRequest() {
                 }
             }
         })
-        console.log(res.data.create_check_request)
+        res.data.create_check_request.created_at ? router.push('/me') : null;
     }
 
-    return <form>
-        <h4>Grant</h4>
-        <GrantSelect state={grantID} setState={setGrantID} />
-        <h4>Date</h4>
-        <input type="date" name="date" onChange={(e: any) => setDate(new Date(e.target.value).toISOString())} />
-        <h4>Description</h4>
-        <textarea rows={5} maxLength={75} name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
-        <span>{description.length}/75 characters</span>
-        <VendorInput setAddress={setVendorAddress} setName={setVendorName} address={vendorAddress} />
-        <h3>Purchases</h3>
-        <span className="description">Limit of 5 Purchases per Request</span>
-        <br />
-        <button onClick={addPurchase}>Add</button>
-        <button onClick={removePurchase}>Remove Last</button>
-        <PurchaseInput />
-        {rowCount >= 2 && <PurchaseInput />}
-        {rowCount >= 3 && <PurchaseInput />}
-        {rowCount >= 4 && <PurchaseInput />}
-        {rowCount >= 5 && <PurchaseInput />}
-        <h3>Credit Card Used</h3>
-        <select name='creditCard' value={creditCard} onChange={(e: any) => setCreditCard(e.target.value)} defaultValue="">
-            <option value="" disabled hidden>Select Credit Card..</option>
-            <option value="N/A">No Card</option>
-            <option value="1234">Card 1</option>
-            <option value="5678">Card 2</option>
-        </select>
-        <h4>{receipts.length} Receipt{receipts.length > 1 && "s"} Attached</h4>
-        <span className="description">Limit of 5 Receipts per Request</span>
-        <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />
-        <br />
-        <button className='submit' onClick={submitRequest}>Submit Request</button>
-    </form>
+    return <main className={styles.main}>
+        <form>
+            <h4>Grant</h4>
+            <GrantSelect state={grantID} setState={setGrantID} />
+            <h4>Date</h4>
+            <input type="date" name="date" onChange={(e: any) => setDate(new Date(e.target.value).toISOString())} />
+            <h4>Description</h4>
+            <textarea rows={5} maxLength={75} name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
+            <br />
+            <span>{description.length}/75 characters</span>
+            <VendorInput setAddress={setVendorAddress} setName={setVendorName} address={vendorAddress} />
+            <h3>Purchases</h3>
+            <span className="description">Limit of 5 Purchases per Request</span>
+            <br />
+            <br />
+            <PurchaseInput />
+            <hr />
+            {rowCount >= 2 && <><PurchaseInput /><hr /></>}
+            {rowCount >= 3 && <><PurchaseInput /><hr /></>}
+            {rowCount >= 4 && <><PurchaseInput /><hr /></>}
+            {rowCount >= 5 && <><PurchaseInput /><hr /></>}
+            <br />
+            <button onClick={addPurchase}>Add</button>
+            <button onClick={removePurchase}>Remove Last</button>
+            <h3>Company Credit Card Used</h3>
+            <select name='creditCard' value={creditCard} onChange={(e: any) => setCreditCard(e.target.value)} defaultValue="">
+                <option value="" disabled hidden>Select Credit Card..</option>
+                <option value="N/A">No Card</option>
+                <option value="1234">Card 1</option>
+                <option value="5678">Card 2</option>
+            </select>
+            <h4>{receipts.length} Receipt{receipts.length === 0 && 's'}{receipts.length > 1 && "s"} Attached</h4>
+            <span className="description">Limit of 5 Receipts per Request</span>
+            <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />
+            <br />
+            <button className='submit' onClick={submitRequest}>Submit Request</button>
+        </form>
+    </main>
 }

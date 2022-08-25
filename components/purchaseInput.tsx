@@ -6,5 +6,6 @@ export default function PurchaseInput() {
         <input type="text" name="description" />
         <label>Amount</label>
         <input type="number" name="amount" />
+        <hr />
     </form>
 }

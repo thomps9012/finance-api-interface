@@ -80,9 +80,11 @@
   }
   
   .navItems {
-    margin-bottom: 2rem;
+    margin-right: 1rem;
     padding: 0;
     list-style: none;
+    display: flex;
+    justify-content: center;
   }
   #hidden {
    display: none;
@@ -90,5 +92,9 @@
   
   .navItem {
     display: inline-block;
-    margin-right: 1rem;
+    margin-left: .75rem;
+  }
+
+  .navItem:hover{
+    cursor: pointer;
   }

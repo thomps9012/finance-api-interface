@@ -41,21 +41,21 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
                         )}
                     </div>
                 )}
+                <br />
+                <button onClick={onImageRemoveAll} className='remove-all-btn'>Remove All Receipts</button>
+                <br />
+                <br />
                 <div
                     className="upload-area"
                     style={isDragging ? { background: 'lightsteelblue' } : undefined}
                     {...dragProps}>
-                    <h1 className="description">Drop Receipt Images Here</h1>
+                    <p className="description">Drop Receipt Images Here</p>
                 </div>
-                <button onClick={onImageRemoveAll} className='remove-all-btn'>Remove All Receipts</button>
 
                 <div className="image-container">
                     {imageList.map((image, index) => <div key={index} className="image-item">
+                        <a className='remove' onClick={() => onImageRemove(index)}><p>X</p></a>
                         <img src={image['data_url']} alt="" width="200" height="200" />
-                        <div className="image-item__btn-wrapper">
-                            <button className='remove-single-img' onClick={() => onImageRemove(index)}>X</button>
-                            {/* <button className='swap-single-img' onClick={() => onImageUpdate(index)}>↔</button> */}
-                        </div>
                     </div>
                     )}
                 </div>

@@ -35,7 +35,6 @@ export default function Header() {
                             />
                         )}
                         <span className={styles.signedInText}>
-                            <small>Signed in as </small>
                             <br />
                             <strong>{session.user.name}</strong>
                         </span>
@@ -46,11 +45,10 @@ export default function Header() {
                             }}>
                             Sign Out
                         </a>
-                       
                     </>
                 )}
             </p>
+            <NavLinks />
         </div>
-        <NavLinks />
     </header>
 }

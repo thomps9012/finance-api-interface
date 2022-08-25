@@ -2,6 +2,11 @@ import type { GetServerSidePropsContext, NextPage } from 'next'
 import styles from '../styles/Home.module.css'
 import { unstable_getServerSession } from 'next-auth'
 import { authOptions } from './api/auth/[...nextauth]'
+import { gql } from '@apollo/client'
+import createClient from '../graphql/client'
+import { UserOverview } from '../types/users'
+import dateFormat from '../utils/dateformat'
+import Link from 'next/link'
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const sessionData = await unstable_getServerSession(
@@ -9,24 +14,32 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     context.res,
     authOptions
   )
-  const user = sessionData?.user
-  
-  console.log("sessionData \n", sessionData)
+  const jwt = sessionData?.user.token
+  const client = createClient(jwt);
+  const GET_MY_INFO = gql`query me {
+        me {id, name, last_login, incomplete_actions {request_type, request_id, status, created_at}, incomplete_action_count, role }}`
+  const res = await client.query({ query: GET_MY_INFO })
   return {
     props: {
-      userdata: sessionData ? user : null
+      userdata: sessionData ? res.data.me : null
     }
   }
 }
 
-const Home: NextPage = ({ userdata }: any) => {
+export default function Home({ userdata }: { userdata: UserOverview }) {
 
-  return (
+  return <main className={styles.main}>
     <div className={styles.container}>
-      <pre>{JSON.stringify(userdata, null, 2)}</pre>
       <h1>Welcome to the Finance Request Hub</h1>
+      <h1>{userdata.name}</h1>
+      <Link href={'/me/inbox'}>
+        <a>
+          <h2>You have {userdata.incomplete_action_count} Notifications</h2>
+        </a>
+      </Link>
+      <h2>Since your Last Login on {dateFormat(userdata.last_login)}</h2>
     </div>
-  )
+  </main>
 }
 
-export default Home
+

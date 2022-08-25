@@ -7,15 +7,18 @@ import dateFormat from "../../utils/dateformat";
 import Link from "next/link";
 import { UserOverview } from "../../types/users";
 import { Action } from "../../types/checkrequests";
+import { gql } from "@apollo/client";
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const sessionData = await unstable_getServerSession(
         context.req,
         context.res,
         authOptions
     )
-    const client = createClient(sessionData?.Authorization);
-    const res = await client.query({ query: GET_MY_INBOX, fetchPolicy: 'no-cache' })
-    console.log(res.data, "userdata on server")
+    const jwt = sessionData?.user.token
+    const client = createClient(jwt);
+    const GET_MY_INFO = gql`query me {
+          me {incomplete_actions {id, request_type, request_id, user, status, created_at}, incomplete_action_count }}`
+    const res = await client.query({ query: GET_MY_INFO })
     return {
         props: {
             userdata: sessionData ? res.data.me : []

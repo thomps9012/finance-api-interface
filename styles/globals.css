@@ -30,3 +30,69 @@ a {
   display: none;
 }
 
+footer {
+  margin-bottom: 0;
+  display: flex;
+  flex: 1;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  justify-content: center;
+  align-items: center;
+}
+
+nav {
+  display: flex;
+  justify-content: flex-start;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.PENDING {
+  color: goldenrod;
+  font-weight: bolder;
+}
+
+.show{
+  font-weight: bold;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+#vehicleInput{
+  display: inline-flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.remove{
+color: red;
+font-weight: bold;
+}
+
+button:hover,
+button:focus,
+button:active {
+  color: #0070f3;
+  border-color: #0070f3;
+}
+
+.purchase-row{
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-area {
+  /* height: 10ch; */
+  border: 1px dashed dimgray;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding: 10ch;
+}
+.image-container {
+  display: inline;
+  margin-top: 0;
+}

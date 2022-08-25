@@ -16,7 +16,7 @@ export default function NavLinks() {
             </li> */}
             <li className={styles.navItem}>
                 <Link href="/me">
-                    <a>Your Info</a>
+                    <a>Profile</a>
                 </Link>
             </li>
             <li className={styles.navItem}>
@@ -26,7 +26,7 @@ export default function NavLinks() {
             </li>
             <li className={styles.navItem}>
                 <Link href="/check_request/create">
-                    <a>Create Check Request</a>
+                    <a>Add Check Request</a>
                 </Link>
             </li>
             {/* <li className={styles.navItem}>
