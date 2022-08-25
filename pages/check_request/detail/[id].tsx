@@ -7,7 +7,7 @@ import { Action, CheckDetail, Purchase } from "../../../types/checkrequests"
 import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
-
+import styles from '../../../styles/Home.module.css';
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
     const sessionData = await unstable_getServerSession(
@@ -30,7 +30,7 @@ export default function RecordDetail({ recorddata }: { recorddata: CheckDetail }
     const { receipts, purchases, created_at, credit_card, current_status, date, description, grant_id, is_active, order_total, user_id, action_history } = recorddata;
     const vendorName = recorddata.vendor.name;
     const { website, street, city, zip, state } = recorddata.vendor.address;
-    return <main className={is_active ? 'active' : 'inactive'}>
+    return <main className={styles.main} id={is_active ? `active` : `inactive`}>
         <p>{dateFormat(date)} Check Request</p>
         <p>for</p>
         <h3>{description}</h3>
@@ -48,7 +48,7 @@ export default function RecordDetail({ recorddata }: { recorddata: CheckDetail }
         {credit_card}
         <hr />
         <h5>Receipts</h5>
-        {receipts.map((receipt: string) => <img src={receipt} />)}
+        {receipts.map((receipt: string, i:number) => <img key={i}src={receipt} alt={`receipt ${i}`} />)}
         <hr />
         <h3>{vendorName}</h3>
         <p>{website}</p>

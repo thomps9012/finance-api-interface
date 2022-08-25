@@ -17,6 +17,6 @@ export default function AggCheckRequests({ check_requests }: { check_requests: C
             </div>
         })}
         <h5>Vendors</h5>
-        {vendors.map((vendor: Vendor) => <p>{vendor.name}</p>)}
+        {vendors.map((vendor: Vendor) => <p key={vendor.name}>{vendor.name}</p>)}
     </>
 }

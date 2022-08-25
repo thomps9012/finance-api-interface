@@ -8,7 +8,7 @@ import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import createClient from "../../../graphql/client";
 import { MILEAGE_DETAIL } from "../../../graphql/queries";
-
+import styles from '../../../styles/Home.module.css'
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query 
     const sessionData = await unstable_getServerSession(
@@ -29,7 +29,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
 export default function RecordDetail({ recorddata }: { recorddata: MileageDetail }) {
     const { is_active, created_at, user_id, trip_mileage, trip_purpose, tolls, start_odometer, starting_location, end_odometer, destination, parking, reimbursement, action_history, current_status } = recorddata;
-    return <main className={is_active ? 'active' : 'inactive'}>
+    return <main className={styles.main} id={is_active ? `active` : `inactive`}>
         <h3>{trip_purpose}</h3>
         <h5>From {starting_location} to {destination}</h5>
         <h5>Trip Breakdown</h5>

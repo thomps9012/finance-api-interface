@@ -21,7 +21,7 @@ export default function VendorInput({ setName, setAddress, address }: any) {
         <h5>State</h5>
         <select name='state' defaultValue="" onChange={handleAddressChange} >
             <option value="" disabled hidden>State Select</option>
-            {states.map((state: string) => <option value={state}>{state}</option>)}
+            {states.map((state: string) => <option key={state} value={state}>{state}</option>)}
         </select>
         <h5>Zip</h5>
         <input type='text' name='zip' onChange={handleAddressChange} />

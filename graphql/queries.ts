@@ -1,6 +1,6 @@
 import {gql} from '@apollo/client'
 // user
-export const GET_MY_INBOX = `https://agile-tundra-78417.herokuapp.com/graphql?query=query me {
+export const GET_MY_INBOX = gql`query me {
   me {
     id
     name
@@ -20,7 +20,7 @@ export const GET_MY_INBOX = `https://agile-tundra-78417.herokuapp.com/graphql?qu
     }
     }
 }`
-export const GET_NOTIFICATIONS = `https://agile-tundra-78417.herokuapp.com/graphql?query=query me {
+export const GET_NOTIFICATIONS = gql`query me {
   me {
     id
     name
@@ -28,8 +28,8 @@ export const GET_NOTIFICATIONS = `https://agile-tundra-78417.herokuapp.com/graph
     incomplete_action_count
     }
 }`
-export const GET_ME = `https://agile-tundra-78417.herokuapp.com/graphql?query={me{id, name, manager_id, last_login, incomplete_action_count, vehicles {id,  name,  description}, mileage_requests {mileage, parking, tolls, requests {id, current_status, date}, reimbursement}, check_requests {vendors {name}, requests {id, current_status, date}, total_amount}, petty_cash_requests {requests {id, current_status, date}, total_amount}}}`
-export const GET_MY_MILEAGE = `https://agile-tundra-78417.herokuapp.com/graphql?query={
+export const GET_ME = gql`{me{id, name, manager_id, last_login, incomplete_action_count, vehicles {id,  name,  description}, mileage_requests {mileage, parking, tolls, requests {id, current_status, date}, reimbursement}, check_requests {vendors {name}, requests {id, current_status, date}, total_amount}, petty_cash_requests {requests {id, current_status, date}, total_amount}}}`
+export const GET_MY_MILEAGE = gql`{
   me {
     id
     name
@@ -48,7 +48,7 @@ export const GET_MY_MILEAGE = `https://agile-tundra-78417.herokuapp.com/graphql?
   }
 }
 `;
-export const GET_MY_PETTY_CASH = `https://agile-tundra-78417.herokuapp.com/graphql?query={
+export const GET_MY_PETTY_CASH = gql`{
   me {
     id
     name
@@ -63,7 +63,7 @@ export const GET_MY_PETTY_CASH = `https://agile-tundra-78417.herokuapp.com/graph
     }
   }
 }`;
-export const GET_MY_CHECKS = `https://agile-tundra-78417.herokuapp.com/graphql?query={
+export const GET_MY_CHECKS = gql`{
   me {
     id
     name
@@ -82,10 +82,9 @@ export const GET_MY_CHECKS = `https://agile-tundra-78417.herokuapp.com/graphql?q
   }
 }
 `;
-export const ALL_USERS = `https://agile-tundra-78417.herokuapp.com/graphql?query=query{all_users{id manager_id name role email}}`;
+export const ALL_USERS = gql`query{all_users{id manager_id name role email}}`;
 // pass in params
-const id = 1;
-export const USER_OVERVIEW = `https://agile-tundra-78417.herokuapp.com/graphql?query={user_overview(id:${id}){
+export const USER_OVERVIEW = gql`{user_overview(id:$id){
     id
     manager_id
     name
@@ -157,8 +156,8 @@ export const MILEAGE_DETAIL = gql`query MileageDetail($id: ID!){
 }`;
 
 // // petty cash
-export const PETTY_CASH_DETAIL = `https://agile-tundra-78417.herokuapp.com/graphql?query=query{
-  petty_cash_detail(id: ${id}) {
+export const PETTY_CASH_DETAIL = gql`query{
+  petty_cash_detail(id: $id) {
     id
     user_id
     grant_id

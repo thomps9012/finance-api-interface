@@ -28,7 +28,7 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
                 {errors && (
                     <div className="error-container">
                         {errors.maxNumber && (
-                            <span className='error-alert'>You've reached the image upload limit</span>
+                            <span className='error-alert'>{"You've reached the image upload limit"}</span>
                         )}
                         {errors.acceptType && (
                             <span className='error-alert'>Your attempting to upload a forbidden file type</span>
