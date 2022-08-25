@@ -1,33 +1,32 @@
 import { CREATE_CHECK_REQ } from "../../graphql/mutations"
-
 import GrantSelect from "../../components/grantSelect";
-import { useMutation } from "@apollo/client"
 import { useState } from "react";
 import ReceiptUpload from "../../components/receiptUpload";
 import VendorInput from "../../components/vendorInput";
 import PurchaseInput from "../../components/purchaseInput";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
+import createClient from "../../graphql/client";
+import { useSession } from "next-auth/react";
 export default function CreateRequest() {
-    const router = useRouter();
-    const [addRequest, { data, loading, error }] = useMutation(CREATE_CHECK_REQ)
+    // const router = useRouter();
+    const { data } = useSession();
+    const jwt = data?.user.token;
     const [receipts, setReceipts] = useState([]);
     const [grantID, setGrantID] = useState("N/A")
-    const [vendorName, setVendorName] = useState("")
+    const [vendorName, setVendorName] = useState("test vendor")
     const [vendorAddress, setVendorAddress] = useState({
-        website: "",
-        street: "",
-        city: "",
-        state: "",
+        website: "www.test.com",
+        street: "123 st",
+        city: "Test City",
+        state: "TN",
         zip: 12345
     })
     const [creditCard, setCreditCard] = useState("N/A")
     const [requestDate, setDate] = useState("")
     const [rowCount, setRows] = useState(1)
-    const [description, setDescription] = useState("")
+    const [description, setDescription] = useState("test description")
     const addPurchase = (e: any) => { e.preventDefault(); rowCount < 5 ? setRows(rowCount + 1) : null }
     const removePurchase = (e: any) => { e.preventDefault(); setRows(rowCount - 1) }
-    if (loading) return 'Submitting...';
-    if (error) return `Submission error! ${error.message}`;
     const submitRequest = async (e: any) => {
         e.preventDefault();
         const receiptArr: string[] = receipts.map((receipt: any) => receipt.data_url)
@@ -40,7 +39,8 @@ export default function CreateRequest() {
             purchaseArr.push(purchaseData)
 
         }
-        addRequest({
+        const client = createClient(jwt);
+        const res = await client.mutate({mutation: CREATE_CHECK_REQ,
             variables: {
                 vendor: {
                     name: vendorName,
@@ -56,7 +56,7 @@ export default function CreateRequest() {
                 }
             }
         })
-        data && router.push("/")
+        console.log(res.data.create_check_request)
     }
 
     return <form>
@@ -79,7 +79,7 @@ export default function CreateRequest() {
         {rowCount >= 4 && <PurchaseInput />}
         {rowCount >= 5 && <PurchaseInput />}
         <h3>Credit Card Used</h3>
-        <select name='creditCard' onChange={(e: any) => setCreditCard(e.target.value)} defaultValue="">
+        <select name='creditCard' value={creditCard} onChange={(e: any) => setCreditCard(e.target.value)} defaultValue="">
             <option value="" disabled hidden>Select Credit Card..</option>
             <option value="N/A">No Card</option>
             <option value="1234">Card 1</option>

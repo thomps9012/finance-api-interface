@@ -1,7 +1,5 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { SIGN_IN } from '../../../graphql/mutations';
-import createClient from "../../../graphql/client";
 export const authOptions: NextAuthOptions = {
     providers: [
         GoogleProvider({
@@ -12,32 +10,28 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async signIn({ user, account, profile }) {
             profile.hd != 'norainc.org' && false;
-            return true
-            const client = createClient("");
-            console.log('email:', user.email)
-            console.log('id:', user.id)
-            console.log('name:', user.name)
-            const res = await client.mutate({ mutation: SIGN_IN, variables: { name: user.name, email: user.email, id: user.id } });
-            console.log('user token', user.token)
-            user.token = res.data.sign_in
-            console.log('signin res', res)
-            if (!res) {
-                console.log('error')
-                console.error('trouble sign in');
-                return false
-            } else {
-                console.log('success')
+            const api_route = `https://agile-tundra-78417.herokuapp.com/graphql?query=mutation+_{sign_in(id:"${user.id}", email:"${user.email}", name:"${user.name}")}`
+            const json = await fetch(api_route).then(res => res.json())
+            if (json){
+                user.token = json.data.sign_in
+                console.log('api json', json.data.sign_in)
+                console.log('user token', user.token)
                 return true
             }
+            return false
         },
         async jwt({ token, user }) {
             if (user) {
                 token.Authorization = user.token
+                token.id = user.id
             }
             return token;
         },
         async session({ session, token, user }) {
-            session.Authorization = token.Authorization;
+            if (token) {
+                session.user.id = token.id
+                session.user.token = token.Authorization
+            }
             return session;
         }
     }

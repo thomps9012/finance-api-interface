@@ -42,7 +42,7 @@ export default function Header() {
                         <a href={`/api/auth/signout`}
                             className={styles.button} onClick={(e: any) => {
                                 e.preventDefault()
-                                signOut({ callbackUrl: '/signOut' })
+                                signOut({ callbackUrl: '/' })
                             }}>
                             Sign Out
                         </a>

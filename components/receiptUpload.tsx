@@ -54,7 +54,7 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
                         <img src={image['data_url']} alt="" width="200" height="200" />
                         <div className="image-item__btn-wrapper">
                             <button className='remove-single-img' onClick={() => onImageRemove(index)}>X</button>
-                            <button className='swap-single-img' onClick={() => onImageUpdate(index)}>↔</button>
+                            {/* <button className='swap-single-img' onClick={() => onImageUpdate(index)}>↔</button> */}
                         </div>
                     </div>
                     )}

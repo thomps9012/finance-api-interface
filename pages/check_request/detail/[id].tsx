@@ -15,7 +15,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         context.res,
         authOptions
     )
-    const client = createClient(sessionData?.Authorization);
+    const jwt = sessionData?.user.token
+    const client = createClient(jwt);
     const res = await client.query({query: CHECK_DETAIL, variables: {id}})
     return {
         props: {

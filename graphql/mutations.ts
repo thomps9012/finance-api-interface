@@ -5,15 +5,15 @@ export const SIGN_IN = gql`mutation signIn($id: ID!, $email:String!, $name:Strin
   sign_in(id:$id, email:$email,name:$name)
 }`;
 // export const CREATE_USER = gql``;
-export const ADD_VEHICLE = gql`mutation addVehicle($user_id: ID!, $name: String!, $description: String!){
-  add_vehicle(user_id: $user_id, name: $name, description: $description) {
+export const ADD_VEHICLE = gql`mutation addVehicle($name: String!, $description: String!){
+  add_vehicle(name: $name, description: $description) {
     id
     name
     description
   }
 }`;
-export const REMOVE_VEHICLE = gql`mutation removeVehicle($user_id: ID!, $vehicle_id: ID!){
-  remove_vehicle(user_id: $user_id, vehicle_id: $vehicle_id)
+export const REMOVE_VEHICLE = gql`mutation removeVehicle($vehicle_id: ID!){
+  remove_vehicle(vehicle_id: $vehicle_id)
 }`;
 
 // mileage

@@ -9,11 +9,11 @@ export default function NavLinks() {
                 </Link>
             </li>
             {/* add in admin session checker for link */}
-            <li className={styles.navItem}>
+            {/* <li className={styles.navItem}>
                 <Link href="/users/all">
                     <a>All Users</a>
                 </Link>
-            </li>
+            </li> */}
             <li className={styles.navItem}>
                 <Link href="/me">
                     <a>Your Info</a>
