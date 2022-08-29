@@ -7,7 +7,8 @@ import PurchaseInput from "../../components/purchaseInput";
 import { useRouter } from "next/router";
 import createClient from "../../graphql/client";
 import { useSession } from "next-auth/react";
-import styles from '../../styles/Home.module.css';
+import styles from '../../styles/Home.module.css'
+
 export default function CreateRequest() {
     const router = useRouter();
     const { data } = useSession();
@@ -94,6 +95,7 @@ export default function CreateRequest() {
             </select>
             <h4>{receipts.length} Receipt{receipts.length === 0 && 's'}{receipts.length > 1 && "s"} Attached</h4>
             <span className="description">Limit of 5 Receipts per Request</span>
+            <span className="description">Allowed File Types are .png, .jpg, .pdf</span>
             <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />
             <br />
             <button className='submit' onClick={submitRequest}>Submit Request</button>

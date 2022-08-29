@@ -1,4 +1,4 @@
-import {gql} from '@apollo/client'
+import { gql } from '@apollo/client'
 // user
 export const GET_MY_INBOX = gql`query me {
   me {
@@ -28,7 +28,8 @@ export const GET_NOTIFICATIONS = gql`query me {
     incomplete_action_count
     }
 }`
-export const GET_ME = gql`{me{id, name, manager_id, last_login, incomplete_action_count, vehicles {id,  name,  description}, mileage_requests {mileage, parking, tolls, requests {id, current_status, date}, reimbursement}, check_requests {vendors {name}, requests {id, current_status, date}, total_amount}, petty_cash_requests {requests {id, current_status, date}, total_amount}}}`
+export const GET_MY_INFO = gql`query me {
+  me {id, name, last_login, vehicles {id, name, description}, incomplete_actions {request_type, request_id, status, created_at}, incomplete_action_count, role, mileage_requests{requests{id, current_status, date}}, petty_cash_requests{requests{id, current_status, date}}, check_requests{requests{id, current_status, date}}}}`
 export const GET_MY_MILEAGE = gql`{
   me {
     id
@@ -84,7 +85,7 @@ export const GET_MY_CHECKS = gql`{
 `;
 export const ALL_USERS = gql`query{all_users{id manager_id name role email}}`;
 // pass in params
-export const USER_OVERVIEW = gql`{user_overview(id:$id){
+export const USER_OVERVIEW = gql`query UserOverview($id: ID!){user_overview(id:$id){
     id
     manager_id
     name
@@ -122,7 +123,14 @@ export const USER_OVERVIEW = gql`{user_overview(id:$id){
         total_amount
       }
     }
-  }`;
+  }
+}`;
+
+export const USER_MANAGER = gql`query ManagerName($id: ID!){user_overview(id:$id){
+  id
+  name
+  role
+}} `
 
 // // mileage
 export const MILEAGE_DETAIL = gql`query MileageDetail($id: ID!){

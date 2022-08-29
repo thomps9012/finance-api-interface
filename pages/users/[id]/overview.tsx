@@ -9,6 +9,7 @@ import AggCheckRequests from "../../../components/aggCheckRequests";
 import AggPettyCash from "../../../components/aggPettyCash";
 import { USER_OVERVIEW } from "../../../graphql/queries";
 import createClient from "../../../graphql/client";
+import styles from '../../../styles/Home.module.css';
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
@@ -17,8 +18,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         context.res,
         authOptions
     )
-    const client = createClient(sessionData?.Authorization);
-    const res = await client.query({ query: USER_OVERVIEW, variables: {id} })
+    const jwt = sessionData?.Authorization
+    const client = createClient(jwt);
+    const res = await client.query({ query: USER_OVERVIEW, variables: { id } })
     console.log(res.data, 'user overview')
     return {
         props: {
@@ -31,7 +33,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 export default function UserRecordOverview({ userdata }: { userdata: UserOverview }) {
     const { name, id, incomplete_action_count, last_login, role } = userdata;
 
-    return <div>
+    return <main className={styles.main}>
         <h1>Overview for {name}</h1>
         <h2>{titleCase(role)} with {incomplete_action_count} Incomplete Actions</h2>
         <span>Last Login: {dateFormat(last_login)}</span>
@@ -41,5 +43,5 @@ export default function UserRecordOverview({ userdata }: { userdata: UserOvervie
         <AggCheckRequests check_requests={userdata.check_requests} />
         <h3>Petty Cash Requests</h3>
         <AggPettyCash petty_cash={userdata.petty_cash_requests} />
-    </div>
+    </main>
 }

@@ -10,7 +10,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         context.res,
         authOptions
     )
-    const client = createClient(sessionData?.Authorization);
+    const jwt = sessionData?.Authorization
+    const client = createClient(jwt);
     const res = await client.query({ query: ALL_USERS });
     console.log(res.data, "userdata on server")
     return {

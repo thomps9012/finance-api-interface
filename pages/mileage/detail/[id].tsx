@@ -2,13 +2,13 @@ import { GetServerSidePropsContext } from "next"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import { unstable_getServerSession } from "next-auth";
 import { MileageDetail } from "../../../types/mileage"
-import Link from "next/link"
 import { Action } from "../../../types/checkrequests"
 import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import createClient from "../../../graphql/client";
 import { MILEAGE_DETAIL } from "../../../graphql/queries";
 import styles from '../../../styles/Home.module.css'
+
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
     const sessionData = await unstable_getServerSession(

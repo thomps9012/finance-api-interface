@@ -8,7 +8,8 @@ import { Action, CheckDetail, Purchase } from "../../../types/checkrequests"
 import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
-import styles from '../../../styles/Home.module.css';
+import styles from '../../../styles/Home.module.css'
+
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
     const sessionData = await unstable_getServerSession(

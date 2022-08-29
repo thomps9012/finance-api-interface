@@ -7,7 +7,7 @@ import Link from "next/link";
 import { UserOverview } from "../../types/users";
 import { Action } from "../../types/checkrequests";
 import { gql } from "@apollo/client";
-import styles from '../../styles/Home.module.css'
+import styles from '../../styles/Home.module.css';
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const sessionData = await unstable_getServerSession(
         context.req,

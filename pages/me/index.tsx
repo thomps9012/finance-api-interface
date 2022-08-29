@@ -1,18 +1,15 @@
-// import { useSession } from "next-auth/react"
 import { ADD_VEHICLE, REMOVE_VEHICLE } from "../../graphql/mutations";
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
-// import { GET_ME } from "../../graphql/queries";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { UserOverview, Vehicle } from "../../types/users";
 import dateFormat from "../../utils/dateformat";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { gql } from "@apollo/client";
 import createClient from "../../graphql/client";
 import styles from '../../styles/Home.module.css';
-// import { MileageOverview } from "../../types/mileage";
-// import titleCase from "../../utils/titlecase";
+import { GET_MY_INFO } from "../../graphql/queries";
+
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const sessionData = await unstable_getServerSession(
         context.req,
@@ -21,8 +18,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     )
     const jwt = sessionData?.user.token
     const client = createClient(jwt);
-    const GET_MY_INFO = gql`query me {
-        me {id, name, last_login, vehicles {id, name, description}, incomplete_actions {request_type, request_id, status, created_at}, incomplete_action_count, role, mileage_requests{requests{id, current_status, date}}, check_requests{requests{id, current_status, date}}}}`
+  
     const res = await client.query({ query: GET_MY_INFO })
     console.log('ssr res', res)
     return {
@@ -52,11 +48,11 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
     }
     return <main className={styles.container}>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
-            <div style={{padding: 20}}>
+            <div style={{ padding: 20 }}>
                 {userdata.vehicles.length > 0 && (<h3>Current Vehicles</h3>)}
                 {userdata.vehicles?.map((vehicle: Vehicle) => {
-                    return <div key={vehicle.id} style={{textAlign: 'center'}}>
-                        <h4>{vehicle.name} : {vehicle.description}<a style={{marginLeft: 15}} id={vehicle.id} onClick={removeVehicle} className='remove'>X</a> </h4>
+                    return <div key={vehicle.id} style={{ textAlign: 'center' }}>
+                        <h4>{vehicle.name} : {vehicle.description}<a style={{ marginLeft: 15 }} id={vehicle.id} onClick={removeVehicle} className='remove'>X</a> </h4>
                     </div>
                 })}
             </div>
@@ -84,6 +80,11 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
         </div>
         )}
 
-        {/* <Link href="/me/pettyCash"><a><h1>My Petty Cash</h1></a></Link> */}
+        <Link href="/me/pettyCash"><a><h1>My Petty Cash</h1></a></Link>
+        {userdata.petty_cash_requests.requests.map((petty_cash_req: any) => <div key={petty_cash_req.id}>
+            <Link href={`/petty_cash/detail/${petty_cash_req.id}`}><a><p className={petty_cash_req.current_status}>{dateFormat(petty_cash_req.date)} {petty_cash_req.current_status}</p></a></Link>
+        </div>
+        )}
+
     </main>
 }

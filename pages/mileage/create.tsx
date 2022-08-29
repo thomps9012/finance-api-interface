@@ -4,7 +4,8 @@ import { useState } from "react";
 import GrantSelect from "../../components/grantSelect";
 import createClient from "../../graphql/client";
 import { CREATE_MILEAGE } from "../../graphql/mutations"
-import styles from '../../styles/Home.module.css';
+import styles from '../../styles/Home.module.css'
+
 export default function CreateRequest() {
     const router = useRouter();
     const { data } = useSession();

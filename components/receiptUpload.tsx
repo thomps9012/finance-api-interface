@@ -1,4 +1,5 @@
 import ImageUploading, { ImageListType } from "react-images-uploading";
+import Image from "next/image";
 export default function ReceiptUpload({ receipts, setReceipts }: any) {
     const onChange = (
         receiptList: ImageListType,
@@ -15,10 +16,10 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
         onChange={onChange}
         maxNumber={maxNumber}
         onError={onError}
+        acceptType={['png', 'jpg', 'pdf']}
         dataURLKey="data_url">
         {({ imageList,
             onImageRemoveAll,
-            onImageUpdate,
             onImageRemove,
             isDragging,
             dragProps,
@@ -55,7 +56,7 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
                 <div className="image-container">
                     {imageList.map((image, index) => <div key={index} className="image-item">
                         <a className='remove' onClick={() => onImageRemove(index)}><p>X</p></a>
-                        <img src={image['data_url']} alt="" width="200" height="200" />
+                        <Image src={image['data_url']} alt="" width="200" height="200" />
                     </div>
                     )}
                 </div>

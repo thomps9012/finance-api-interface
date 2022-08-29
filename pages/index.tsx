@@ -1,13 +1,12 @@
-import type { GetServerSidePropsContext, NextPage } from 'next'
-import styles from '../styles/Home.module.css'
-import { unstable_getServerSession } from 'next-auth'
+import type { GetServerSidePropsContext } from 'next'
+import { unstable_getServerSession } from "next-auth"
 import { authOptions } from './api/auth/[...nextauth]'
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client"
 import createClient from '../graphql/client'
 import { UserOverview } from '../types/users'
 import dateFormat from '../utils/dateformat'
 import Link from 'next/link'
-
+import styles from '../styles/Home.module.css'
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const sessionData = await unstable_getServerSession(
     context.req,
