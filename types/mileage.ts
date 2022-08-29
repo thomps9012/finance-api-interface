@@ -30,3 +30,16 @@ export interface MileageOverview {
     last_request: MileageDetail;
     tolls: number;
 }
+
+export interface MonthlyMileage {
+    grant_ids: [string];
+    user_id: string;
+    name: string;
+    month: number;
+    year: number;
+    mileage: number;
+    tolls: number;
+    parking: number;
+    reimbursement: number;
+    request_ids: [string];
+}
