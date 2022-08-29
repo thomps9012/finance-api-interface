@@ -8,7 +8,35 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import createClient from "../../graphql/client";
 import styles from '../../styles/Home.module.css';
-import { GET_MY_INFO } from "../../graphql/queries";
+import { gql } from "@apollo/client";
+
+const GET_MY_INFO = gql`query me {
+    me {
+      id
+      name
+      mileage_requests {
+        requests {
+          id
+          current_status
+          date
+        }
+      }
+      check_requests {
+        requests {
+          id
+          current_status
+          date
+        }
+      }
+      petty_cash_requests {
+        requests {
+          id
+          current_status
+          date
+        }
+      }
+    }
+  }`;
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const sessionData = await unstable_getServerSession(
@@ -18,7 +46,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     )
     const jwt = sessionData?.user.token
     const client = createClient(jwt);
-  
     const res = await client.query({ query: GET_MY_INFO })
     console.log('ssr res', res)
     return {
@@ -49,7 +76,7 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
     return <main className={styles.container}>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
             <div style={{ padding: 20 }}>
-                {userdata.vehicles.length > 0 && (<h3>Current Vehicles</h3>)}
+                {userdata.vehicles?.length > 0 && (<h3>Current Vehicles</h3>)}
                 {userdata.vehicles?.map((vehicle: Vehicle) => {
                     return <div key={vehicle.id} style={{ textAlign: 'center' }}>
                         <h4>{vehicle.name} : {vehicle.description}<a style={{ marginLeft: 15 }} id={vehicle.id} onClick={removeVehicle} className='remove'>X</a> </h4>

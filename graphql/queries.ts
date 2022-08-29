@@ -29,7 +29,32 @@ export const GET_NOTIFICATIONS = gql`query me {
     }
 }`
 export const GET_MY_INFO = gql`query me {
-  me {id, name, last_login, vehicles {id, name, description}, incomplete_actions {request_type, request_id, status, created_at}, incomplete_action_count, role, mileage_requests{requests{id, current_status, date}}, petty_cash_requests{requests{id, current_status, date}}, check_requests{requests{id, current_status, date}}}}`
+  me {
+    id
+    name
+    mileage_requests {
+      requests {
+        id
+        current_status
+        date
+      }
+    }
+    check_requests {
+      requests {
+        id
+        current_status
+        date
+      }
+    }
+    petty_cash_requests {
+      requests {
+        id
+        current_status
+        date
+      }
+    }
+  }
+}`
 export const GET_MY_MILEAGE = gql`{
   me {
     id

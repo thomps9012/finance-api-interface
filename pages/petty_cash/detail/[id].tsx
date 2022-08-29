@@ -7,13 +7,37 @@ import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import createClient from "../../../graphql/client"
-import { PETTY_CASH_DETAIL } from "../../../graphql/queries"
 import jwt_decode from "jwt-decode";
-import { useMutation } from "@apollo/client"
+import { gql, useMutation } from "@apollo/client"
 import { APPROVE_REQUEST, ARCHIVE_REQUEST, REJECT_REQUEST } from "../../../graphql/mutations"
 import { useRouter } from "next/router"
 import Image from "next/image"
 import styles from '../../../styles/Home.module.css'
+const PETTY_CASH_DETAIL = gql`query PettyCashDetail($id: ID!){
+    petty_cash_detail(id: $id) {
+      id
+      user_id
+      grant_id
+      date
+      description
+      amount
+      receipts
+      created_at
+      action_history {
+        id
+        status
+        user {
+          id
+          name
+        }
+        created_at
+      }
+      current_user
+      current_status
+      is_active
+    }
+  }`;
+
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
     const sessionData = await unstable_getServerSession(
@@ -21,7 +45,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         context.res,
         authOptions
     )
-    const jwt = sessionData?.Authorization;
+    const jwt = sessionData?.user.token;
     const client = createClient(jwt);
     const tokenData: { role: string, id: string } = await jwt_decode(jwt as string)
     const user_role = tokenData.role
@@ -40,30 +64,26 @@ export default function RecordDetail({ recorddata, user_role, userID }: { record
     const router = useRouter();
     const { user_id, created_at, current_status, action_history, date, grant_id, current_user, is_active, receipts, amount, description, id } = recorddata;
     const request_type = 'petty_cash_requests';
-    const [approve, { data: approveData, error: approveError, loading: approveLoading }] = useMutation(APPROVE_REQUEST)
-    const [reject, { data: rejectData, error: rejectError, loading: rejectLoading }] = useMutation(REJECT_REQUEST)
-    const [archive, { data: archiveData, error: archiveError, loading: archiveLoading }] = useMutation(ARCHIVE_REQUEST)
-    if (approveLoading || rejectLoading || archiveLoading) return 'Submitting...';
-    if (approveError || rejectError || archiveError) return `Submission error! ${approveError?.message || rejectError?.message || archiveError?.message}`;
-    const approveRequest = async (e: any) => {
-        e.preventDefault()
-        console.log(id, request_type)
-        await approve({ variables: { request_id: id, request_type: request_type } })
-        console.log(approveData)
-        approveData && router.push('/me')
-    }
-    const rejectRequest = async (e: any) => {
-        e.preventDefault()
-        await reject({ variables: { request_id: id, request_type: request_type } })
-        console.log(rejectData)
-        rejectData && router.push('/me')
-    }
-    const archiveRequest = async (e: any) => {
-        e.preventDefault()
-        await archive({ variables: { request_id: id, request_type: request_type } })
-        console.log(archiveData)
-        archiveData && router.push('/me')
-    }
+    
+    // const approveRequest = async (e: any) => {
+    //     e.preventDefault()
+    //     console.log(id, request_type)
+    //     await approve({ variables: { request_id: id, request_type: request_type } })
+    //     console.log(approveData)
+    //     approveData && router.push('/me')
+    // }
+    // const rejectRequest = async (e: any) => {
+    //     e.preventDefault()
+    //     await reject({ variables: { request_id: id, request_type: request_type } })
+    //     console.log(rejectData)
+    //     rejectData && router.push('/me')
+    // }
+    // const archiveRequest = async (e: any) => {
+    //     e.preventDefault()
+    //     await archive({ variables: { request_id: id, request_type: request_type } })
+    //     console.log(archiveData)
+    //     archiveData && router.push('/me')
+    // }
     return <main className={styles.main} id={is_active ? 'active' : 'inactive'}>
         {/* {user_role != 'EMPLOYEE' && current_user === userID && <div className='button-row'>
             <button onClick={approveRequest}>Approve</button>

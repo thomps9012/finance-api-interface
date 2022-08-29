@@ -3,12 +3,53 @@ import { unstable_getServerSession } from "next-auth"
 import Link from "next/link"
 import Image from 'next/image'
 import createClient from "../../../graphql/client"
-import { CHECK_DETAIL } from "../../../graphql/queries"
 import { Action, CheckDetail, Purchase } from "../../../types/checkrequests"
 import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import styles from '../../../styles/Home.module.css'
+import { gql } from "@apollo/client"
+
+const CHECK_DETAIL = gql`query checkDetail($id: ID!){
+    check_request_detail(id: $id) {
+      id
+      user_id
+      grant_id
+      date
+      vendor {
+        name
+        address {
+          website
+          street
+          city
+          state
+          zip
+        }
+      }
+      description
+      purchases {
+        amount
+        description
+        grant_line_item
+      }
+      receipts
+      order_total
+      credit_card
+      created_at
+      action_history {
+        id
+        status
+        user {
+          id
+          name
+        }
+        created_at
+      }
+      current_user
+      current_status
+      is_active
+    }
+  }`;
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query

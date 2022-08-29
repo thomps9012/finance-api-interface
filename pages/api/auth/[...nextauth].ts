@@ -10,6 +10,9 @@ export const authOptions: NextAuthOptions = {
     callbacks: {
         async signIn({ user, account, profile }) {
             profile.hd != 'norainc.org' && false;
+            console.log('user id: ', user.id)
+            console.log('user email: ', user.email)
+            console.log('user name: ', user.name)
             const api_route = `https://agile-tundra-78417.herokuapp.com/graphql?query=mutation+_{sign_in(id:"${user.id}", email:"${user.email}", name:"${user.name}")}`
             const json = await fetch(api_route).then(res => res.json())
             if (json){

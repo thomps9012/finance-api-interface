@@ -6,9 +6,38 @@ import { Action } from "../../../types/checkrequests"
 import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import createClient from "../../../graphql/client";
-import { MILEAGE_DETAIL } from "../../../graphql/queries";
 import styles from '../../../styles/Home.module.css'
-
+import { gql } from "@apollo/client";
+// need to move all gql queries to individual pages
+const MILEAGE_DETAIL = gql`query MileageDetail($id: ID!){
+    mileage_detail(id: $id) {
+      id
+      user_id
+      date
+      starting_location
+      destination
+      trip_purpose
+      start_odometer
+      end_odometer
+      tolls
+      parking
+      trip_mileage
+      reimbursement
+      created_at
+      action_history {
+        id
+        status
+        user {
+          id
+          name
+        }
+        created_at
+      }
+      current_user
+      current_status
+      is_active
+    }
+  }`;
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
     const sessionData = await unstable_getServerSession(
