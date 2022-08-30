@@ -1,4 +1,5 @@
 import { Action } from "./checkrequests";
+import { UserInfo } from "./users";
 
 export interface MileageDetail {
     id: string;
@@ -42,4 +43,13 @@ export interface MonthlyMileage {
     parking: number;
     reimbursement: number;
     request_ids: [string];
+}
+
+export interface UserMileage {
+    user: UserInfo;
+    mileage: number;
+    tolls: number;
+    parking: number;
+    reimbursement: number;
+    requests: [MileageDetail]
 }

@@ -6,6 +6,9 @@ export default function MileageReportLanding() {
         <Link href="/mileage/reports/user">
             <a><h2>User Monthly Mileag</h2></a>
         </Link>
+        <Link href="/mileage/reports/monthly">
+            <a><h2>Organization Monthly Mileage</h2></a>
+        </Link>
         <Link href="/mileage/reports/grant">
             <a><h2>Grant Mileage Requests</h2></a>
         </Link>

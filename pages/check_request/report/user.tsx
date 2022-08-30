@@ -11,7 +11,7 @@ import styles from '../../../styles/Home.module.css';
 import { CheckDetail, UserCheckRequests, Vendor } from "../../../types/checkrequests"
 // build out on backend
 const USER_CHECK_REPORT = gql`query userCheckRequests($user_id: ID!, $start_date: String!, $end_date: String!) {
-    user_check_requests(user_id: $user_id, start_date: $start_date, end_date: $end_date){
+    user_check_requests(id: $user_id, start_date: $start_date, end_date: $end_date){
         total_amount
         vendors {
             name
