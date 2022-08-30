@@ -25,7 +25,9 @@ a {
     background: black;
   }
 }
-
+#inbox-link:hover {
+  cursor: pointer;
+}
 #vehicleInput {
   display: none;
 }
