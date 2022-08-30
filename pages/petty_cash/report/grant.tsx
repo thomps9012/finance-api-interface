@@ -10,7 +10,6 @@ import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import styles from '../../../styles/Home.module.css';
 import { GrantInfo } from "../../../types/grants"
-// can modify query for backend
 const GRANT_PETTY_CASH_REPORT = gql`query grantPettyCash($grant_id: ID!, $start_date: String!, $end_date: String!) {
     petty_cash_grant_requests(grant_id: $grant_id, start_date: $start_date, end_date: $end_date){
         total_amount
@@ -27,7 +26,6 @@ const GRANT_PETTY_CASH_REPORT = gql`query grantPettyCash($grant_id: ID!, $start_
         }
     }
 }`
-// need to build out query for backend
 const GRANT_LIST = gql`query getGrants {
     all_grants {
         id

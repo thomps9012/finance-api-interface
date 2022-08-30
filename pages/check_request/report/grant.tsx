@@ -9,7 +9,6 @@ import { authOptions } from "../../api/auth/[...nextauth]"
 import styles from '../../../styles/Home.module.css';
 import { CheckDetail, Vendor } from "../../../types/checkrequests"
 import { GrantCheckRequest, GrantInfo } from "../../../types/grants"
-// build out on backend
 const GRANT_CHECK_REPORT = gql`query grantCheckRequests($grant_id: ID!, $start_date: String!, $end_date: String!) {
     grant_check_requests(grant_id: $grant_id, start_date: $start_date, end_date: $end_date){
         total_amount
@@ -27,7 +26,6 @@ const GRANT_CHECK_REPORT = gql`query grantCheckRequests($grant_id: ID!, $start_d
         }
     }
 }`
-// need to build out query for backend
 const GRANT_LIST = gql`query getGrants {
     all_grants {
         id

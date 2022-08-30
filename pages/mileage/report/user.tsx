@@ -9,9 +9,8 @@ import { authOptions } from '../../api/auth/[...nextauth]';
 import dateFormat from '../../../utils/dateformat';
 import titleCase from '../../../utils/titlecase';
 import { UserInfo } from '../../../types/users';
-// need to build out on backend
 const MILEAGE_REPORT = gql`query userMileageReport($start_date: String!, $end_date: String!, $user_id: ID!) {
-    user_mileage_report(start_date: $start_date, end_date: $end_date, user_id: $user_id){
+    user_mileage(start_date: $start_date, end_date: $end_date, user_id: $user_id){
         user {
             id
             name
@@ -27,7 +26,6 @@ const MILEAGE_REPORT = gql`query userMileageReport($start_date: String!, $end_da
     }
 }`;
 
-// need to build out query for backend
 const USER_LIST = gql`query getUsers {
     all_users {
         id

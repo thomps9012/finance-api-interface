@@ -8,7 +8,6 @@ import styles from '../../styles/Home.module.css';
 import { MonthlyMileage } from '../../../types/mileage';
 import { authOptions } from '../../api/auth/[...nextauth]';
 
-// change request ids to requests (similar to cash request returns)
 const MILEAGE_REPORT = gql`query userMileageReport($month: Int!, $year: Int!) {
     mileage_monthly_report(month:$month, year:$year){
         user_id

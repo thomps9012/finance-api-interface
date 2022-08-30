@@ -9,7 +9,6 @@ import dateFormat from "../../../utils/dateformat"
 import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import styles from '../../../styles/Home.module.css';
-// remove receipts from backend query
 const USER_PETTY_CASH_REPORT = gql`query userPettyCash($user_id: ID!, $start_date: String!, $end_date: String!) {
     petty_cash_user_requests(user_id: $user_id, start_date: $start_date, end_date: $end_date){
         total_amount
