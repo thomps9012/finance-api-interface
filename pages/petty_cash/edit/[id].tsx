@@ -14,25 +14,11 @@ import dateFormat from "../../../utils/dateformat";
 const PETTY_CASH_DETAIL = gql`query PettyCashDetail($id: ID!){
     petty_cash_detail(id: $id) {
       id
-      user_id
       grant_id
       date
       description
       amount
       receipts
-      created_at
-      action_history {
-        id
-        status
-        user {
-          id
-          name
-        }
-        created_at
-      }
-      current_user
-      current_status
-      is_active
     }
   }`;
 const EDIT_PETTY_CASH = gql`mutation editPettyCash($request_id: ID!, $grant_id: ID!, $request: PettyCashInput!){

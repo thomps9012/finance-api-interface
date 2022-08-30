@@ -8,11 +8,13 @@ import titleCase from "../../../utils/titlecase"
 import createClient from "../../../graphql/client";
 import styles from '../../../styles/Home.module.css'
 import { gql } from "@apollo/client";
+import Link from "next/link";
 // need to move all gql queries to individual pages
 const MILEAGE_DETAIL = gql`query MileageDetail($id: ID!){
     mileage_detail(id: $id) {
       id
       user_id
+      grant_id
       date
       starting_location
       destination
@@ -57,11 +59,13 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 }
 
 export default function RecordDetail({ recorddata }: { recorddata: MileageDetail }) {
-    const { is_active, created_at, user_id, date, trip_mileage, trip_purpose, tolls, start_odometer, starting_location, end_odometer, destination, parking, reimbursement, action_history, current_status } = recorddata;
+    const { is_active, id, date, trip_mileage, trip_purpose, tolls, start_odometer, starting_location, end_odometer, destination, parking, reimbursement, action_history, current_status } = recorddata;
     return <main className={styles.main} id={is_active ? `active` : `inactive`}>
+        {current_status === 'REJECTED' || current_status === 'PENDING' && <Link href={`/mileage/edit/${id}`}><a>Edit Request</a></Link>}
         <h2>{dateFormat(date)}</h2>
         <h1 className={current_status}>Trip from</h1>
         <h1 className={current_status}> {starting_location} to {destination}</h1>
+        <h3>{recorddata.grant_id}</h3>
         <h3>{trip_purpose}</h3>
         <table>
             <tr><th>Start Odometer</th><th>{start_odometer}</th></tr>
