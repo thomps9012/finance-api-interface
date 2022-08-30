@@ -16,7 +16,7 @@ const createClient = (context: any) => {
     });
     return new ApolloClient({
         link: authLink.concat(httpLink),
-        ssrMode: true,
+        ssrMode: typeof window === 'undefined',
         cache: new InMemoryCache()
     });
 }

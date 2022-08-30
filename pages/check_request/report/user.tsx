@@ -86,7 +86,7 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
         const fetch_data = async () => {
             const client = createClient(jwt);
             const res = await client.query({ query: USER_CHECK_REPORT, variables: { user_id: selectedUserID, start_date: start_date, end_date: end_date } })
-            const new_data = res.data.petty_cash_user_requests;
+            const new_data = res.data.user_check_requests;
             setResults(new_data)
         }
         fetch_data();

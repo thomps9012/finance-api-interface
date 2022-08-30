@@ -39,7 +39,6 @@ export interface CheckRequestOverview {
 export interface UserCheckRequests {
     total_amount: number;
     vendors: [Vendor];
-    credit_cards: [string];
     requests: [CheckDetail];
 }
 

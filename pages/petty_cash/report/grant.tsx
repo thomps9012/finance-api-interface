@@ -40,6 +40,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         authOptions
     )
     const jwt = sessionData?.user.token
+    console.log('sessionData', sessionData)
     const grantID = "H79TI082369"
     const client = createClient(jwt);
     const today = new Date().toISOString();
@@ -58,6 +59,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     }
 }
 export default function GrantPettyCashReport({ base_report, grant_list, jwt }: { jwt: string, grant_list: GrantInfo[], base_report: GrantPettyCash }) {
+    console.log('render')
     const [start_date, setStart] = useState(new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString())
     const [end_date, setEnd] = useState(new Date().toISOString())
     const [selectedGrant, setSelectedGrant] = useState("H79TI082369")
@@ -77,10 +79,10 @@ export default function GrantPettyCashReport({ base_report, grant_list, jwt }: {
         }
     }
     useEffect(() => {
+        const client = createClient(jwt);
         const fetch_data = async () => {
-            const client = createClient(jwt);
             const res = await client.query({ query: GRANT_PETTY_CASH_REPORT, variables: { grant_id: selectedGrant, start_date: start_date, end_date: end_date } })
-            const new_data = res.data.petty_cash_user_requests;
+            const new_data = res.data.petty_cash_grant_requests;
             setResults(new_data)
         }
         fetch_data();

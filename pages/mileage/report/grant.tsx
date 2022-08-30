@@ -87,7 +87,7 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
         const fetch_data = async () => {
             const client = createClient(jwt);
             const res = await client.query({ query: MILEAGE_REPORT, variables: { grant_id: selectedGrant, start_date: start_date, end_date: end_date } })
-            const new_data = res.data.petty_cash_user_requests;
+            const new_data = res.data.grant_mileage_report;
             setResults(new_data)
         }
         fetch_data();
