@@ -1,11 +1,11 @@
-export default function PurchaseInput() {
+export default function PurchaseInput({purchase}: any) {
     return <form className="purchase-row">
         <label>Grant Line Item</label>
-        <input type="text" name="grant_line_item" />
+        <input defaultValue={purchase.grant_line_item} type="text" name="grant_line_item" />
         <label>Description</label>
-        <input type="text" name="description" />
+        <input defaultValue={purchase.description} type="text" name="description" />
         <label>Amount</label>
-        <input type="number" name="amount" />
+        <input defaultValue={purchase.amount} type="number" name="amount" />
         <hr />
     </form>
 }

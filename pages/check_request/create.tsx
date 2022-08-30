@@ -72,7 +72,7 @@ export default function CreateRequest() {
             <textarea rows={5} maxLength={75} name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
             <br />
             <span>{description.length}/75 characters</span>
-            <VendorInput setAddress={setVendorAddress} setName={setVendorName} address={vendorAddress} />
+            <VendorInput setAddress={setVendorAddress} setName={setVendorName} address={vendorAddress} name={vendorName} />
             <h3>Purchases</h3>
             <span className="description">Limit of 5 Purchases per Request</span>
             <br />

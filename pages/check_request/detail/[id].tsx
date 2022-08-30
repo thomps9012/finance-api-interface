@@ -70,10 +70,11 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
 export default function RecordDetail({ recorddata }: { recorddata: CheckDetail }) {
     console.log(recorddata)
-    const { receipts, purchases, created_at, credit_card, current_status, date, description, grant_id, is_active, order_total, user_id, action_history } = recorddata;
+    const { id, receipts, purchases, created_at, credit_card, current_status, date, description, grant_id, is_active, order_total, user_id, action_history } = recorddata;
     const vendorName = recorddata.vendor.name;
     const { website, street, city, zip, state } = recorddata.vendor.address;
     return <main className={styles.main} id={is_active ? `active` : `inactive`}>
+       {current_status === 'REJECTED' || current_status === 'PENDING' && <Link href={`/check_request/edit/${id}`}><a>Edit Request</a></Link>}
         <h1 className={current_status}>{titleCase(current_status)} Check Request</h1 >
         <h1>{dateFormat(date)}</h1>
         <h3>{description}</h3>

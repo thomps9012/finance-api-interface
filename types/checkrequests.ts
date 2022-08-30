@@ -49,7 +49,7 @@ export interface CheckDetail {
     date: string;
     vendor: Vendor;
     description: string;
-    purchases: [Purchase];
+    purchases: Purchase[];
     receipts: [string];
     order_total: number;
     credit_card: string;
