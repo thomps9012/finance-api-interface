@@ -33,7 +33,7 @@ export interface PettyCashInput {
 }
 export interface UserPettyCash {
     total_amount: number;
-    receipts: [string];
     requests: [PettyCashDetail];
     last_request: PettyCashDetail;
 }
+

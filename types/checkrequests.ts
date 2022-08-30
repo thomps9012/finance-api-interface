@@ -36,6 +36,13 @@ export interface CheckRequestOverview {
     last_request: CheckDetail;
 }
 
+export interface UserCheckRequests {
+    total_amount: number;
+    vendors: [Vendor];
+    credit_cards: [string];
+    requests: [CheckDetail];
+}
+
 export interface CheckDetail {
     id: string;
     user_id: string;

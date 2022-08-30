@@ -3,12 +3,13 @@ import { GetServerSidePropsContext } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import Link from 'next/link';
 import { useState } from 'react';
-import createClient from '../../graphql/client';
+import createClient from '../../../graphql/client';
 import styles from '../../styles/Home.module.css';
-import { MonthlyMileage } from '../../types/mileage';
-import { authOptions } from '../api/auth/[...nextauth]';
+import { MonthlyMileage } from '../../../types/mileage';
+import { authOptions } from '../../api/auth/[...nextauth]';
 
-const MILEAGE_REPORT = gql`query MileageReport($month: Int!, $year: Int!) {
+// change request ids to requests (similar to cash request returns)
+const MILEAGE_REPORT = gql`query userMileageReport($month: Int!, $year: Int!) {
     mileage_monthly_report(month:$month, year:$year){
         user_id
         name
@@ -39,7 +40,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     }
 }
 
-export default function MileageReport({ base_report, jwt }: { base_report: MonthlyMileage[], jwt: string }) {
+export default function UserMonthlyMileageReport({ base_report, jwt }: { base_report: MonthlyMileage[], jwt: string }) {
     const [results, setResults] = useState(base_report)
     console.log(jwt)
     const client = createClient(jwt);
@@ -51,7 +52,7 @@ export default function MileageReport({ base_report, jwt }: { base_report: Month
         setResults(res.data.mileage_monthly_report)
     }
     return <main className={styles.main}>
-        <h1>Mileage Reports for <input className={styles.calendar} type='month' defaultValue={Date.now()} onChange={handleChange} /></h1>
+        <h1>User Mileage Reports for <input className={styles.calendar} type='month' defaultValue={Date.now()} onChange={handleChange} /></h1>
         <table>
             <thead>
                 <tr>
