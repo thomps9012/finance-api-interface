@@ -31,3 +31,9 @@ export interface PettyCashInput {
     grant_id: string;
     request: PettyCashRequestInput;
 }
+export interface UserPettyCash {
+    total_amount: number;
+    receipts: [string];
+    requests: [PettyCashDetail];
+    last_request: PettyCashDetail;
+}
