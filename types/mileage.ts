@@ -42,7 +42,7 @@ export interface MonthlyMileage {
     tolls: number;
     parking: number;
     reimbursement: number;
-    request_ids: [string];
+    requests: [MileageDetail];
 }
 
 export interface UserMileage {

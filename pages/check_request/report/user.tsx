@@ -9,14 +9,19 @@ import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import styles from '../../../styles/Home.module.css';
 import { CheckDetail, UserCheckRequests, Vendor } from "../../../types/checkrequests"
+import Link from "next/link"
 const USER_CHECK_REPORT = gql`query userCheckRequests($user_id: ID!, $start_date: String!, $end_date: String!) {
     user_check_requests(id: $user_id, start_date: $start_date, end_date: $end_date){
         total_amount
         vendors {
             name
-            address
+            address {
+                street
+                city
+                state
+                website
+            }
         }
-        credit_cards
         requests {
             id
             created_at
@@ -63,7 +68,6 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
     const [end_date, setEnd] = useState(new Date().toISOString())
     const [selectedUserID, setSelectedUserID] = useState(userID)
     const [results, setResults] = useState(base_report)
-    const client = createClient(jwt);
     const handleChange = async (e: any) => {
         const { name, value } = e.target;
         switch (name) {
@@ -80,12 +84,13 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
     }
     useEffect(() => {
         const fetch_data = async () => {
+            const client = createClient(jwt);
             const res = await client.query({ query: USER_CHECK_REPORT, variables: { user_id: selectedUserID, start_date: start_date, end_date: end_date } })
             const new_data = res.data.petty_cash_user_requests;
             setResults(new_data)
         }
         fetch_data();
-    }, [start_date, end_date, selectedUserID])
+    }, [start_date, end_date, selectedUserID, jwt])
     return <main className={styles.main}>
         <h1>User Petty Cash Reports</h1>
 
@@ -115,19 +120,24 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
         {results.total_amount != 0 ? <>
             <h2>Total Amount: {results.total_amount}</h2>
             <h2>Vendors Used</h2>
-            {results.vendors?.map((vendor: Vendor) => <div key={vendor.name}>
-                <h5>{vendor.name}</h5>
-                <p>{vendor.address.street}</p>
-                <p>{vendor.address.city}, {vendor.address.state}</p>
-                <p>{vendor.address.website}</p>
-            </div>)}
-            {results.credit_cards?.map((card: string, i: number) => <p key={i}>{card}</p>)}
-            <h2>Request List</h2>
-            {results.requests?.map((request: CheckDetail) => <div key={request.id}>
-                <h5>${request.order_total}</h5>
-                <p className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {results.vendors?.map((vendor: Vendor) => <div key={vendor.name} style={{ margin: 5, padding: 5 }}>
+                    <h5>{vendor.name}</h5>
+                    <p>{vendor.address.street}</p>
+                    <p>{vendor.address.city}, {vendor.address.state}</p>
+                    <p>{vendor.address.website}</p>
+                </div>)}
             </div>
-            )}
+            <h2>Request List</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {results.requests?.map((request: CheckDetail) => <div key={request.id} style={{ margin: 5, padding: 5 }}>
+                    <Link href={`/check_request/detail/${request.id}`}><a>
+                        <p className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
+                        <h5>${request.order_total}</h5>
+                    </a></Link>
+                </div>
+                )}
+            </div>
         </>
             : <h2>No Requests during the Time Frame</h2>}
         <hr />

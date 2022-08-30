@@ -3,14 +3,15 @@ import { GetServerSidePropsContext } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import { useEffect, useState } from 'react';
 import createClient from '../../../graphql/client';
-import styles from '../../styles/Home.module.css';
+import styles from '../../../styles/Home.module.css';
 import { MileageDetail, UserMileage } from '../../../types/mileage';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import dateFormat from '../../../utils/dateformat';
 import titleCase from '../../../utils/titlecase';
 import { UserInfo } from '../../../types/users';
-const MILEAGE_REPORT = gql`query userMileageReport($start_date: String!, $end_date: String!, $user_id: ID!) {
-    user_mileage(start_date: $start_date, end_date: $end_date, user_id: $user_id){
+// possible conflict on backend
+const MILEAGE_REPORT = gql`query userMileageReport($start_date: String, $end_date: String, $user_id: ID!) {
+    user_mileage(start_date: $start_date, end_date: $end_date, id: $user_id){
         user {
             id
             name
@@ -22,6 +23,7 @@ const MILEAGE_REPORT = gql`query userMileageReport($start_date: String!, $end_da
         requests {
             id
             date
+            current_status
         }
     }
 }`;
@@ -52,7 +54,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     console.log(res)
     return {
         props: {
-            base_report: sessionData ? res.data.grant_mileage_report : null,
+            base_report: sessionData ? res.data.user_mileage : null,
             user_list: sessionData ? users.data.all_users : null,
             userID: userID ? userID : "",
             jwt: jwt ? jwt : ""
@@ -65,7 +67,7 @@ export default function UserMonthlyMileageReport({ base_report, userID, jwt, use
     const [end_date, setEnd] = useState(new Date().toISOString())
     const [selectedUserID, setSelectedUserID] = useState(userID)
     const [results, setResults] = useState(base_report)
-    const client = createClient(jwt);
+    console.table(results)
     const handleChange = async (e: any) => {
         const { name, value } = e.target;
         switch (name) {
@@ -75,21 +77,22 @@ export default function UserMonthlyMileageReport({ base_report, userID, jwt, use
             case 'end_date':
                 setEnd(new Date(value).toISOString())
                 break;
-                case 'selectedUserID':
-                    setSelectedUserID(value);
-                    break;
+            case 'selectedUserID':
+                setSelectedUserID(value);
+                break;
         }
     }
     useEffect(() => {
         const fetch_data = async () => {
+            const client = createClient(jwt);
             const res = await client.query({ query: MILEAGE_REPORT, variables: { user_id: selectedUserID, start_date: start_date, end_date: end_date } })
-            const new_data = res.data.user_mileage_requests;
+            const new_data = res.data.user_mileage;
             setResults(new_data)
         }
         fetch_data();
-    }, [start_date, end_date, selectedUserID])
+    }, [start_date, end_date, selectedUserID, jwt])
     return <main className={styles.main}>
-        <h1>Grant Mileage Report</h1>
+        <h1>User Mileage Report</h1>
         <div className={styles.inputRow}>
             <div className={styles.inputCol}>
                 <h5>Start Date</h5>
@@ -114,11 +117,20 @@ export default function UserMonthlyMileageReport({ base_report, userID, jwt, use
         </div>
         <hr />
         {results.reimbursement != 0 ? <>
-            <h2>Request List</h2>
-            {results.requests?.map((request: MileageDetail) => <div key={request.id}>
-                <p className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
+            <h2>Total Reimbursement: ${results.reimbursement}</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <h2 style={{ margin: 5, padding: 5 }}>Mileage: {results.mileage}</h2>
+                <h2 style={{ margin: 5, padding: 5 }}>Tolls: {results.tolls}</h2>
+                <h2 style={{ margin: 5, padding: 5 }}>Parking: {results.parking}</h2>
             </div>
-            )}
+            <hr />
+            <h2>Requests</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {results.requests?.map((request: MileageDetail) => <div key={request.id}>
+                    <p style={{ margin: 5, padding: 5 }} className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
+                </div>
+                )}
+            </div>
         </>
             : <h2>No Requests during the Time Frame</h2>}
         <hr />

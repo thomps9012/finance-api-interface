@@ -7,10 +7,49 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import AggMileage from "../../../components/aggMileage";
 import AggCheckRequests from "../../../components/aggCheckRequests";
 import AggPettyCash from "../../../components/aggPettyCash";
-import { USER_OVERVIEW } from "../../../graphql/queries";
 import createClient from "../../../graphql/client";
 import styles from '../../../styles/Home.module.css';
-
+import { gql } from "@apollo/client";
+const USER_OVERVIEW = gql`query UserOverview($id: ID!) {
+    user_overview(id:$id) {
+        id
+        manager_id
+        name
+        role
+        last_login
+        incomplete_action_count
+        mileage_requests {
+            mileage
+            parking
+            tolls
+            requests {
+            id
+            current_status
+            date
+            }
+            reimbursement
+        }
+        check_requests {
+            vendors {
+            name
+            }
+            requests {
+            id
+            current_status
+            date
+            }
+            total_amount
+        }
+        petty_cash_requests {
+            requests {
+            id
+            current_status
+            date
+            }
+            total_amount
+        }
+    }
+}`;
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
     const sessionData = await unstable_getServerSession(

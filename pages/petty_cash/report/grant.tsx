@@ -10,6 +10,7 @@ import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import styles from '../../../styles/Home.module.css';
 import { GrantInfo } from "../../../types/grants"
+import Link from "next/link"
 const GRANT_PETTY_CASH_REPORT = gql`query grantPettyCash($grant_id: ID!, $start_date: String!, $end_date: String!) {
     petty_cash_grant_requests(grant_id: $grant_id, start_date: $start_date, end_date: $end_date){
         total_amount
@@ -50,7 +51,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     console.log(res)
     return {
         props: {
-            base_report: sessionData ? res.data.petty_cash_user_requests : null,
+            base_report: sessionData ? res.data.petty_cash_grant_requests : null,
             grant_list: sessionData ? grants.data.all_grants : null,
             jwt: jwt ? jwt : ""
         }
@@ -61,7 +62,6 @@ export default function GrantPettyCashReport({ base_report, grant_list, jwt }: {
     const [end_date, setEnd] = useState(new Date().toISOString())
     const [selectedGrant, setSelectedGrant] = useState("H79TI082369")
     const [results, setResults] = useState(base_report)
-    const client = createClient(jwt);
     const handleChange = async (e: any) => {
         const { name, value } = e.target;
         switch (name) {
@@ -78,12 +78,13 @@ export default function GrantPettyCashReport({ base_report, grant_list, jwt }: {
     }
     useEffect(() => {
         const fetch_data = async () => {
+            const client = createClient(jwt);
             const res = await client.query({ query: GRANT_PETTY_CASH_REPORT, variables: { grant_id: selectedGrant, start_date: start_date, end_date: end_date } })
             const new_data = res.data.petty_cash_user_requests;
             setResults(new_data)
         }
         fetch_data();
-    }, [start_date, end_date, selectedGrant])
+    }, [start_date, end_date, selectedGrant, jwt])
     return <main className={styles.main}>
         <h1>Grant Petty Cash Reports</h1>
         <div className={styles.inputRow}>
@@ -102,7 +103,7 @@ export default function GrantPettyCashReport({ base_report, grant_list, jwt }: {
             <div className={styles.inputCol}>
                 <h5>Grant Select</h5>
                 <hr />
-                <select name='selectedUserID' value={selectedGrant} onChange={handleChange}>
+                <select name='selectedGrant' value={selectedGrant} onChange={handleChange}>
                     {grant_list.map((grant: GrantInfo) => <option key={grant.id} value={grant.id}>{grant.name}</option>
                     )}
                 </select>
@@ -112,11 +113,15 @@ export default function GrantPettyCashReport({ base_report, grant_list, jwt }: {
         {results.total_amount != 0 ? <>
             <h2>Total Amount: {results.total_amount}</h2>
             <h2>Request List</h2>
-            {results.requests?.map((request: PettyCashDetail) => <div key={request.id}>
-                <h5>${request.amount}</h5>
-                <p className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {results.requests?.map((request: PettyCashDetail) => <div key={request.id} style={{ margin: 5, padding: 5 }}>
+                    <Link href={`/petty_cash/detail/${request.id}`}><a>
+                        <p className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
+                        <h3>${request.amount}</h3>
+                    </a></Link>
+                </div>
+                )}
             </div>
-            )}
         </>
             : <h2>No Requests during the Time Frame</h2>}
         <hr />

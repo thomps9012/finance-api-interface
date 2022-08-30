@@ -3,7 +3,7 @@ import { GetServerSidePropsContext } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import { useEffect, useState } from 'react';
 import createClient from '../../../graphql/client';
-import styles from '../../styles/Home.module.css';
+import styles from '../../../styles/Home.module.css';
 import { MileageDetail } from '../../../types/mileage';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import { GrantInfo, GrantMileage } from '../../../types/grants';
@@ -23,6 +23,7 @@ const MILEAGE_REPORT = gql`query grantMileageReport($start_date: String!, $end_d
         requests {
             id
             date
+            current_status
         }
     }
 }`;
@@ -51,6 +52,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     const res = await client.query({ query: MILEAGE_REPORT, variables: { grant_id: grantID, start_date: startDate, end_date: today } })
     const grants = await client.query({ query: GRANT_LIST })
     console.log(res)
+    console.log(grants)
     return {
         props: {
             base_report: sessionData ? res.data.grant_mileage_report : null,
@@ -65,7 +67,8 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
     const [end_date, setEnd] = useState(new Date().toISOString())
     const [selectedGrant, setSelectedGrant] = useState("H79TI082369")
     const [results, setResults] = useState(base_report)
-    const client = createClient(jwt);
+    console.log('base_report:', base_report)
+    console.log('results', results)
     const handleChange = async (e: any) => {
         const { name, value } = e.target;
         switch (name) {
@@ -82,12 +85,13 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
     }
     useEffect(() => {
         const fetch_data = async () => {
+            const client = createClient(jwt);
             const res = await client.query({ query: MILEAGE_REPORT, variables: { grant_id: selectedGrant, start_date: start_date, end_date: end_date } })
             const new_data = res.data.petty_cash_user_requests;
             setResults(new_data)
         }
         fetch_data();
-    }, [start_date, end_date, selectedGrant])
+    }, [start_date, end_date, selectedGrant, jwt])
     return <main className={styles.main}>
         <h1>Grant Mileage Report</h1>
         <div className={styles.inputRow}>
@@ -106,7 +110,7 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
             <div className={styles.inputCol}>
                 <h5>Grant Select</h5>
                 <hr />
-                <select name='selectedUserID' value={selectedGrant} onChange={handleChange}>
+                <select name='selectedGrant' value={selectedGrant} onChange={handleChange}>
                     {grant_list.map((grant: GrantInfo) => <option key={grant.id} value={grant.id}>{grant.name}</option>
                     )}
                 </select>
@@ -114,11 +118,20 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
         </div>
         <hr />
         {results.reimbursement != 0 ? <>
-            <h2>Request List</h2>
-            {results.requests?.map((request: MileageDetail) => <div key={request.id}>
-                <p className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
+            <h2>Total Reimbursement: ${results.reimbursement}</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <h2 style={{ margin: 5, padding: 5 }}>Mileage: {results.mileage}</h2>
+                <h2 style={{ margin: 5, padding: 5 }}>Tolls: {results.tolls}</h2>
+                <h2 style={{ margin: 5, padding: 5 }}>Parking: {results.parking}</h2>
             </div>
-            )}
+            <hr />
+            <h2>Requests</h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {results.requests?.map((request: MileageDetail) => <div key={request.id}>
+                    <p style={{ margin: 5, padding: 5 }} className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
+                </div>
+                )}
+            </div>
         </>
             : <h2>No Requests during the Time Frame</h2>}
         <hr />

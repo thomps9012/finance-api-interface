@@ -1,11 +1,38 @@
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
 import createClient from "../../../graphql/client";
-import { ALL_USERS, USER_MANAGER, USER_OVERVIEW } from "../../../graphql/queries";
 import { UserOverview } from "../../../types/users";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import styles from '../../../styles/Home.module.css';
-import { useState } from "react";
+import { gql } from "@apollo/client";
+
+const ALL_USERS = gql`query allUsers {
+    all_users {
+        id
+        manager_id
+        name
+        role
+        email
+    }
+}`;
+const USER_OVERVIEW = gql`query userOverview($id: ID!) {
+    user_overview(id: $id){
+        id
+        manager_id
+        name
+        role
+        email
+        last_login
+    }
+}
+`;
+const USER_MANAGER = gql`query userManager($id: ID!) {
+    user_overview(id: $id) {
+        id
+        name
+        role
+    }
+}`;
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
