@@ -89,12 +89,12 @@ export default function RecordDetail({ recorddata, user_role, userID, jwt }: { j
     }
     return <main className={styles.main} id={is_active ? 'active' : 'inactive'}>
         {/* add in conditional rendering of buttons */}
-        {current_status === 'REJECTED' || current_status === 'PENDING' && <Link href={`/petty_cash/edit/${id}`}><a>Edit Request</a></Link>}
-        {user_role != 'EMPLOYEE' && current_user === userID && <div className='button-row'>
+        {(current_status === 'REJECTED' || current_status === 'PENDING') && <Link href={`/petty_cash/edit/${id}`}><a>Edit Request</a></Link>}
+        {user_role != 'EMPLOYEE' && current_user === userID && current_status != 'REJECTED' && <div className='button-row'>
             <button onClick={approveRequest}>Approve</button>
             <button onClick={rejectRequest}>Reject</button>
         </div>}
-        {user_role === 'FINANCE' && current_user === user_id && <button onClick={archiveRequest}>Archive Request</button>}
+        {(user_role === 'FINANCE' || current_user === user_id) && <button onClick={archiveRequest}>Archive Request</button>}
         <h1>{dateFormat(date)}</h1>
         <h1 className={current_status}>{titleCase(current_status)} Petty Cash Request</h1>
         <p>for</p>
