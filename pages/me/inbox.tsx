@@ -43,42 +43,46 @@ export default function MyInbox({ userdata }: { userdata: UserOverview }) {
     const { incomplete_actions } = userdata;
     console.table(incomplete_actions)
     return <main className={styles.main}>
-        <h1>{userdata.incomplete_action_count} New Action Item{userdata.incomplete_action_count != 0 && userdata.incomplete_action_count > 1 && `s`}</h1>
-        <table>
-            <thead>
-                <th>Type</th>
-                <th>Current Status</th>
-                <th>Created At</th>
-                <th>Requestor</th>
-            </thead>
-            <tbody>
-                {incomplete_actions?.map((action: Action) => {
-                    const { id, request_id, request_type, user, status, created_at } = action;
-                    let item_type, request_name;
-                    switch (request_type) {
-                        case 'petty_cash_requests':
-                            item_type = 'petty_cash'
-                            request_name = 'Petty Cash'
-                            break;
-                        case 'mileage_requests':
-                            item_type = 'mileage'
-                            request_name = 'Mileage'
-                            break;
-                        case 'check_requests':
-                            item_type = 'check_request'
-                            request_name = 'Check'
-                            break;
-                    }
-                    return <Link href={`/${item_type}/detail/${request_id}`} key={id}>
-                        <tr key={id} className={status} id='inbox-link'>
-                            <td>{request_name}</td>
-                            <td>{action.status}</td>
-                            <td>{dateFormat(action.created_at)}</td>
-                            <td>{action.user.name}</td>
-                        </tr>
-                    </Link>
-                })}
-            </tbody>
-        </table>
+
+        {incomplete_actions.length > 0 ? <>
+            <h1>{userdata.incomplete_action_count} New Action Item{userdata.incomplete_action_count != 1 && `s`}</h1> <table>
+                <thead>
+                    <th className='table-cell'>Type</th>
+                    <th className='table-cell'>Current Status</th>
+                    <th className='table-cell'>Created At</th>
+                    <th className='table-cell'>Requestor</th>
+                </thead>
+                <tbody>
+                    {incomplete_actions?.map((action: Action) => {
+                        const { id, request_id, request_type, user, status, created_at } = action;
+                        let item_type, request_name;
+                        switch (request_type) {
+                            case 'petty_cash_requests':
+                                item_type = 'petty_cash'
+                                request_name = 'Petty Cash'
+                                break;
+                            case 'mileage_requests':
+                                item_type = 'mileage'
+                                request_name = 'Mileage'
+                                break;
+                            case 'check_requests':
+                                item_type = 'check_request'
+                                request_name = 'Check'
+                                break;
+                        }
+                        return <Link href={`/${item_type}/detail/${request_id}`} key={id}>
+                            <tr id='table-row' key={id} className={status}>
+                                <td className='table-cell'>{request_name}</td>
+                                <td className='table-cell'>{action.status}</td>
+                                <td className='table-cell'>{dateFormat(action.created_at)}</td>
+                                <td className='table-cell'>{action.user.name}</td>
+                            </tr>
+                        </Link>
+                    })}
+                </tbody>
+            </table>
+        </>
+            : <h1>Nothing Todo Yet</h1>
+        }
     </main>
 }

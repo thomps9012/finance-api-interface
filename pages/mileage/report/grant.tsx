@@ -129,23 +129,23 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
             <h1>Requests</h1>
         <table>
             <thead>
-                <th>Link</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Mileage</th>
-                <th>Reimbursement</th>
+                <th className='table-cell'>Link</th>
+                <th className='table-cell'>Date</th>
+                <th className='table-cell'>Status</th>
+                <th className='table-cell'>Mileage</th>
+                <th className='table-cell'>Reimbursement</th>
             </thead>
             <tbody>
                 {results.requests.map((request: MileageDetail) => {
                     const { id, date, current_status, trip_mileage, reimbursement } = request;
-                    return <tr key={id} className={current_status}>
-                        <td>
+                    return <tr id='table-row' key={id} className={current_status}>
+                        <td className='table-cell'>
                             <Link href={`/mileage/detail/${id}`}><a>Trip Detail</a></Link><br />
                         </td>
-                        <td>{dateFormat(date)}</td>
-                        <td>{current_status}</td>
-                        <td>{trip_mileage}</td>
-                        <td>${reimbursement}</td>
+                        <td className='table-cell'>{dateFormat(date)}</td>
+                        <td className='table-cell'>{current_status}</td>
+                        <td className='table-cell'>{trip_mileage}</td>
+                        <td className='table-cell'>${reimbursement}</td>
                     </tr>
                 }
                 )}

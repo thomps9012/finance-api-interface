@@ -25,9 +25,11 @@ a {
     background: black;
   }
 }
+
 #inbox-link:hover {
   cursor: pointer;
 }
+
 #vehicleInput {
   display: none;
 }
@@ -45,17 +47,41 @@ footer {
 nav {
   display: flex;
   justify-content: flex-start;
-  background-color: rgba(0, 0, 0, 0.05);
   margin-bottom: 0;
   padding-bottom: 0;
 }
 
+/* different status stylings */
 .PENDING {
   color: goldenrod;
-  font-weight: bolder;
+  font-weight: bold;
+}
+.ARCHIVED {
+  font-weight: bold;
+  color: #b2b0b0;
+}
+.MANAGER_APPROVED {
+  font-weight: bold;
+  color: greenyellow;
+}
+.FINANCE_APPROVED {
+  font-weight: bold;
+  color: greenyellow;
+}
+.ORG_APPROVED {
+  font-weight: bold;
+  color: green;
+}
+.REJECTED {
+  font-weight: bold;
+  color: red;
+}
+.REJECTED_EDIT {
+  font-weight: bold;
+  color: rosybrown;
 }
 
-.show{
+.show {
   font-weight: bold;
 }
 
@@ -63,15 +89,33 @@ a:hover {
   cursor: pointer;
 }
 
-#vehicleInput{
+#vehicleInput {
   display: inline-flex;
   flex-direction: column;
   padding: 20px;
 }
 
-.remove{
-color: red;
-font-weight: bold;
+.remove {
+  color: red;
+  font-weight: bold;
+}
+
+button {
+  font-weight: bold;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+}
+input {
+  font-size: large;
+  height: 40px;
+  padding: 10px;
+}
+label {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: large;
 }
 
 button:hover,
@@ -81,7 +125,7 @@ button:active {
   border-color: #0070f3;
 }
 
-.purchase-row{
+.purchase-row {
   display: flex;
   flex-direction: column;
 }
@@ -94,7 +138,19 @@ button:active {
   justify-content: center;
   padding: 10ch;
 }
+
 .image-container {
   display: inline;
   margin-top: 0;
+}
+
+.table-cell {
+  padding: 20px;
+  text-align: center;
+  font-size: large;
+}
+
+#table-row:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
 }

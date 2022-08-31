@@ -10,19 +10,19 @@ export default function AggPettyCash({ petty_cash }: { petty_cash: PettyCashOver
         <h1>Requests</h1>
         <table>
             <thead>
-                <th>Link</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Amount</th>
+                <th className='table-cell'>Link</th>
+                <th className='table-cell'>Date</th>
+                <th className='table-cell'>Status</th>
+                <th className='table-cell'>Amount</th>
             </thead>
             <tbody>
                 {requests.map((request: PettyCashDetail) => {
                     const { id, date, current_status, amount } = request;
-                    return <tr key={id} className={current_status}>
-                        <tr><Link href={`/petty_cash/detail/${id}`}><a>Detail</a></Link></tr>
-                        <td>{dateFormat(date)}</td>
-                        <td>{current_status}</td>
-                        <td>${amount}</td>
+                    return <tr id='table-row' key={id} className={current_status}>
+                        <td><Link href={`/petty_cash/detail/${id}`}><a>Detail</a></Link></td>
+                        <td className='table-cell'>{dateFormat(date)}</td>
+                        <td className='table-cell'>{current_status}</td>
+                        <td className='table-cell'>${amount}</td>
                     </tr>
                 })}
             </tbody>

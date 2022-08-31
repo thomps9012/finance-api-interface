@@ -2,46 +2,91 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import jwtDecode from 'jwt-decode'
-
-export default function Landing() {
+import { gql } from '@apollo/client'
+import { GetServerSidePropsContext } from 'next'
+import { unstable_getServerSession } from 'next-auth'
+import createClient from '../graphql/client'
+import { authOptions } from './api/auth/[...nextauth]'
+import dateFormat from '../utils/dateformat'
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const sessionData = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  )
+  const jwt = sessionData?.user.token
+  if (jwt) {
+    const client = createClient(jwt);
+    const GET_NOTIFICATIONS = gql`query me {
+        me {
+          incomplete_action_count
+          last_login 
+        }
+  }`
+    const res = await client.query({ query: GET_NOTIFICATIONS })
+    return {
+      props: {
+        notifications: res.data.me.incomplete_action_count,
+        last_login: res.data.me.last_login
+      }
+    }
+  } else {
+    return {
+      props: {
+        notifications: 0,
+        last_login: ""
+      }
+    }
+  }
+}
+export default function Landing({ notifications, last_login }: { notifications: number, last_login: string }) {
   const session = useSession()
   const user_token: { role: string } = jwtDecode(session?.data?.user.token)
   const user_role = user_token?.role;
   console.log('role', user_role)
   return <main className={styles.landing}>
     <div className={styles.container}>
-      <h1>Finance Request Hub</h1>
-      <Link href={'/me/inbox'}>
-        <a><h2>Your Notifications</h2></a>
+      <header style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <h1>Finance Request Hub</h1>
+        <div style={{ textAlign: 'right' }}>
+          <Link href={'/me/inbox'}>
+            <a><h2>{notifications} New Action Items</h2><h2>Since {dateFormat(last_login)}</h2></a>
+          </Link>
+        </div>
+      </header>
+      <br />
+      <h2>🚗 Mileage </h2>
+      <hr />
+      <Link href={'/mileage/create'}>
+        <a><h3>New</h3></a>
+      </Link>
+      <Link href={'/mileage'}>
+        <a>
+          <h3>Reports</h3>
+        </a>
       </Link>
       <br />
-      <h2>Mileage</h2>
+      <h2>💸 Petty Cash </h2>
       <hr />
-      <Link href={'/me/mileage'}>
-        <a><h3>Your Active Requests</h3></a>
+      <Link href={'/petty_cash/create'}>
+        <a><h3>New</h3></a>
       </Link>
-      {user_role != 'EMPLOYEE' && <Link href={'/mileage/report'}>
-        <a><h3>Reports</h3></a>
+      <Link href={'/petty_cash'}>
+        <a>
+          <h3>Reports</h3>
+        </a>
       </Link>
-      }
-      <h2>Petty Cash</h2>
+      <br />
+      <h2>📑 Check Requests </h2>
       <hr />
-      <Link href={'/me/pettyCash'}>
-        <a><h3>Your Active Requests</h3></a>
+      <Link href={'/check_request/create'}>
+        <a><h3>New</h3></a>
       </Link>
-      {user_role != 'EMPLOYEE' && <Link href={'/petty_cash/report'}>
-        <a><h3>Reports</h3></a>
+      <Link href={'/check_request'}>
+        <a>
+          <h3>Reports</h3>
+        </a>
       </Link>
-      }
-      <h2>Check Requests</h2>
-      <hr />
-      <Link href={'/me/checkRequests'}>
-        <a><h3>Your Active Requests</h3></a>
-      </Link>
-      {user_role != 'EMPLOYEE' && <Link href={'/check_request/report'}>
-        <a><h3>Reports</h3></a>
-      </Link>
-      }
     </div>
   </main>
 }

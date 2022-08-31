@@ -1,54 +1,50 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import styles from "./header.module.css"
 import NavLinks from "./navLinks";
 
 export default function Header() {
-    const { data: session, status } = useSession();
-    const loading = status === "loading";
+    const { data: session } = useSession();
     return <header>
-        <noscript>
-            <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
-        </noscript>
-        <div className={styles.signedInStatus}>
-            <p className={`nojs-show ${!session && loading ? styles.loading : styles.loaded}`}>
-                {!session && (
-                    <>
-                        <span className={styles.notSignedInText}>
-                            You are not signed in
-                        </span>
-                        <a href={`/api/auth/signin`}
-                            className={styles.buttonPrimary}
-                            onClick={(e: any) => {
-                                e.preventDefault()
-                                signIn("google")
-                            }}>
-                            Sign In
+        <div className={styles.navHeader}>
+            {session?.user && (
+                <>
+                    <Link href="/me">
+                        <a>
+                            {session.user.image && (
+                                <span
+                                    style={{ backgroundImage: `url('${session.user.image}')` }}
+                                    className={styles.avatar}
+                                />
+                            )}
+                            <span className={styles.signedInText}>
+                                <br />
+                                <strong>{session.user.name}</strong>
+                            </span>
                         </a>
-                    </>
-                )}
-                {session?.user && (
-                    <>
-                        {session.user.image && (
-                            <span
-                                style={{ backgroundImage: `url('${session.user.image}')` }}
-                                className={styles.avatar}
-                            />
-                        )}
-                        <span className={styles.signedInText}>
-                            <br />
-                            <strong>{session.user.name}</strong>
-                        </span>
-                        <a href={`/api/auth/signout`}
-                            className={styles.button} onClick={(e: any) => {
-                                e.preventDefault()
-                                signOut({ callbackUrl: '/' })
-                            }}>
-                            Sign Out
-                        </a>
-                    </>
-                )}
-            </p>
-            <NavLinks />
+                    </Link>
+                    <ul className={styles.navIcons}>
+                        <li className={styles.navIcon}>
+                            <Link href="/">
+                                <a className={styles.navIcon}>🏡</a>
+                            </Link>
+                        </li>
+                        <li className={styles.navIcon}>
+                            <Link href="/me/inbox">
+                                <a className={styles.navIcon}>📭</a>
+                            </Link>
+                        </li>
+                    </ul>
+                    <a href={`/api/auth/signout`}
+                        className={styles.buttonPrimary} onClick={(e: any) => {
+                            e.preventDefault()
+                            signOut({ callbackUrl: '/' })
+                        }}>
+                        Sign Out
+                    </a>
+                </>
+            )}
         </div>
+        <NavLinks />
     </header>
 }

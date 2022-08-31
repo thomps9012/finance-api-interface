@@ -55,23 +55,21 @@ export default function UserMonthlyMileageReport({ base_report, jwt }: { base_re
         <h1>User Mileage Reports for <input className={styles.calendar} type='month' defaultValue={Date.now()} onChange={handleChange} /></h1>
         <table>
             <thead>
-                <tr>
-                    <th>Employee</th>
-                    <th>Mileage</th>
-                    <th>Tolls</th>
-                    <th>Parking</th>
-                    <th>Total Reimbursement</th>
-                    <th>Request Links</th>
-                </tr>
+                    <th className='table-cell'>Employee</th>
+                    <th className='table-cell'>Mileage</th>
+                    <th className='table-cell'>Tolls</th>
+                    <th className='table-cell'>Parking</th>
+                    <th className='table-cell'>Total Reimbursement</th>
+                    <th className='table-cell'>Request Links</th>
             </thead>
             <tbody>
-                {results.map((record: MonthlyMileage) => <tr key={record.user_id}>
-                    <td><Link href={`/user/${record.user_id}`}>{record.name}</Link></td>
-                    <td>{record.mileage}</td>
-                    <td>{record.tolls}</td>
-                    <td>{record.parking}</td>
-                    <td>{record.reimbursement}</td>
-                    <td>
+                {results.map((record: MonthlyMileage) => <tr id='table-row' key={record.user_id}>
+                    <td className='table-cell'><Link href={`/user/${record.user_id}`}>{record.name}</Link></td>
+                    <td className='table-cell'>{record.mileage}</td>
+                    <td className='table-cell'>{record.tolls}</td>
+                    <td className='table-cell'>{record.parking}</td>
+                    <td className='table-cell'>{record.reimbursement}</td>
+                    <td className='table-cell'>
                         {record.requests.map((request: MileageDetail) => <span key={request.id}><Link href={`/mileage/detail/${request.id}`}>{dateFormat(request.date)}</Link><br /></span>)}
                     </td>
                 </tr>

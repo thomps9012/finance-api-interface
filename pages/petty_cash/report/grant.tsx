@@ -117,17 +117,17 @@ export default function GrantPettyCashReport({ base_report, grant_list, jwt }: {
             <h2>Requests</h2>
             <table>
                 <thead>
-                    <th>Link</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Amount</th>
+                    <th className='table-cell'>Link</th>
+                    <th className='table-cell'>Status</th>
+                    <th className='table-cell'>Date</th>
+                    <th className='table-cell'>Amount</th>
                 </thead>
                 <tbody>
-                    {results.requests?.map((request: PettyCashDetail) => <tr key={request.id} className={request.current_status}>
-                        <td><Link href={`/petty_cash/detail/${request.id}`}><a>Detail</a></Link></td>
-                        <td>{request.current_status}</td>
-                        <td> {dateFormat(request.date)}</td>
-                        <td>${request.amount}</td>
+                    {results.requests?.map((request: PettyCashDetail) => <tr id='table-row' key={request.id} className={request.current_status}>
+                        <td className='table-cell'><Link href={`/petty_cash/detail/${request.id}`}><a>Detail</a></Link></td>
+                        <td className='table-cell'>{request.current_status}</td>
+                        <td className='table-cell'> {dateFormat(request.date)}</td>
+                        <td className='table-cell'>${request.amount}</td>
                     </tr>
                     )}
                 </tbody>

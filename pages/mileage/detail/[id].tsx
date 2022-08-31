@@ -105,12 +105,12 @@ export default function RecordDetail({ recorddata, user_role, userID, jwt }: { j
         <Link href={`/user/detail/${user_id}`}><a>Requestor Profile</a></Link>
         <h3>{trip_purpose}</h3>
         <table>
-            <tr><th>Start Odometer</th><th>{start_odometer}</th></tr>
-            <tr><th>End Odometer</th><th>{end_odometer}</th></tr>
-            <tr><th>Mileage</th><th>{trip_mileage}</th></tr>
-            <tr><th>Tolls</th><th>{tolls}</th></tr>
-            <tr><th>Parking</th><th>{parking}</th></tr>
-            <tr><th>Reimbursement</th><th>{reimbursement}</th></tr>
+            <tr><th className='table-cell'>Start Odometer</th><th className='table-cell'>{start_odometer}</th></tr>
+            <tr><th className='table-cell'>End Odometer</th><th className='table-cell'>{end_odometer}</th></tr>
+            <tr><th className='table-cell'>Mileage</th><th className='table-cell'>{trip_mileage}</th></tr>
+            <tr><th className='table-cell'>Tolls</th><th className='table-cell'>{tolls}</th></tr>
+            <tr><th className='table-cell'>Parking</th><th className='table-cell'>{parking}</th></tr>
+            <tr><th className='table-cell'>Reimbursement</th><th className='table-cell'>{reimbursement}</th></tr>
         </table>
         <hr />
 
