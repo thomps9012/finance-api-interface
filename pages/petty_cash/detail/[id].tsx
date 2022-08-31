@@ -96,23 +96,23 @@ export default function RecordDetail({ recorddata, user_role, userID, jwt }: { j
         </div>}
         {(user_role === 'FINANCE' || current_user === user_id) && <button onClick={archiveRequest}>Archive Request</button>}
         <h1>{dateFormat(date)}</h1>
-        <h1 className={current_status}>{titleCase(current_status)} Petty Cash Request</h1>
+        <h1 className={current_status}>{current_status} Petty Cash Request</h1>
         <p>for</p>
         <h3>{amount}</h3>
         <h3>{description}</h3>
         <h3>Grant  {grant_id}</h3>
         <Link href={`/user/detail/${user_id}`}><a>Requestor Profile</a></Link>
         <h5>Receipts</h5>
-        {receipts.map((receipt: string, i: number) => <Image key={i} src={receipt} height={300} width={300} alt={`receipt${i}`} />)}
+        {receipts.map((receipt: string, i: number) => <Image key={i} src={receipt} height={300} width={300} alt="" />)}
         <hr />
         <br />
         <p>Created on {dateFormat(created_at)}</p>
-        <h5>Action History</h5>
-        {action_history.map((action: Action) => {
+        <h5>Recent Action History</h5>
+        {action_history.slice(0,3).map((action: Action) => {
             const { id, user, created_at, status } = action;
             return <div key={id}>
                 <p>{user.name}</p>
-                <p>{titleCase(status)}</p>
+                <p>{status}</p>
                 <p>{dateFormat(created_at)}</p>
             </div>
         })}

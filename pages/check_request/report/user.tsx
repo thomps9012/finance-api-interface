@@ -128,16 +128,26 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
                     <p>{vendor.address.website}</p>
                 </div>)}
             </div>
-            <h2>Request List</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {results.requests?.map((request: CheckDetail) => <div key={request.id} style={{ margin: 5, padding: 5 }}>
-                    <Link href={`/check_request/detail/${request.id}`}><a>
-                        <p className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
-                        <h5>${request.order_total}</h5>
-                    </a></Link>
-                </div>
-                )}
-            </div>
+            <h1>Requests</h1>
+        <table>
+            <thead>
+                <th>Link</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+            </thead>
+            <tbody>
+                {results.requests.map((request: CheckDetail) => {
+                    const { id, date, current_status, order_total } = request;
+                    return <tr key={id} className={current_status}>
+                        <td><Link href={`/check_request/detail/${id}`}><a>Detail</a></Link></td>
+                        <td>{dateFormat(date)}</td>
+                        <td>{current_status}</td>
+                        <td>${order_total}</td>
+                    </tr>
+                })}
+            </tbody>
+        </table>
         </>
             : <h2>No Requests during the Time Frame</h2>}
         <hr />

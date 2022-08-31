@@ -74,7 +74,7 @@ export default function UserRecordOverview({ userdata }: { userdata: UserOvervie
 
     return <main className={styles.main}>
         <h1>Overview for {name}</h1>
-        <h2>{titleCase(role)} with {incomplete_action_count} Incomplete Actions</h2>
+        <h2>{role} with {incomplete_action_count} Incomplete Actions</h2>
         <span>Last Login: {dateFormat(last_login)}</span>
         <h3>Mileage Requests</h3>
         <AggMileage mileage_requests={userdata.mileage_requests} />

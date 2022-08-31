@@ -9,6 +9,7 @@ import { authOptions } from '../../api/auth/[...nextauth]';
 import dateFormat from '../../../utils/dateformat';
 import titleCase from '../../../utils/titlecase';
 import { UserInfo } from '../../../types/users';
+import Link from 'next/link';
 // possible conflict on backend
 const MILEAGE_REPORT = gql`query userMileageReport($start_date: String, $end_date: String, $user_id: ID!) {
     user_mileage(start_date: $start_date, end_date: $end_date, id: $user_id){
@@ -124,13 +125,31 @@ export default function UserMonthlyMileageReport({ base_report, userID, jwt, use
                 <h2 style={{ margin: 5, padding: 5 }}>Parking: {results.parking}</h2>
             </div>
             <hr />
-            <h2>Requests</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {results.requests?.map((request: MileageDetail) => <div key={request.id}>
-                    <p style={{ margin: 5, padding: 5 }} className={request.current_status}>{titleCase(request.current_status)} {dateFormat(request.date)}</p>
-                </div>
+            <h1>Requests</h1>
+        <table>
+            <thead>
+                <th>Link</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Mileage</th>
+                <th>Reimbursement</th>
+            </thead>
+            <tbody>
+                {results.requests.map((request: MileageDetail) => {
+                    const { id, date, current_status, trip_mileage, reimbursement } = request;
+                    return <tr key={id} className={current_status}>
+                        <td>
+                            <Link href={`/mileage/detail/${id}`}><a>Trip Detail</a></Link><br />
+                        </td>
+                        <td>{dateFormat(date)}</td>
+                        <td>{current_status}</td>
+                        <td>{trip_mileage}</td>
+                        <td>${reimbursement}</td>
+                    </tr>
+                }
                 )}
-            </div>
+            </tbody>
+        </table>
         </>
             : <h2>No Requests during the Time Frame</h2>}
         <hr />
