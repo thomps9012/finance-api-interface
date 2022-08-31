@@ -63,7 +63,7 @@ export default function UserMonthlyMileageReport({ base_report, jwt }: { base_re
                     <th className='table-cell'>Request Links</th>
             </thead>
             <tbody>
-                {results.map((record: MonthlyMileage) => <tr id='table-row' key={record.user_id}>
+                {results.map((record: MonthlyMileage) => <tr id='table' key={record.user_id}>
                     <td className='table-cell'><Link href={`/user/${record.user_id}`}>{record.name}</Link></td>
                     <td className='table-cell'>{record.mileage}</td>
                     <td className='table-cell'>{record.tolls}</td>

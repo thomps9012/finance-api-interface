@@ -120,7 +120,7 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
             </div>
         </div>
         {results.total_amount != 0 ? <>
-            <h2>Total Amount: {results.total_amount}</h2>
+            <h2>Total Amount: ${Math.floor(results.total_amount).toPrecision(4)}</h2>
             <div className="hr" />
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {results.vendors?.map((vendor: Vendor) => <div key={vendor.name} className={styles.card}>
@@ -146,7 +146,7 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
                                 <td className='table-cell'>{dateFormat(date)}</td>
                                 <td className='table-cell'>{current_status}</td>
                                 <td className='table-cell'>{purchases.length}</td>
-                                <td className='table-cell'>${order_total}</td>
+                                <td className='table-cell'>${Math.floor(order_total).toPrecision(4)}</td>
                             </tr>
                         </Link>
                     })}

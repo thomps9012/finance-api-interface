@@ -11,7 +11,7 @@ export default function AggPettyCash({ petty_cash }: { petty_cash: PettyCashOver
     return <main className={styles.main}>
         <h1>{user_name} Petty Cash</h1>
         <div className="hr" />
-        <h1>Total Amount - ${total_amount}</h1>
+        <h1>Total Amount: ${Math.floor(total_amount).toPrecision(4)}</h1>
         <table>
             <thead>
                 <th className='table-cell'>Date</th>

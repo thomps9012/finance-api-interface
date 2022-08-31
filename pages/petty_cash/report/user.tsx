@@ -108,7 +108,7 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
         </div>
         <div className="hr" />
         {results.total_amount != 0 ? <>
-            <h2>Total Amount: {results.total_amount}</h2>
+            <h2>Total Amount: ${Math.floor(results.total_amount).toPrecision(4)}</h2>
             <table>
                 <thead>
                     <th className='table-cell'>Link</th>
@@ -121,7 +121,7 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
                         <td className='table-cell'><Link href={`/petty_cash/detail/${request.id}`}><a>Detail</a></Link></td>
                         <td className='table-cell'>{request.current_status}</td>
                         <td className='table-cell'> {dateFormat(request.date)}</td>
-                        <td className='table-cell'>${request.amount}</td>
+                        <td className='table-cell'>${Math.floor(request.amount).toPrecision(4)}</td>
                     </tr>
                     )}
                 </tbody>

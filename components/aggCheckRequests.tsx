@@ -10,7 +10,7 @@ export default function AggCheckRequests({ check_requests }: { check_requests: C
     if (total_amount === 0) { return <h1>No Check Requests for {user_name}</h1> }
     return <main className={styles.main}>
         <h1>{user_name} Check Requests</h1>
-        <h2>Total Amount: {total_amount}</h2>
+        <h2>Total Amount: ${Math.floor(total_amount).toPrecision(4)}</h2>
         <div className="hr" />
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {vendors?.map((vendor: Vendor) => <div key={vendor.name} className={styles.card}>
@@ -36,7 +36,7 @@ export default function AggCheckRequests({ check_requests }: { check_requests: C
                             <td className='table-cell'>{dateFormat(date)}</td>
                             <td className='table-cell'>{current_status}</td>
                             <td className='table-cell'>{purchases.length}</td>
-                            <td className='table-cell'>${order_total}</td>
+                            <td className='table-cell'>${Math.floor(order_total).toPrecision(4)}</td>
                         </tr>
                     </Link>
                 })}

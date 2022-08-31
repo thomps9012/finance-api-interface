@@ -25,6 +25,8 @@ const MILEAGE_REPORT = gql`query grantMileageReport($start_date: String!, $end_d
             id
             date
             current_status
+            reimbursement
+            trip_mileage
         }
     }
 }`;
@@ -97,19 +99,19 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
         <h1>Grant Mileage Report</h1>
         <div className={styles.inputRow}>
             <div className={styles.inputCol}>
-                <h5>Start Date</h5>
+                <h3>Start Date</h3>
                 <hr />
-                <h5>{dateFormat(start_date)}</h5>
+                <h3>{dateFormat(start_date)}</h3>
                 <input type="date" name="start_date" value={start_date} onChange={handleChange} />
             </div>
             <div className={styles.inputCol}>
-                <h5>End Date</h5>
+                <h3>End Date</h3>
                 <hr />
-                <h5>{dateFormat(end_date)}</h5>
+                <h3>{dateFormat(end_date)}</h3>
                 <input type="date" name="end_date" value={end_date} onChange={handleChange} />
             </div>
             <div className={styles.inputCol}>
-                <h5>Grant Select</h5>
+                <h3>Grant Select</h3>
                 <hr />
                 <select name='selectedGrant' value={selectedGrant} onChange={handleChange}>
                     {grant_list.map((grant: GrantInfo) => <option key={grant.id} value={grant.id}>{grant.name}</option>
@@ -126,7 +128,6 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
             <div className='hr' />
             <table>
                 <thead>
-                    <th className='table-cell'>Link</th>
                     <th className='table-cell'>Date</th>
                     <th className='table-cell'>Status</th>
                     <th className='table-cell'>Mileage</th>
@@ -135,15 +136,14 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
                 <tbody>
                     {results.requests.map((request: MileageDetail) => {
                         const { id, date, current_status, trip_mileage, reimbursement } = request;
-                        return <tr id='table-row' key={id} className={current_status}>
-                            <td className='table-cell'>
-                                <Link href={`/mileage/detail/${id}`}><a>Trip Detail</a></Link><br />
-                            </td>
+                        return <Link key={id} href={`/mileage/detail/${id}`}>
+                        <tr id='table-row' className={current_status}>
                             <td className='table-cell'>{dateFormat(date)}</td>
                             <td className='table-cell'>{current_status}</td>
                             <td className='table-cell'>{trip_mileage}</td>
-                            <td className='table-cell'>${reimbursement}</td>
+                            <td className='table-cell'>${Math.floor(reimbursement).toPrecision(4)}</td>
                         </tr>
+                    </Link>
                     }
                     )}
                 </tbody>

@@ -12,7 +12,7 @@ export default function AggMileage({ mileage_requests }: { mileage_requests: Mil
         <h1>{user_name} Mileage</h1>
         <table>
         <table>
-                <tr><th className='table-cell'>Total Reimbursement</th><td className='table-cell'>${reimbursement}</td><th className='table-cell'>Total Mileage</th><td className='table-cell'>{mileage}</td></tr>
+                <tr><th className='table-cell'>Total Reimbursement</th><td className='table-cell'>${Math.floor(reimbursement).toPrecision(4)}</td><th className='table-cell'>Total Mileage</th><td className='table-cell'>{mileage}</td></tr>
                 <tr><th className='table-cell'>Total Tolls</th><td className='table-cell'>{tolls}</td><th className='table-cell'>Total Parking</th><td className='table-cell'>{parking}</td></tr>
             </table>
         </table>
@@ -32,7 +32,7 @@ export default function AggMileage({ mileage_requests }: { mileage_requests: Mil
                             <td className='table-cell'>{dateFormat(date)}</td>
                             <td className='table-cell'>{current_status}</td>
                             <td className='table-cell'>{trip_mileage}</td>
-                            <td className='table-cell'>${reimbursement}</td>
+                            <td className='table-cell'>${Math.floor(reimbursement).toPrecision(4)}</td>
                         </tr>
                     </Link>
                 }

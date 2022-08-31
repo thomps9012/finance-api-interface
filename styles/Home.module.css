@@ -72,22 +72,20 @@
   flex-grow: 1;
 }
 
-.title a {
+.editLink {
   color: #0070f3;
   text-decoration: none;
+  margin: 0;
+  line-height: 1.15;
+  font-size: 2rem;
 }
 
-.title a:hover,
-.title a:focus,
-.title a:active {
+.editLink a:hover,
+.editLink a:focus,
+.editLink a:active {
   text-decoration: underline;
 }
 
-.title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
-}
 
 .title,
 .description {
