@@ -50,8 +50,8 @@ const MILEAGE_DETAIL = gql`query MileageDetail($id: ID!){
       is_active
     }
   }`;
-const FIND_GRANTS = gql`query findGrants {
-    all_grants {
+  const FIND_GRANT = gql`query findGrant($id: ID!) {
+    single_grant(id: $id) {
       id
       name
     }
@@ -70,16 +70,14 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     const user_role = tokenData.role
     const userID = tokenData.id
     const res = await client.query({ query: MILEAGE_DETAIL, variables: { id } })
-    // move this to an individual query
-    const grants = await client.query({ query: FIND_GRANTS })
-    const grant_info = grants.data.all_grants.filter((grant: GrantInfo) => grant.id === res.data.mileage_detail.grant_id)
+    const grant = await client.query({ query: FIND_GRANT, variables: {id: res.data.mileage_detail.grant_id} })
     return {
         props: {
             recorddata: sessionData ? res.data.mileage_detail : [],
             user_role: sessionData ? user_role : "",
             userID: sessionData ? userID : "",
             jwt: jwt ? jwt : "",
-            grant_info: grant_info[0]
+            grant_info: grant.data.single_grant
         }
     }
 }
