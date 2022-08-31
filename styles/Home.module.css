@@ -77,12 +77,12 @@
   text-decoration: none;
   margin: 0;
   line-height: 1.15;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
-.editLink a:hover,
-.editLink a:focus,
-.editLink a:active {
+.editLink:hover,
+.editLink:focus,
+.editLink:active {
   text-decoration: underline;
 }
 

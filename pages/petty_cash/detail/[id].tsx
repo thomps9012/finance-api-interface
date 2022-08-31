@@ -74,14 +74,14 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
       user_role: sessionData ? user_role : "",
       userID: sessionData ? userID : "",
       jwt: jwt ? jwt : "",
-      grant_info: grant_info
+      grant_info: grant_info[0]
     }
   }
 }
 
-export default function RecordDetail({ recorddata, user_role, userID, jwt, grant_info }: { grant_info: GrantInfo[], jwt: string, recorddata: PettyCashDetail, user_role: string, userID: string }) {
+export default function RecordDetail({ recorddata, user_role, userID, jwt, grant_info }: { grant_info: GrantInfo, jwt: string, recorddata: PettyCashDetail, user_role: string, userID: string }) {
   const router = useRouter();
-  const { user_id, created_at, current_status, action_history, date, grant_id, current_user, is_active, receipts, amount, description, id } = recorddata;
+  const { user_id, created_at, current_status, action_history, date, current_user, is_active, receipts, amount, description, id } = recorddata;
   const request_type = 'petty_cash_requests';
   const client = createClient(jwt);
   const approveRequest = async () => {
@@ -104,7 +104,7 @@ export default function RecordDetail({ recorddata, user_role, userID, jwt, grant
 
 
     <h1 className={current_status}>{current_status} Petty Cash Request</h1>
-    <h4>{grant_info[0].name}</h4>
+    <h4>{grant_info.name}</h4>
     <div className="hr" />
     <h3>{dateFormat(date)}</h3>
     <h3>${amount}</h3>

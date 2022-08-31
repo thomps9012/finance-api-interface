@@ -174,3 +174,8 @@ button:active {
   background-color: #f0f0f0;
   cursor: pointer;
 }
+
+.record-link:hover {
+  text-decoration: underline;
+  color: #0070f3;
+}

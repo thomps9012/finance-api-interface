@@ -68,9 +68,9 @@ export default function UserMonthlyMileageReport({ base_report, jwt }: { base_re
                     <td className='table-cell'>{record.mileage}</td>
                     <td className='table-cell'>{record.tolls}</td>
                     <td className='table-cell'>{record.parking}</td>
-                    <td className='table-cell'>{record.reimbursement}</td>
+                    <td className='table-cell'>${record.reimbursement}</td>
                     <td className='table-cell'>
-                        {record.requests.map((request: MileageDetail) => <span key={request.id}><Link href={`/mileage/detail/${request.id}`}>{dateFormat(request.date)}</Link><br /></span>)}
+                        {record.requests.map((request: MileageDetail) => <span className='record-link' key={request.id}><Link href={`/mileage/detail/${request.id}`}>{dateFormat(request.date)}</Link><br /></span>)}
                     </td>
                 </tr>
                 )}

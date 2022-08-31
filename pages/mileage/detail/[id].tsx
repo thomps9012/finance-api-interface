@@ -10,6 +10,7 @@ import { gql } from "@apollo/client";
 import Link from "next/link";
 import jwtDecode from "jwt-decode";
 import { useRouter } from "next/router";
+import { GrantInfo } from "../../../types/grants";
 const APPROVE_REQUEST = gql`mutation approveRequest($request_id: ID!, $request_type: String!) {
     approve_request(request_id: $request_id, request_type: $request_type)
   }`;
@@ -49,6 +50,12 @@ const MILEAGE_DETAIL = gql`query MileageDetail($id: ID!){
       is_active
     }
   }`;
+const FIND_GRANTS = gql`query findGrants {
+    all_grants {
+      id
+      name
+    }
+  }`
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
     const sessionData = await unstable_getServerSession(
@@ -63,17 +70,21 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     const user_role = tokenData.role
     const userID = tokenData.id
     const res = await client.query({ query: MILEAGE_DETAIL, variables: { id } })
+    // move this to an individual query
+    const grants = await client.query({ query: FIND_GRANTS })
+    const grant_info = grants.data.all_grants.filter((grant: GrantInfo) => grant.id === res.data.mileage_detail.grant_id)
     return {
         props: {
             recorddata: sessionData ? res.data.mileage_detail : [],
             user_role: sessionData ? user_role : "",
             userID: sessionData ? userID : "",
-            jwt: jwt ? jwt : ""
+            jwt: jwt ? jwt : "",
+            grant_info: grant_info[0]
         }
     }
 }
 
-export default function RecordDetail({ recorddata, user_role, userID, jwt }: { jwt: string, recorddata: MileageDetail, user_role: string, userID: string }) {
+export default function RecordDetail({ recorddata, user_role, userID, jwt, grant_info }: { grant_info: GrantInfo, jwt: string, recorddata: MileageDetail, user_role: string, userID: string }) {
     const { is_active, id, current_user, date, user_id, trip_mileage, trip_purpose, tolls, start_odometer, starting_location, end_odometer, destination, parking, reimbursement, action_history, current_status } = recorddata;
     const router = useRouter();
     const request_type = 'mileage_requests';
@@ -92,37 +103,48 @@ export default function RecordDetail({ recorddata, user_role, userID, jwt }: { j
         res.data.archive_request ? router.push('/me') : null;
     }
     return <main className={styles.main} id={is_active ? `active` : `inactive`}>
-        {(current_status === 'REJECTED' || current_status === 'PENDING') && <Link href={`/mileage/edit/${id}`}><a>Edit Request</a></Link>}
         {user_role != 'EMPLOYEE' && current_user === userID && current_status != 'REJECTED' && <div className='button-row'>
             <button onClick={approveRequest}>Approve</button>
             <button onClick={rejectRequest}>Reject</button>
         </div>}
-        {(user_role === 'FINANCE' || userID === user_id) && <button onClick={archiveRequest}>Archive Request</button>}
-        <h2>{dateFormat(date)}</h2>
-        <h1 className={current_status}>Trip from</h1>
-        <h1 className={current_status}> {starting_location} to {destination}</h1>
-        <h3>Grant: {recorddata.grant_id}</h3>
-        <Link href={`/user/detail/${user_id}`}><a>Requestor Profile</a></Link>
-        <h3>{trip_purpose}</h3>
-        <table>
-            <tr><th className='table-cell'>Start Odometer</th><th className='table-cell'>{start_odometer}</th></tr>
-            <tr><th className='table-cell'>End Odometer</th><th className='table-cell'>{end_odometer}</th></tr>
-            <tr><th className='table-cell'>Mileage</th><th className='table-cell'>{trip_mileage}</th></tr>
-            <tr><th className='table-cell'>Tolls</th><th className='table-cell'>{tolls}</th></tr>
-            <tr><th className='table-cell'>Parking</th><th className='table-cell'>{parking}</th></tr>
-            <tr><th className='table-cell'>Reimbursement</th><th className='table-cell'>{reimbursement}</th></tr>
-        </table>
-        <hr />
+        <h1 className={current_status}>{current_status} Mileage Request</h1>
+        <h3>{grant_info.name}</h3>
+        <div className="hr" />
 
-        <h5>Recent Action History</h5>
-        {action_history.slice(0, 3).map((action: Action) => {
-            const { id, user, created_at, status } = action;
-            return <div key={id}>
-                <p>{user.name}</p>
-                <p>{status}</p>
-                <p>{dateFormat(created_at)}</p>
-            </div>
-        })}
+        <h2>{dateFormat(date)}</h2>
+        <p>From {starting_location} to {destination}</p>
+        <p>{trip_purpose}</p>
+        <table>
+            <tr><th className='table-cell'>Start Odometer</th><td className='table-cell'>{start_odometer}</td></tr>
+            <tr><th className='table-cell'>End Odometer</th><td className='table-cell'>{end_odometer}</td></tr>
+            <tr><th className='table-cell'>Mileage</th><td className='table-cell'>{trip_mileage}</td></tr>
+            <tr><th className='table-cell'>Tolls</th><td className='table-cell'>{tolls}</td></tr>
+            <tr><th className='table-cell'>Parking</th><td className='table-cell'>{parking}</td></tr>
+            <tr><th className='table-cell'>Reimbursement</th><td className='table-cell'>{(reimbursement).toPrecision(4)}</td></tr>
+        </table>
+        <br />
+        {(current_status === 'REJECTED' || current_status === 'PENDING') && <Link href={`/mileage/edit/${id}`}><a className={styles.editLink}>Edit Request</a></Link>}
+        <br />
+        {(user_role === 'FINANCE' || userID === user_id) && <button onClick={archiveRequest}>Archive Request</button>}
+        <div className="hr" />
+        <h4>Recent Actions</h4>
+        <table>
+            <thead>
+                <th>User</th>
+                <th>Status</th>
+                <th>Date</th>
+            </thead>
+            <tbody>
+                {action_history.slice(0, 3).map((action: Action) => {
+                    const { id, user, created_at, status } = action;
+                    return <tr key={id} className={status}>
+                        <td className="table-cell">{user.name}</td>
+                        <td className="table-cell">{status}</td>
+                        <td className="table-cell">{dateFormat(created_at)}</td>
+                    </tr>
+                })}
+            </tbody>
+        </table>
     </main>
 
 }
