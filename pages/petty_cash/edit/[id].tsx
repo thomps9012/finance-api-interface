@@ -61,7 +61,6 @@ export default function EditRecord({ recorddata, jwt }: { jwt: string, recorddat
     const submitEdit = async (e: any) => {
         e.preventDefault();
         const client = createClient(jwt);
-        const receiptArr: string[] = receipts.map((receipt: any) => receipt.data_url)
         const res = await client.mutate({
             mutation: EDIT_PETTY_CASH, variables: {
                 request_id: recorddata.id, 
@@ -69,7 +68,7 @@ export default function EditRecord({ recorddata, jwt }: { jwt: string, recorddat
                 request: {
                     amount: amount,
                     description: description,
-                    receipts: receiptArr,
+                    receipts: receipts,
                     date: requestDate
                 }
             }
@@ -89,8 +88,8 @@ export default function EditRecord({ recorddata, jwt }: { jwt: string, recorddat
             <span>{description.length}/75 characters</span>
             <h4>{receipts.length} Attached</h4>
             <span className="description">Limit of 5 Receipts per Request</span>
-            <span className="description">Allowed File Types are .png, .jpg, .pdf</span>
-            <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />
+            <span className="description">Allowed File Types are .png, .jpg</span>
+            <ReceiptUpload receipts={receipts.map((receipt: any, i: number) => receipt= {data_url: receipt, file: {name: 'image'+i}})} setReceipts={setReceipts} />
             <br />
             <button className='submit' onClick={submitEdit}>Resubmit Request</button>
         </form>

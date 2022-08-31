@@ -4,7 +4,9 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
     const onChange = (
         receiptList: ImageListType,
     ) => {
-        setReceipts(receiptList as never[]);
+        const receiptArr: string[] = receiptList.map((receipt: any) => receipt.data_url)
+        console.log(receiptList)
+        setReceipts(receiptArr);
     };
     const onError = ({ errors, files }: any) => {
         console.log('Error', errors, files);

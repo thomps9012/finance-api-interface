@@ -31,7 +31,6 @@ export default function CreateRequest() {
     const removePurchase = (e: any) => { e.preventDefault(); setRows(rowCount - 1) }
     const submitRequest = async (e: any) => {
         e.preventDefault();
-        const receiptArr: string[] = receipts.map((receipt: any) => receipt.data_url)
         if (grantID === "") { alert('select a grant'); return }
         console.log(requestDate)
         let purchaseArr = [];
@@ -51,7 +50,7 @@ export default function CreateRequest() {
                 },
                 grant_id: grantID,
                 request: {
-                    receipts: receiptArr,
+                    receipts: receipts,
                     date: requestDate,
                     purchases: purchaseArr,
                     credit_card: creditCard,
@@ -77,12 +76,12 @@ export default function CreateRequest() {
             <span className="description">Limit of 5 Purchases per Request</span>
             <br />
             <br />
-            <PurchaseInput />
+            <PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}}/>
             <hr />
-            {rowCount >= 2 && <><PurchaseInput /><hr /></>}
-            {rowCount >= 3 && <><PurchaseInput /><hr /></>}
-            {rowCount >= 4 && <><PurchaseInput /><hr /></>}
-            {rowCount >= 5 && <><PurchaseInput /><hr /></>}
+            {rowCount >= 2 && <><PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}} /><hr /></>}
+            {rowCount >= 3 && <><PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}} /><hr /></>}
+            {rowCount >= 4 && <><PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}} /><hr /></>}
+            {rowCount >= 5 && <><PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}} /><hr /></>}
             <br />
             <button onClick={addPurchase}>Add</button>
             <button onClick={removePurchase}>Remove Last</button>

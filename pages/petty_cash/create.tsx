@@ -18,7 +18,6 @@ export default function CreateRequest() {
     const [grantID, setGrantID] = useState("N/A")
     const submitRequest = async (e: any) => {
         e.preventDefault();
-        const receiptArr: string[] = receipts.map((receipt: any) => receipt.data_url)
         if (description.length === 0) { alert('add a description'); return }
         if (grantID === "") { alert('select a grant'); return }
         if (amount === 0.0) { alert('add an amount'); return }
@@ -30,7 +29,7 @@ export default function CreateRequest() {
                 request: {
                     amount: amount,
                     description: description,
-                    receipts: receiptArr,
+                    receipts: receipts,
                     date: requestDate
                 }
             }

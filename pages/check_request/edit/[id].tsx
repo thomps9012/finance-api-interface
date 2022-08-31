@@ -80,7 +80,6 @@ export default function EditCheckRequest({ recorddata, jwt }: { recorddata: Chec
     const removePurchase = (e: any) => { e.preventDefault(); setRows(rowCount - 1) }
     const submitEdit = async (e: any) => {
         e.preventDefault();
-        const receiptArr: string[] = receipts.map((receipt: any) => receipt.data_url)
         if (grantID === "") { alert('select a grant'); return }
         console.log(requestDate)
         let purchaseArr = [];
@@ -97,7 +96,7 @@ export default function EditCheckRequest({ recorddata, jwt }: { recorddata: Chec
                 request_id: recorddata.id,
                 grant_id: grantID,
                 request: {
-                    receipts: receiptArr,
+                    receipts: receipts,
                     date: requestDate,
                     purchases: purchaseArr,
                     credit_card: creditCard,
