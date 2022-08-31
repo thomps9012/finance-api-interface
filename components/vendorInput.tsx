@@ -9,21 +9,22 @@ export default function VendorInput({ setName, setAddress, address, name }: any)
         setAddress({ ...address, [name]: value })
     }
     return <form>
-        <h4>Vendor Name</h4>
+        <h2>Vendor</h2>
+        <h3>Name</h3>
         <input defaultValue={name} type='text' name='vendor-name' onChange={handleNameChange} />
-        <h4>Vendor Address</h4>
-        <h5>Website</h5>
+        <h4>Website</h4>
         <input defaultValue={address.website} type='text' name='website' onChange={handleAddressChange} />
-        <h5>Address</h5>
+        <h4>Address</h4>
         <input defaultValue={address.street} type='text' name='website' onChange={handleAddressChange} />
-        <h5>City</h5>
+        <h4>City</h4>
         <input defaultValue={address.city} type='text' name='city' onChange={handleAddressChange} />
-        <h5>State</h5>
+        <h4>State</h4>
         <select defaultValue={address.state} name='state' onChange={handleAddressChange} >
             <option value="" disabled hidden>State Select</option>
             {states.map((state: string) => <option key={state} value={state}>{state}</option>)}
         </select>
-        <h5>Zip</h5>
+        <h4>Zip</h4>
         <input defaultValue={address.zip} type='text' name='zip' onChange={handleAddressChange} />
+        <div className="hr" />
     </form>
 }

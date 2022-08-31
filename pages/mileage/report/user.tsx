@@ -116,40 +116,37 @@ export default function UserMonthlyMileageReport({ base_report, userID, jwt, use
                 </select>
             </div>
         </div>
-        <hr />
+        <div className="hr" />
         {results.reimbursement != 0 ? <>
-            <h2>Total Reimbursement: ${results.reimbursement}</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                <h2 style={{ margin: 5, padding: 5 }}>Mileage: {results.mileage}</h2>
-                <h2 style={{ margin: 5, padding: 5 }}>Tolls: {results.tolls}</h2>
-                <h2 style={{ margin: 5, padding: 5 }}>Parking: {results.parking}</h2>
-            </div>
-            <hr />
-            <h1>Requests</h1>
-        <table>
-            <thead>
-                <th className='table-cell'>Link</th>
-                <th className='table-cell'>Date</th>
-                <th className='table-cell'>Status</th>
-                <th className='table-cell'>Mileage</th>
-                <th className='table-cell'>Reimbursement</th>
-            </thead>
-            <tbody>
-                {results.requests.map((request: MileageDetail) => {
-                    const { id, date, current_status, trip_mileage, reimbursement } = request;
-                    return <tr id='table-row' key={id} className={current_status}>
-                        <td className='table-cell'>
-                            <Link href={`/mileage/detail/${id}`}><a>Trip Detail</a></Link><br />
-                        </td>
-                        <td className='table-cell'>{dateFormat(date)}</td>
-                        <td className='table-cell'>{current_status}</td>
-                        <td className='table-cell'>{trip_mileage}</td>
-                        <td className='table-cell'>${reimbursement}</td>
-                    </tr>
-                }
-                )}
-            </tbody>
-        </table>
+            <table>
+                <tr><th className='table-cell'>Total Reimbursement</th><td className='table-cell'>${results.reimbursement}</td><th className='table-cell'>Total Mileage</th><td className='table-cell'>{results.mileage}</td></tr>
+                <tr><th className='table-cell'>Total Tolls</th><td className='table-cell'>{results.tolls}</td><th className='table-cell'>Total Parking</th><td className='table-cell'>{results.parking}</td></tr>
+            </table>
+            <div className="hr" />
+            <table>
+                <thead>
+                    <th className='table-cell'>Link</th>
+                    <th className='table-cell'>Date</th>
+                    <th className='table-cell'>Status</th>
+                    <th className='table-cell'>Mileage</th>
+                    <th className='table-cell'>Reimbursement</th>
+                </thead>
+                <tbody>
+                    {results.requests.map((request: MileageDetail) => {
+                        const { id, date, current_status, trip_mileage, reimbursement } = request;
+                        return <tr id='table-row' key={id} className={current_status}>
+                            <td className='table-cell'>
+                                <Link href={`/mileage/detail/${id}`}><a>Trip Detail</a></Link><br />
+                            </td>
+                            <td className='table-cell'>{dateFormat(date)}</td>
+                            <td className='table-cell'>{current_status}</td>
+                            <td className='table-cell'>{trip_mileage}</td>
+                            <td className='table-cell'>${reimbursement}</td>
+                        </tr>
+                    }
+                    )}
+                </tbody>
+            </table>
         </>
             : <h2>No Requests during the Time Frame</h2>}
         <hr />

@@ -58,33 +58,33 @@ export default function Landing({ notifications, last_login }: { notifications: 
       <h2>🚗 Mileage </h2>
       <hr />
       <Link href={'/mileage/create'}>
-        <a><h3>New</h3></a>
+        <a><h3>New Request</h3></a>
       </Link>
       <Link href={'/mileage'}>
         <a>
-          <h3>Reports</h3>
+          <h3>All Actions</h3>
         </a>
       </Link>
       <br />
       <h2>💸 Petty Cash </h2>
       <hr />
       <Link href={'/petty_cash/create'}>
-        <a><h3>New</h3></a>
+        <a><h3>New Request</h3></a>
       </Link>
       <Link href={'/petty_cash'}>
         <a>
-          <h3>Reports</h3>
+          <h3>All Actions</h3>
         </a>
       </Link>
       <br />
       <h2>📑 Check Requests </h2>
       <hr />
       <Link href={'/check_request/create'}>
-        <a><h3>New</h3></a>
+        <a><h3>New Request</h3></a>
       </Link>
       <Link href={'/check_request'}>
         <a>
-          <h3>Reports</h3>
+          <h3>All Actions</h3>
         </a>
       </Link>
     </div>

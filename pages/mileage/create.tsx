@@ -11,14 +11,14 @@ export default function CreateRequest() {
     const { data } = useSession();
     const jwt = data?.user.token;
     const [requestDate, setDate] = useState("")
-    const [purpose, setPurpose] = useState("test purpose")
-    const [start_location, setTripStart] = useState("test start")
-    const [destination, setDestination] = useState("test end")
-    const [start_odometer, setStart] = useState(10)
+    const [purpose, setPurpose] = useState("")
+    const [start_location, setTripStart] = useState("")
+    const [destination, setDestination] = useState("")
+    const [start_odometer, setStart] = useState(0)
     const [end_odometer, setEnd] = useState(start_odometer + 1)
-    const [tolls, setTolls] = useState(10.0)
-    const [parking, setParking] = useState(10.0)
-    const [grantID, setGrantID] = useState("N/A")
+    const [tolls, setTolls] = useState(0.0)
+    const [parking, setParking] = useState(0.0)
+    const [grantID, setGrantID] = useState("")
     const checkOdo = () => { start_odometer >= end_odometer && alert('start mileage is too high and/or end mileage is too low') }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -52,12 +52,11 @@ export default function CreateRequest() {
             <span>{start_location.length}/50 characters</span>
             <h4>Destination</h4>
             <input name="destination" id="end" value={destination} maxLength={50} type="text" onChange={(e: any) => setDestination(e.target.value)} />
-            <br />
             <span>{destination.length}/50 characters</span>
-            <h4>Description</h4>
+            <h4>Trip Description</h4>
             <textarea rows={5} maxLength={75} name="description" value={purpose} onChange={(e: any) => setPurpose(e.target.value)} />
-            <br />
             <span>{purpose.length}/75 characters</span>
+            <div className="hr" />
             <h4>Start Odometer</h4>
             <input name="start_odometer" value={start_odometer} max={end_odometer - 1} type="number" onChange={(e: any) => setStart(parseInt(e.target.value))} />
             <h4>End Odometer</h4>
@@ -66,7 +65,7 @@ export default function CreateRequest() {
             <input name="tolls" type="number" value={tolls} onChange={(e: any) => setTolls(parseFloat(e.target.value))} />
             <h4>Parking</h4>
             <input name="parking" type="number" value={parking} onChange={(e: any) => setParking(parseFloat(e.target.value))} />
-            <br />
+            <div className="hr" />
             <br />
             <button onClick={handleSubmit}>Submit Request</button>
         </form>

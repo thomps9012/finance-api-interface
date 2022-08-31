@@ -14,19 +14,19 @@ export default function CreateRequest() {
     const { data } = useSession();
     const jwt = data?.user.token;
     const [receipts, setReceipts] = useState([]);
-    const [grantID, setGrantID] = useState("N/A")
-    const [vendorName, setVendorName] = useState("test vendor")
+    const [grantID, setGrantID] = useState("")
+    const [vendorName, setVendorName] = useState("")
     const [vendorAddress, setVendorAddress] = useState({
-        website: "www.test.com",
-        street: "123 st",
-        city: "Test City",
-        state: "TN",
-        zip: 12345
+        website: "",
+        street: "",
+        city: "",
+        state: "",
+        zip: 0
     })
-    const [creditCard, setCreditCard] = useState("N/A")
+    const [creditCard, setCreditCard] = useState("")
     const [requestDate, setDate] = useState("")
     const [rowCount, setRows] = useState(1)
-    const [description, setDescription] = useState("test description")
+    const [description, setDescription] = useState("")
     const addPurchase = (e: any) => { e.preventDefault(); rowCount < 5 ? setRows(rowCount + 1) : null }
     const removePurchase = (e: any) => { e.preventDefault(); setRows(rowCount - 1) }
     const submitRequest = async (e: any) => {
@@ -63,39 +63,37 @@ export default function CreateRequest() {
 
     return <main className={styles.main}>
         <form>
-            <h4>Grant</h4>
             <GrantSelect state={grantID} setState={setGrantID} />
             <h4>Date</h4>
             <input type="date" name="date" onChange={(e: any) => setDate(new Date(e.target.value).toISOString())} />
             <h4>Description</h4>
             <textarea rows={5} maxLength={75} name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
-            <br />
             <span>{description.length}/75 characters</span>
+            <div className="hr" />
             <VendorInput setAddress={setVendorAddress} setName={setVendorName} address={vendorAddress} name={vendorName} />
             <h3>Purchases</h3>
-            <span className="description">Limit of 5 Purchases per Request</span>
+            <span className="description">Limit 5 Purchases per Request</span>
             <br />
-            <br />
-            <PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}}/>
-            <hr />
-            {rowCount >= 2 && <><PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}} /><hr /></>}
-            {rowCount >= 3 && <><PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}} /><hr /></>}
-            {rowCount >= 4 && <><PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}} /><hr /></>}
-            {rowCount >= 5 && <><PurchaseInput purchase={{grant_line_item: '', description: '', amount: 0.0}} /><hr /></>}
-            <br />
-            <button onClick={addPurchase}>Add</button>
-            <button onClick={removePurchase}>Remove Last</button>
-            <h3>Company Credit Card Used</h3>
+            <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />
+            {rowCount >= 2 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />}
+            {rowCount >= 3 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />}
+            {rowCount >= 4 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />}
+            {rowCount >= 5 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />}
+            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                <button onClick={addPurchase}>Add Purchase</button>
+                <button onClick={removePurchase}>Remove Last</button>
+            </div>
+            <h3>Company Credit Card Used?</h3>
             <select name='creditCard' value={creditCard} onChange={(e: any) => setCreditCard(e.target.value)} defaultValue="">
                 <option value="" disabled hidden>Select Credit Card..</option>
-                <option value="N/A">No Card</option>
+                <option value="N/A">No</option>
                 <option value="1234">Card 1</option>
                 <option value="5678">Card 2</option>
             </select>
-            <h4>{receipts.length} Receipt{receipts.length === 0 && 's'}{receipts.length > 1 && "s"} Attached</h4>
-            <span className="description">Limit of 5 Receipts per Request</span>
-            <span className="description">Allowed File Types are .png, .jpg, .pdf</span>
+            <h3>{receipts.length} Receipt{receipts.length === 0 && 's'}{receipts.length > 1 && "s"} Attached</h3>
+            <span className="description">Limit 5 Receipts in PNG or JPEG Format</span>
             <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />
+            <div className="hr" />
             <br />
             <button className='submit' onClick={submitRequest}>Submit Request</button>
         </form>

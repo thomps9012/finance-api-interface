@@ -99,17 +99,37 @@ a:hover {
   color: red;
   font-weight: bold;
 }
-
+.hr {
+  padding: 5px;
+  margin: 5px;
+  border-bottom: 5px dashed cadetblue;
+  opacity: 50%;
+  width: 100%;
+}
 button {
   font-weight: bold;
   border-radius: 0.3rem;
   cursor: pointer;
   font-size: 1rem;
+  line-height: 1.4rem;
+  z-index: 10;
   text-decoration: none;
+  padding: 0.7rem 1.4rem;
+  margin: 10px;
 }
-input {
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+input, select {
   font-size: large;
   height: 40px;
+  padding: 10px;
+}
+textarea {
+  font-size: large;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
   padding: 10px;
 }
 label {

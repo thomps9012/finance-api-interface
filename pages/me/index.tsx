@@ -80,6 +80,33 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
     res.data.remove_vehicle ? router.push('/me') : null;
   }
   return <main className={styles.container}>
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ flexDirection: 'column' }}>
+        <Link href="/me/mileage"><a><h1>Mileage</h1></a></Link>
+        {userdata.mileage_requests.requests.slice(0, 3).map((mileage_req: any) => <div key={mileage_req.id}>
+
+          <Link href={`/mileage/detail/${mileage_req.id}`}><a><p className={mileage_req.current_status}>{dateFormat(mileage_req.date)} {mileage_req.current_status}</p></a></Link>
+        </div>
+        )}
+      </div>
+
+      <div style={{ flexDirection: 'column' }}>
+        <Link href="/me/checkRequests"><a><h1>Check Requests</h1></a></Link>
+        {userdata.check_requests.requests.slice(0, 3).map((check_req: any) => <div key={check_req.id}>
+
+          <Link href={`/check_request/detail/${check_req.id}`}><a><p className={check_req.current_status}>{dateFormat(check_req.date)} {check_req.current_status}</p></a></Link>
+        </div>
+        )}
+      </div>
+
+      <div style={{ flexDirection: 'column' }}>
+        <Link href="/me/pettyCash"><a><h1>Petty Cash</h1></a></Link>
+        {userdata.petty_cash_requests.requests.slice(0, 3).map((petty_cash_req: any) => <div key={petty_cash_req.id}>
+          <Link href={`/petty_cash/detail/${petty_cash_req.id}`}><a><p className={petty_cash_req.current_status}>{dateFormat(petty_cash_req.date)} {petty_cash_req.current_status}</p></a></Link>
+        </div>
+        )}
+      </div>
+    </div>
     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
       <div style={{ padding: 20 }}>
         {userdata.vehicles?.length > 0 && (<h2>Current Vehicles</h2>)}
@@ -100,26 +127,6 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
         <button type="submit" className="submit" style={{ padding: 10, margin: 10 }}>Add Vehicle</button>
       </form>
     </div>
-
-    <Link href="/me/mileage"><a><h1>My Mileage</h1></a></Link>
-    {userdata.mileage_requests.requests.slice(0, 3).map((mileage_req: any) => <div key={mileage_req.id}>
-
-      <Link href={`/mileage/detail/${mileage_req.id}`}><a><p className={mileage_req.current_status}>{dateFormat(mileage_req.date)} {mileage_req.current_status}</p></a></Link>
-    </div>
-    )}
-
-    <Link href="/me/checkRequests"><a><h1>My Check Requests</h1></a></Link>
-    {userdata.check_requests.requests.slice(0, 3).map((check_req: any) => <div key={check_req.id}>
-
-      <Link href={`/check_request/detail/${check_req.id}`}><a><p className={check_req.current_status}>{dateFormat(check_req.date)} {check_req.current_status}</p></a></Link>
-    </div>
-    )}
-
-    <Link href="/me/pettyCash"><a><h1>My Petty Cash</h1></a></Link>
-    {userdata.petty_cash_requests.requests.slice(0, 3).map((petty_cash_req: any) => <div key={petty_cash_req.id}>
-      <Link href={`/petty_cash/detail/${petty_cash_req.id}`}><a><p className={petty_cash_req.current_status}>{dateFormat(petty_cash_req.date)} {petty_cash_req.current_status}</p></a></Link>
-    </div>
-    )}
 
   </main>
 }

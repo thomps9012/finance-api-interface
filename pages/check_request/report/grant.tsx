@@ -4,7 +4,6 @@ import { unstable_getServerSession } from "next-auth"
 import { useState, useEffect } from "react"
 import createClient from "../../../graphql/client"
 import dateFormat from "../../../utils/dateformat"
-import titleCase from "../../../utils/titlecase"
 import { authOptions } from "../../api/auth/[...nextauth]"
 import styles from '../../../styles/Home.module.css';
 import { CheckDetail, Vendor } from "../../../types/checkrequests"
@@ -28,6 +27,9 @@ const GRANT_CHECK_REPORT = gql`query grantCheckRequests($grant_id: ID!, $start_d
             date
             current_status
             order_total
+            purchases {
+                amount
+            }
         }
     }
 }`
@@ -61,7 +63,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         }
     }
 }
-export default function UserPettyCashReport({ base_report, grant_list, jwt }: { jwt: string, grant_list: GrantInfo[], base_report: GrantCheckRequest }) {
+export default function GrantCheckRequestReport({ base_report, grant_list, jwt }: { jwt: string, grant_list: GrantInfo[], base_report: GrantCheckRequest }) {
     const [start_date, setStart] = useState(new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString())
     const [end_date, setEnd] = useState(new Date().toISOString())
     const [selectedGrant, setSelectedGrant] = useState("H79TI082369")
@@ -90,23 +92,22 @@ export default function UserPettyCashReport({ base_report, grant_list, jwt }: { 
         fetch_data();
     }, [start_date, end_date, selectedGrant, jwt])
     return <main className={styles.main}>
-        <h1>User Petty Cash Reports</h1>
-
+        <h1>Grant Check Request Reports</h1>
         <div className={styles.inputRow}>
             <div className={styles.inputCol}>
-                <h5>Start Date</h5>
+                <h3>Start Date</h3>
                 <hr />
-                <h5>{dateFormat(start_date)}</h5>
+                <h3>{dateFormat(start_date)}</h3>
                 <input type="date" name="start_date" value={start_date} onChange={handleChange} />
             </div>
             <div className={styles.inputCol}>
-                <h5>End Date</h5>
+                <h3>End Date</h3>
                 <hr />
-                <h5>{dateFormat(end_date)}</h5>
+                <h3>{dateFormat(end_date)}</h3>
                 <input type="date" name="end_date" value={end_date} onChange={handleChange} />
             </div>
             <div className={styles.inputCol}>
-                <h5>Grant Select</h5>
+                <h3>Grant Select</h3>
                 <hr />
                 <select name='selectedGrant' value={selectedGrant} onChange={handleChange}>
                     {grant_list.map((grant: GrantInfo) => <option key={grant.id} value={grant.id}>{grant.name}</option>
@@ -114,38 +115,39 @@ export default function UserPettyCashReport({ base_report, grant_list, jwt }: { 
                 </select>
             </div>
         </div>
-        <hr />
         {results.total_amount != 0 ? <>
             <h2>Total Amount: {results.total_amount}</h2>
-            <h2>Vendors Used</h2>
+            <div className="hr" />
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {results.vendors?.map((vendor: Vendor) => <div key={vendor.name} style={{ margin: 5, padding: 5 }}>
-                    <h5>{vendor.name}</h5>
+                {results.vendors?.map((vendor: Vendor) => <div key={vendor.name} className={styles.card}>
+                    <h2>{vendor.name}</h2>
+                    <p>{vendor.address.website}</p>
                     <p>{vendor.address.street}</p>
                     <p>{vendor.address.city}, {vendor.address.state}</p>
-                    <p>{vendor.address.website}</p>
                 </div>)}
             </div>
-            <h1>Requests</h1>
-        <table>
-            <thead>
-                <th className='table-cell'>Link</th>
-                <th className='table-cell'>Date</th>
-                <th className='table-cell'>Status</th>
-                <th className='table-cell'>Total</th>
-            </thead>
-            <tbody>
-                {results.requests.map((request: CheckDetail) => {
-                    const { id, date, current_status, order_total } = request;
-                    return <tr id='table-row' key={id} className={current_status}>
-                        <td className='table-cell'><Link href={`/check_request/detail/${id}`}><a>Detail</a></Link></td>
-                        <td className='table-cell'>{dateFormat(date)}</td>
-                        <td className='table-cell'>{current_status}</td>
-                        <td className='table-cell'>${order_total}</td>
-                    </tr>
-                })}
-            </tbody>
-        </table>
+            <div className="hr" />
+            <table>
+                <thead>
+                    <th className='table-cell'>Date</th>
+                    <th className='table-cell'>Status</th>
+                    <th className='table-cell'>Items</th>
+                    <th className='table-cell'>Total</th>
+                </thead>
+                <tbody>
+                    {results.requests.map((request: CheckDetail) => {
+                        const { id, date, current_status, order_total, purchases } = request;
+                        return <Link key={id} href={`/check_request/detail/${id}`}>
+                            <tr id='table-row' className={current_status}>
+                                <td className='table-cell'>{dateFormat(date)}</td>
+                                <td className='table-cell'>{current_status}</td>
+                                <td className='table-cell'>{purchases?.length}</td>
+                                <td className='table-cell'>${order_total}</td>
+                            </tr>
+                        </Link>
+                    })}
+                </tbody>
+            </table>
         </>
             : <h2>No Requests during the Time Frame</h2>}
         <hr />

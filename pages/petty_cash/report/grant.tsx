@@ -111,10 +111,9 @@ export default function GrantPettyCashReport({ base_report, grant_list, jwt }: {
                 </select>
             </div>
         </div>
-        <hr />
+        <div className="hr" />
         {results.total_amount != 0 ? <>
             <h2>Total Amount: {results.total_amount}</h2>
-            <h2>Requests</h2>
             <table>
                 <thead>
                     <th className='table-cell'>Link</th>

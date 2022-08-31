@@ -34,6 +34,21 @@ export default function Header() {
                                 <a className={styles.navIcon}>📭</a>
                             </Link>
                         </li>
+                        <li className={styles.navIcon}>
+                            <Link href="/mileage">
+                                <a className={styles.navIcon}>🚗</a>
+                            </Link>
+                        </li>
+                        <li className={styles.navIcon}>
+                            <Link href="/petty_cash">
+                                <a className={styles.navIcon}>💸</a>
+                            </Link>
+                        </li>
+                        <li className={styles.navIcon}>
+                            <Link href="/check_request">
+                                <a className={styles.navIcon}>📑</a>
+                            </Link>
+                        </li>
                     </ul>
                     <a href={`/api/auth/signout`}
                         className={styles.buttonPrimary} onClick={(e: any) => {

@@ -106,11 +106,9 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
                 </select>
             </div>
         </div>
-        <hr />
+        <div className="hr" />
         {results.total_amount != 0 ? <>
             <h2>Total Amount: {results.total_amount}</h2>
-            <hr />
-            <h2>Requests</h2>
             <table>
                 <thead>
                     <th className='table-cell'>Link</th>

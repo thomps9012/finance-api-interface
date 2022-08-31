@@ -64,11 +64,14 @@ export default function GrantSelect({ state, setState }: any) {
         const { name, value } = event.target;
         setState(value);
     }
-    return <select name={state} onChange={handleChange} defaultValue={state}>
-        <option value="" disabled hidden>Select Grant...</option>
-        <option value="N/A">None</option>
-        {grants.map((grant: any) => {
-            return <option key={grant.ID} value={grant.ID}>{grant.Name}</option>
-        })}
-    </select>
+    return <>
+        <h3>Grant</h3>
+        <select name={state} onChange={handleChange} defaultValue={state}>
+            <option value="" disabled hidden>Select Grant...</option>
+            <option value="N/A">None</option>
+            {grants.map((grant: any) => {
+                return <option key={grant.ID} value={grant.ID}>{grant.Name}</option>
+            })}
+        </select>
+    </>
 }

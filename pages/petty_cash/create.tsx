@@ -15,7 +15,7 @@ export default function CreateRequest() {
     const [requestDate, setDate] = useState("")
     const [description, setDescription] = useState("")
     const [amount, setAmount] = useState(0.0)
-    const [grantID, setGrantID] = useState("N/A")
+    const [grantID, setGrantID] = useState("")
     const submitRequest = async (e: any) => {
         e.preventDefault();
         if (description.length === 0) { alert('add a description'); return }
@@ -47,10 +47,11 @@ export default function CreateRequest() {
             <textarea rows={5} maxLength={75} name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
             <br />
             <span>{description.length}/75 characters</span>
-            <h4>{receipts.length} Receipt{receipts.length > 1 && "s"} Attached</h4>
-            <span className="description">Limit of 5 Receipts per Request</span>
-            <span className="description">Allowed File Types are .png, .jpg, .pdf</span>
+            <div className="hr" />
+            <h3>{receipts.length} Receipt{receipts.length === 0 && 's'}{receipts.length > 1 && "s"} Attached</h3>
+            <span className="description">Limit 5 Receipts in PNG or JPEG Format</span>
             <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />
+            <div className="hr" />
             <br />
             <button className='submit' onClick={submitRequest}>Submit Request</button>
         </form>

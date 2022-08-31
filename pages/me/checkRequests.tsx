@@ -25,6 +25,9 @@ const GET_MY_CHECKS = gql`{
           current_status
           date
           order_total
+          purchases {
+            amount
+          }
         }
         total_amount
       }

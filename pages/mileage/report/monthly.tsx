@@ -52,7 +52,7 @@ export default function UserMonthlyMileageReport({ base_report, jwt }: { base_re
         setResults(res.data.mileage_monthly_report)
     }
     return <main className={styles.main}>
-        <h1>User Mileage Reports for <input className={styles.calendar} type='month' defaultValue={Date.now()} onChange={handleChange} /></h1>
+        <h1>Mileage Reports for <input className={styles.calendar} type='month' defaultValue={Date.now()} onChange={handleChange} /></h1>
         <table>
             <thead>
                     <th className='table-cell'>Employee</th>
