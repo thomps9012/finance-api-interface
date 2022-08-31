@@ -99,7 +99,7 @@ export default function RecordDetail({ recorddata, user_role, userID, jwt }: { j
     }
     const archiveRequest = async () => {
         const res = await client.mutate({ mutation: ARCHIVE_REQUEST, variables: { request_type: request_type, request_id: id } })
-        res.data.archive_request ? router.push('/me/inbox') : null;
+        res.data.archive_request ? router.push('/me') : null;
     }
     return <main className={styles.main} id={is_active ? `active` : `inactive`}>
        {(current_status === 'REJECTED' || current_status === 'PENDING') && <Link href={`/check_request/edit/${id}`}><a>Edit Request</a></Link>}
@@ -107,7 +107,7 @@ export default function RecordDetail({ recorddata, user_role, userID, jwt }: { j
             <button onClick={approveRequest}>Approve</button>
             <button onClick={rejectRequest}>Reject</button>
         </div>}
-        {(user_role === 'FINANCE' || current_user === user_id) && <button onClick={archiveRequest}>Archive Request</button>}
+        {(user_role === 'FINANCE' || userID === user_id) && <button onClick={archiveRequest}>Archive Request</button>}
         <h1 className={current_status}>{current_status} Check Request</h1 >
         <h1>{dateFormat(date)}</h1>
         <h3>{description}</h3>
