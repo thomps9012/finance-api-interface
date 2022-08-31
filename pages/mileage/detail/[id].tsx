@@ -59,13 +59,14 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 }
 
 export default function RecordDetail({ recorddata }: { recorddata: MileageDetail }) {
-    const { is_active, id, date, trip_mileage, trip_purpose, tolls, start_odometer, starting_location, end_odometer, destination, parking, reimbursement, action_history, current_status } = recorddata;
+    const { is_active, id, date, user_id, trip_mileage, trip_purpose, tolls, start_odometer, starting_location, end_odometer, destination, parking, reimbursement, action_history, current_status } = recorddata;
     return <main className={styles.main} id={is_active ? `active` : `inactive`}>
         {current_status === 'REJECTED' || current_status === 'PENDING' && <Link href={`/mileage/edit/${id}`}><a>Edit Request</a></Link>}
         <h2>{dateFormat(date)}</h2>
         <h1 className={current_status}>Trip from</h1>
         <h1 className={current_status}> {starting_location} to {destination}</h1>
-        <h3>{recorddata.grant_id}</h3>
+        <h3>Grant: {recorddata.grant_id}</h3>
+        <Link href={`/user/detail/${user_id}`}><a>Requestor Profile</a></Link>
         <h3>{trip_purpose}</h3>
         <table>
             <tr><th>Start Odometer</th><th>{start_odometer}</th></tr>

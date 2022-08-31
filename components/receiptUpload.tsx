@@ -56,7 +56,7 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
                 <div className="image-container">
                     {imageList.map((image, index) => <div key={index} className="image-item">
                         <a className='remove' onClick={() => onImageRemove(index)}><p>X</p></a>
-                        <Image src={image['data_url']} alt="" width="200" height="200" />
+                        <Image src={image['data_url'] || image} alt="" width="200" height="200" />
                     </div>
                     )}
                 </div>

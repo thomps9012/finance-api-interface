@@ -74,7 +74,7 @@ export default function RecordDetail({ recorddata }: { recorddata: CheckDetail }
     const vendorName = recorddata.vendor.name;
     const { website, street, city, zip, state } = recorddata.vendor.address;
     return <main className={styles.main} id={is_active ? `active` : `inactive`}>
-       {current_status === 'REJECTED' || current_status === 'PENDING' && <Link href={`/check_request/edit/${id}`}><a>Edit Request</a></Link>}
+       {(current_status === 'REJECTED' || current_status === 'PENDING') && <Link href={`/check_request/edit/${id}`}><a>Edit Request</a></Link>}
         <h1 className={current_status}>{titleCase(current_status)} Check Request</h1 >
         <h1>{dateFormat(date)}</h1>
         <h3>{description}</h3>
@@ -103,10 +103,9 @@ export default function RecordDetail({ recorddata }: { recorddata: CheckDetail }
         <p>{city}</p>
         <p>{state}</p>
         <p>{zip}</p>
-        <h3>Links to User and Grant Pages</h3>
-        <Link href={`/user/detail/${grant_id}`}><a>{grant_id}</a></Link>
+        <h3>Grant: {grant_id}</h3>
         <br />
-        <Link href={`/user/detail/${user_id}`}><a>User Profile</a></Link>
+        <Link href={`/user/detail/${user_id}`}><a>Requestor Profile</a></Link>
         <p>Created on {dateFormat(created_at)}</p>
         <h5>Action History</h5>
         {action_history.map((action: Action) => {
