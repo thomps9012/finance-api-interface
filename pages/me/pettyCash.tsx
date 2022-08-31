@@ -15,6 +15,7 @@ const GET_MY_PETTY_CASH = gql`{
           id
           current_status
           date
+          amount
         }
         total_amount
       }

@@ -18,6 +18,8 @@ const GET_MY_MILEAGE = gql`{
           id
           current_status
           date
+          trip_mileage
+          reimbursement
         }
         reimbursement
       }
@@ -33,7 +35,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     const jwt = sessionData?.user.token
     const client = createClient(jwt);
     const res = await client.query({ query: GET_MY_MILEAGE, fetchPolicy: 'no-cache' })
-    console.log(res.data, "userdata on server")
+    console.log(res.data.me.mileage_requests, "userdata on server")
     return {
         props: {
             userdata: sessionData ? res.data.me : []

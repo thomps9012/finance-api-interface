@@ -14,6 +14,11 @@ const GET_MY_INFO = gql`query me {
     me {
       id
       name
+      vehicles {
+        id
+        name
+        description
+      }
       mileage_requests {
         requests {
           id
@@ -63,15 +68,13 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
         e.preventDefault();
         const vehicleData = Object.fromEntries(new FormData(e.target))
         const res = await client.mutate({ mutation: ADD_VEHICLE, variables: { name: vehicleData.name, description: vehicleData.description } })
-        res.data.add_vehicle ? router.reload() : null;
+        res.data.add_vehicle ? router.push('/me') : null;
     }
 
-    const removeVehicle = async (e: any) => {
-        e.preventDefault();
-        const vehicle_id = e.target.id;
+    const removeVehicle = async (vehicle_id: string) => {
         console.log(vehicle_id)
         const res = await client.mutate({ mutation: REMOVE_VEHICLE, variables: { vehicle_id } })
-        res.data.remove_vehicle ? router.reload() : null;
+        res.data.remove_vehicle ? router.push('/me') : null;
     }
     return <main className={styles.container}>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
@@ -79,7 +82,7 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
                 {userdata.vehicles?.length > 0 && (<h3>Current Vehicles</h3>)}
                 {userdata.vehicles?.map((vehicle: Vehicle) => {
                     return <div key={vehicle.id} style={{ textAlign: 'center' }}>
-                        <h4>{vehicle.name} : {vehicle.description}<a style={{ marginLeft: 15 }} id={vehicle.id} onClick={removeVehicle} className='remove'>X</a> </h4>
+                        <h4>{vehicle.name} : {vehicle.description}<a style={{ marginLeft: 15 }}onClick={() => removeVehicle(vehicle.id)} className='remove'>X</a> </h4>
                     </div>
                 })}
             </div>

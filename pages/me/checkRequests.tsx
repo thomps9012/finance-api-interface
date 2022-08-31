@@ -13,11 +13,18 @@ const GET_MY_CHECKS = gql`{
       check_requests {
         vendors {
           name
+          address {
+            street
+            city
+            state
+            website
+          }
         }
         requests {
           id
           current_status
           date
+          order_total
         }
         total_amount
       }
