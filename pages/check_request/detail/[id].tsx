@@ -124,9 +124,9 @@ export default function RecordDetail({ recorddata, user_role, userID, jwt, grant
     <h2>${order_total.toPrecision(4)}</h2>
     <p>{description}</p>
     <h3>Purchases</h3>
-    {purchases.map((purchase: Purchase) => {
+    {purchases.map((purchase: Purchase, i: number) => {
       const { amount, description, grant_line_item } = purchase;
-      return <div className={styles.card}>
+      return <div className={styles.card} key={i}>
         <p>{grant_line_item}</p>
         <p>{description}</p>
         <p>${amount}</p>
