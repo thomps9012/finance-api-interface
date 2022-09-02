@@ -52,3 +52,10 @@ export const REJECT_REQUEST = gql`mutation rejectRequest($request_id: ID!, $requ
 export const ARCHIVE_REQUEST = gql`mutation archiveRequest($request_id: ID!, $request_type: String!) {
   archive_request(request_id: $request_id, request_type: $request_type)
 }`
+
+export const CREATE_USER = gql`mutation newUser($name: String!, $email: String!, $manager_id: ID!, $manager_email: String!, $role: String!) {
+  add_user(name: $name, email: $email, manager_id: $manager_id, manager_email: $manager_email, role: $role) {
+    id
+    is_active
+  }
+}`

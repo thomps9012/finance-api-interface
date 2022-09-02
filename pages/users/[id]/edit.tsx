@@ -21,7 +21,6 @@ const USER_OVERVIEW = gql`query userOverview($id: ID!) {
         manager_id
         name
         role
-        email
         last_login
     }
 }
@@ -41,7 +40,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         context.res,
         authOptions
     )
-    const jwt = sessionData?.Authorization
+    const jwt = sessionData?.user.token
     const client = createClient(jwt);
     const res = await client.query({ query: USER_OVERVIEW, variables: { id } })
     console.log(res.data, 'user overview')

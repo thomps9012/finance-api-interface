@@ -2,14 +2,14 @@ import { gql } from "@apollo/client"
 import { GetServerSidePropsContext } from "next"
 import { unstable_getServerSession } from "next-auth"
 import { useState, useEffect } from "react"
-import createClient from "../../../graphql/client"
-import { UserPettyCash, PettyCashDetail } from "../../../types/pettycash"
-import { UserInfo } from "../../../types/users"
-import dateFormat from "../../../utils/dateformat"
-import titleCase from "../../../utils/titlecase"
-import { authOptions } from "../../api/auth/[...nextauth]"
-import styles from '../../../styles/Home.module.css';
+import createClient from "../../../../graphql/client"
+import { UserPettyCash, PettyCashDetail } from "../../../../types/pettycash"
+import { UserInfo } from "../../../../types/users"
+import dateFormat from "../../../../utils/dateformat"
+import { authOptions } from "../../../api/auth/[...nextauth]"
+import styles from '../../../../styles/Home.module.css';
 import Link from "next/link"
+import jwtDecode from "jwt-decode"
 const USER_PETTY_CASH_REPORT = gql`query userPettyCash($user_id: ID!, $start_date: String!, $end_date: String!) {
     petty_cash_user_requests(user_id: $user_id, start_date: $start_date, end_date: $end_date){
         total_amount
@@ -36,20 +36,22 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         authOptions
     )
     const jwt = sessionData?.user.token
-    const userID = sessionData?.user.id;
+    const userData: { id: string } = jwtDecode(jwt)
+    const userID = userData.id;
+    const { id } = context.query;
     const client = createClient(jwt);
     const today = new Date().toISOString();
     const monthAgo = parseInt(today.split('-')[1]) - 1;
     const monthString = monthAgo > 9 ? monthAgo : '0' + monthAgo
     const startDate = today.split('-')[0] + '-' + monthString + '-' + today.split('-')[2]
-    const res = await client.query({ query: USER_PETTY_CASH_REPORT, variables: { user_id: userID, start_date: startDate, end_date: today } })
+    const res = await client.query({ query: USER_PETTY_CASH_REPORT, variables: { user_id: id != "null" ? id : userID, start_date: startDate, end_date: today } })
     const users = await client.query({ query: USER_LIST })
     console.log(res)
     return {
         props: {
             base_report: sessionData ? res.data.petty_cash_user_requests : null,
             user_list: sessionData ? users.data.all_users : null,
-            userID: userID ? userID : "",
+            userID: id != "null" ? id : userID,
             jwt: jwt ? jwt : ""
         }
     }

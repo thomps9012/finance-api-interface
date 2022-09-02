@@ -8,6 +8,7 @@ export default function PettyCashLanding() {
     const user_role = user_token?.role;
     return <main className={styles.landing}>
         <h1>Petty Cash</h1>
+        <div className='hr' />
         <Link href="/petty_cash/create">
             <a><h2>Create New Request</h2></a>
         </Link>
@@ -15,7 +16,7 @@ export default function PettyCashLanding() {
             <a><h2>Your Active Requests</h2></a>
         </Link>
         {user_role != 'EMPLOYEE' && <>
-            <Link href="/petty_cash/report/user">
+            <Link href="/petty_cash/report/user/null">
                 <a><h2>User Requests</h2></a>
             </Link>
             <Link href="/petty_cash/report/grant">

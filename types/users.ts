@@ -3,7 +3,12 @@ import { MileageOverview } from "./mileage";
 import { PettyCashOverview } from "./pettycash";
 
 
-
+export interface UserType {
+    id: string;
+    email: string;
+    name: string;
+    role: string;
+}
 export interface UserInfo {
     id: string;
     name: string;

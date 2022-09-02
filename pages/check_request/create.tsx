@@ -61,7 +61,7 @@ export default function CreateRequest() {
         res.data.create_check_request.created_at ? router.push('/me') : null;
     }
 
-    return <main className={styles.main}>
+    return <main className={styles.container}>
         <form>
             <GrantSelect state={grantID} setState={setGrantID} />
             <h4>Date</h4>

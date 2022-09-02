@@ -44,11 +44,16 @@ footer {
   align-items: center;
 }
 
+/* add in conditional styling breakpoint for small phones */
 nav {
   display: flex;
   justify-content: flex-start;
   margin-bottom: 0;
   padding-bottom: 0;
+}
+/* add in conditional styling breakpoint for small phones */
+header {
+  padding: 0 2rem;
 }
 
 /* different status stylings */
@@ -103,6 +108,13 @@ a:hover {
   padding: 5px;
   margin: 5px;
   border-bottom: 5px dashed cadetblue;
+  opacity: 50%;
+  width: 100%;
+}
+.hr-red {
+  padding: 5px;
+  margin: 5px;
+  border-bottom: 5px dashed rgb(160, 95, 95);
   opacity: 50%;
   width: 100%;
 }

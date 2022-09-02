@@ -36,7 +36,7 @@ export default function CreateRequest() {
         })
         res.data.create_petty_cash.created_at ? router.push('/me') : null;
     }
-    return <main className={styles.main}>
+    return <main className={styles.container}>
         <form id='petty-cash-form'>
             <GrantSelect state={grantID} setState={setGrantID} />
             <h4>Amount</h4>

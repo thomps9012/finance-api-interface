@@ -41,7 +41,7 @@ export default function CreateRequest() {
         })
         res.data.create_mileage.created_at ? router.push('/me') : null;
     }
-    return <main className={styles.main}>
+    return <main className={styles.container}>
         <form id="mileage-form">
             <GrantSelect state={grantID} setState={setGrantID} />
             <h4>Trip Date</h4>

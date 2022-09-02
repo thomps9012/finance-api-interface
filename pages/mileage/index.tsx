@@ -8,6 +8,7 @@ export default function MileageLanding() {
     const user_role = user_token?.role;
     return <main className={styles.landing}>
         <h1>Mileage</h1>
+        <div className='hr' />
         <Link href="/mileage/create">
             <a><h2>Create New Request</h2></a>
         </Link>
@@ -15,7 +16,7 @@ export default function MileageLanding() {
             <a><h2>Your Active Requests</h2></a>
         </Link>
         {user_role != 'EMPLOYEE' && <>
-            <Link href="/mileage/report/user">
+            <Link href="/mileage/report/user/null">
                 <a><h2>User Mileage</h2></a>
             </Link>
             <Link href="/mileage/report/monthly">
