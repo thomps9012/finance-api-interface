@@ -1,3 +1,4 @@
+import jwtDecode from "jwt-decode";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import styles from "./header.module.css"
@@ -5,6 +6,9 @@ import NavLinks from "./navLinks";
 
 export default function Header() {
     const { data: session } = useSession();
+    const user_token: { role: string } = jwtDecode(session?.user.token)
+    const user_role = user_token?.role;
+    console.log('role', user_role)
     return <>
         <div className={styles.mobileHeader}>
             {session?.user && (
@@ -60,6 +64,11 @@ export default function Header() {
                                 <a className={styles.navIcon}>📑</a>
                             </Link>
                         </li>
+                        {user_role != 'EMPLOYEE' && <li className={styles.navIcon}>
+                            <Link href="/users">
+                                <a className={styles.navIcon}>👨‍👦‍👦</a>
+                            </Link>
+                        </li> }
                     </ul>
                    
                 </>
@@ -109,6 +118,11 @@ export default function Header() {
                                     <a className={styles.navIcon}>📑</a>
                                 </Link>
                             </li>
+                            {user_role != 'EMPLOYEE' && <li className={styles.navIcon}>
+                            <Link href="/users">
+                                <a className={styles.navIcon}>👨‍👦‍👦</a>
+                            </Link>
+                        </li> }
                         </ul>
                         <a href={`/api/auth/signout`}
                             className={styles.buttonPrimary} onClick={(e: any) => {

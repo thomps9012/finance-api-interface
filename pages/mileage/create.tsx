@@ -22,6 +22,11 @@ export default function CreateRequest() {
     const checkOdo = () => { start_odometer >= end_odometer && alert('start mileage is too high and/or end mileage is too low') }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        if (grantID === "") { alert('select a grant'); return }
+        if (requestDate === "") { alert('enter valid request date'); return }
+        if (purpose === "") { alert('enter valid trip purpose'); return }
+        if (start_location === "") { alert('enter valid start location'); return }
+        if (destination === "") { alert('enter valid destination'); return }
         const client = createClient(jwt);
         const res = await client.mutate({
             mutation: CREATE_MILEAGE, variables: {

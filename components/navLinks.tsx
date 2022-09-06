@@ -25,8 +25,8 @@ export default function NavLinks() {
                 </Link>
             </li>
             {role != 'EMPLOYEE' && <li className={styles.navItem}>
-            <Link href="/users">
-                <a>Manage Users</a>
+            <Link href="/users/create">
+                <a>Add User</a>
             </Link>
             </li>}
         </ul>

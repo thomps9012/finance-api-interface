@@ -18,7 +18,8 @@ export default function CreateRequest() {
     const [grantID, setGrantID] = useState("")
     const submitRequest = async (e: any) => {
         e.preventDefault();
-        if (description.length === 0) { alert('add a description'); return }
+        if (requestDate === "") { alert('enter valid request date'); return }
+        if (description === "") { alert('add a description'); return }
         if (grantID === "") { alert('select a grant'); return }
         if (amount === 0.0) { alert('add an amount'); return }
         const client = createClient(jwt);

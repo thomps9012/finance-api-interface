@@ -42,7 +42,13 @@ export default function CreateUser({ jwt, user_list, userRole }: { userRole: str
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const userData = Object.fromEntries(new FormData(e.target))
-        console.log(userData)
+        console.log(Object.values(userData))
+        for (const item in Object.values(userData)){
+            if(Object.values(userData)[item] === ""){
+                alert('must enter a valid employee '+Object.keys(userData)[item])
+                return;
+            }
+        }
         const managerInfo = JSON.parse(userData.manager_info as string)
         console.log(JSON.parse(userData.manager_info as string))
         const client = createClient(jwt);

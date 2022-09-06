@@ -32,6 +32,15 @@ export default function CreateRequest() {
     const submitRequest = async (e: any) => {
         e.preventDefault();
         if (grantID === "") { alert('select a grant'); return }
+        if (vendorName === "") { alert('enter vendor name'); return }
+        if (vendorAddress.website === "") { alert('enter complete vendor address'); return }
+        if (vendorAddress.street === "") { alert('enter complete vendor address'); return }
+        if (vendorAddress.city === "") { alert('enter complete vendor address'); return }
+        if (vendorAddress.state === "") { alert('enter complete vendor address'); return }
+        if (vendorAddress.zip === 0) { alert('enter complete vendor address'); return }
+        if (creditCard === "") { alert('enter credit card option'); return }
+        if (requestDate === "") { alert('enter valid request date'); return }
+        if (description === "") { alert('enter purchase description'); return }
         console.log(requestDate)
         let purchaseArr = [];
         const purchaseRows = document.getElementsByClassName('purchase-row');

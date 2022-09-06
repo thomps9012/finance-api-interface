@@ -55,7 +55,7 @@ export default function UsersInfo({ userdata }: { userdata: UserType[] }) {
     }
     return <main className={styles.container}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <h1>Application Users</h1>
+            <h1>Active Users</h1>
             <div style={{ flexDirection: 'column', margin: 10 }}>
                 <h3>Filter by Role</h3>
                 <select onChange={handleChange} value={selectedRoles} style={{ height: 80 }} multiple>
