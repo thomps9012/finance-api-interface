@@ -8,6 +8,7 @@
   transition: all 0.2s ease-in;
 }
 
+
 .signedInText {
   position: absolute;
   padding-top: 0.8rem;
@@ -46,9 +47,41 @@
   top: 20px;
   right: 30px;
 }
+.footerBtn {
+  float: right;
+  margin-right: -0.4rem;
+  font-weight: 500;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1.4rem;
+  z-index: 10;
+  background-color: #346df1;
+  border-color: #346df1;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.7rem 1.4rem;
+}
 
-.buttonPrimary:hover {
+.buttonPrimary:hover, .footerBtn:hover {
   box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.2);
+}
+.mobileHeader {
+  display: none;
+}
+@media only screen and (max-width: 640px ) {
+  .mobileHeader {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 2rem;
+    flex-wrap: wrap;
+  }
+  .navIcons {
+   position: relative;
+   margin-left: 0%;
+   margin-right: 100px;
+  }
+  
 }
 
 .navItems {
