@@ -6,7 +6,7 @@ import NavLinks from "./navLinks";
 export default function Header() {
     const { data: session } = useSession();
     return <>
-    <div className={styles.mobileHeader}>
+        <div className={styles.mobileHeader}>
             {session?.user && (
                 <>
                     <Link href="/me">
@@ -23,6 +23,17 @@ export default function Header() {
                             </span>
                         </a>
                     </Link>
+                    {session?.user && (
+                        <div className='mobileSignOut'>
+                            <a href={`/api/auth/signout`}
+                                className={styles.footerBtn} onClick={(e: any) => {
+                                    e.preventDefault()
+                                    signOut({ callbackUrl: '/' })
+                                }}>
+                                Sign Out
+                            </a>
+                        </div>
+                    )}
                     <ul className={styles.navIcons}>
                         <li className={styles.navIcon}>
                             <Link href="/">
@@ -50,6 +61,7 @@ export default function Header() {
                             </Link>
                         </li>
                     </ul>
+                   
                 </>
             )}
         </div>

@@ -5,16 +5,14 @@ export default function Footer() {
     const { data: session } = useSession();
     return <footer>
         <h5>Copyright 2022</h5>
-        {session?.user && (
-            <div className='mobileSignOut'>
-                <a href={`/api/auth/signout`}
-                    className={styles.footerBtn} onClick={(e: any) => {
-                        e.preventDefault()
-                        signOut({ callbackUrl: '/' })
-                    }}>
-                    Sign Out
-                </a>
-            </div>
-        )}
+        <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'right' }}>
+       
+            <a href="https://thomps9012-github-io.vercel.app/">
+                <p>Designed by
+                    <br />
+                    Samuel Thompson WebDesign
+                </p>
+            </a>
+        </div>
     </footer>
 }

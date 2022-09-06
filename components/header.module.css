@@ -61,6 +61,9 @@
   color: #fff;
   text-decoration: none;
   padding: 0.7rem 1.4rem;
+  position: absolute;
+  top: 20px;
+  right: 30px;
 }
 
 .buttonPrimary:hover, .footerBtn:hover {
@@ -73,13 +76,14 @@
   .mobileHeader {
     display: flex;
     justify-content: space-around;
-    padding: 0 2rem;
+    padding: 3rem;
     flex-wrap: wrap;
   }
   .navIcons {
    position: relative;
    margin-left: 0%;
    margin-right: 100px;
+   margin-top: 35px;
   }
   
 }
