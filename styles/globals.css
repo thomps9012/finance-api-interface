@@ -51,55 +51,100 @@ nav {
   margin-bottom: 0;
   padding-bottom: 0;
 }
+
 /* add in conditional styling breakpoint for small phones */
 header {
   padding: 0 2rem;
 }
+
 .mobileSignOut {
-  display: none;;
+  display: none;
+  ;
 }
 
-@media only screen and (max-width: 640px ) {
-  header, nav {
+@media only screen and (max-width: 685px) {
+
+  header,
+  nav {
     display: none;
   }
- .mobileSignOut {
-  display: block;
- }
- thead {
-  display: none;
- }
- select {
-  width: 85%;
- }
+
+  .mobileSignOut {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  select {
+    width: 85%;
+  }
 }
 
+#mobile-sign-out {
+  display: none;
+}
+
+@media only screen and (max-width: 430px) {
+  #mobile-sign-out {
+    display: block;
+  }
+  #mobile-btn {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 685px) {
+  .navIcons-true {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: absolute;
+    background-color: #fff;
+    left: 0%;
+    top: -10px;
+    height: 100vh;
+    z-index: 1;
+    transition: all var(--duration);
+  }
+
+  .navIcons-false {
+    display: none;
+  }
+}
 
 /* different status stylings */
 .PENDING {
   color: goldenrod;
   font-weight: bold;
 }
+
 .ARCHIVED {
   font-weight: bold;
   color: #b2b0b0;
 }
+
 .MANAGER_APPROVED {
   font-weight: bold;
   color: greenyellow;
 }
+
 .FINANCE_APPROVED {
   font-weight: bold;
   color: greenyellow;
 }
+
 .ORG_APPROVED {
   font-weight: bold;
   color: green;
 }
+
 .REJECTED {
   font-weight: bold;
   color: red;
 }
+
 .REJECTED_EDIT {
   font-weight: bold;
   color: rosybrown;
@@ -123,6 +168,7 @@ a:hover {
   color: red;
   font-weight: bold;
 }
+
 .hr {
   padding: 5px;
   margin: 5px;
@@ -130,6 +176,7 @@ a:hover {
   opacity: 50%;
   width: 100%;
 }
+
 .hr-red {
   padding: 5px;
   margin: 5px;
@@ -137,6 +184,7 @@ a:hover {
   opacity: 50%;
   width: 100%;
 }
+
 button {
   font-weight: bold;
   border-radius: 0.3rem;
@@ -153,16 +201,20 @@ form {
   display: flex;
   flex-direction: column;
 }
-input, select {
+
+input,
+select {
   font-size: large;
   height: 40px;
   padding: 10px;
 }
+
 textarea {
   font-size: large;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding: 10px;
 }
+
 label {
   margin-top: 5px;
   margin-bottom: 10px;
