@@ -109,25 +109,30 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
           ) : <p className="ARCHIVED">None</p>}
       </div>
     </div>
+    <br />
     <a href='/directDeposit.pdf' style={{ textAlign: 'right' }} download><h3>Download Direct Deposit Form</h3></a>
     <div className="hr" />
-    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
       <div style={{ padding: 20 }}>
         {userdata.vehicles?.length > 0 && (<h2>Current Vehicles</h2>)}
         {userdata.vehicles?.map((vehicle: Vehicle) => {
-          return <div key={vehicle.id} style={{ textAlign: 'left' }}>
-            <h3>{vehicle.name}<a style={{ marginLeft: 15 }} onClick={() => removeVehicle(vehicle.id)} className='remove'>X</a> </h3>
-            <h4>{vehicle.description}</h4>
-            <hr />
-          </div>
+          return <a onClick={() => removeVehicle(vehicle.id)} key={vehicle.id} >
+            <h1 className='remove'>X</h1>
+            <div style={{ textAlign: 'left' }}>
+              <h3>{vehicle.name}</h3>
+              <h4>{vehicle.description}</h4>
+              <hr />
+            </div>
+          </a>
         })}
       </div>
       <form onSubmit={handleAdd} id='vehicleInput'>
-        <h3>New Vehicle</h3>
+        <h2>Add Vehicle</h2>
         <label>Name</label>
         <input type="text" max={20} name="name" />
         <label>Description</label>
         <input type="text" max={40} name="description" />
+        <br />
         <button type="submit" className="submit" style={{ padding: 10, margin: 10 }}>Add Vehicle</button>
       </form>
     </div>
