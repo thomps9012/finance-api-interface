@@ -15,7 +15,7 @@ export default function VendorInput({ setName, setAddress, address, name }: any)
         <h4>Website</h4>
         <input defaultValue={address.website} type='text' name='website' onChange={handleAddressChange} />
         <h4>Address</h4>
-        <input defaultValue={address.street} type='text' name='website' onChange={handleAddressChange} />
+        <input defaultValue={address.street} type='text' name='street' onChange={handleAddressChange} />
         <h4>City</h4>
         <input defaultValue={address.city} type='text' name='city' onChange={handleAddressChange} />
         <h4>State</h4>

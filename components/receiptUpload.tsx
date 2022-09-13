@@ -1,11 +1,15 @@
-import ImageUploading, { ImageListType } from "react-images-uploading";
+import ImageUploading, { ImageListType, ImageType } from "react-images-uploading";
 import Image from "next/image";
+import { useState } from "react";
+let imageState: ImageType[]
 export default function ReceiptUpload({ receipts, setReceipts }: any) {
+    const [imageList, setImageList] = useState(imageState)
     const onChange = (
         receiptList: ImageListType,
     ) => {
         const receiptArr: string[] = receiptList.map((receipt: any) => receipt.data_url)
         console.log(receiptList)
+        setImageList(receiptList)
         setReceipts(receiptArr);
     };
     const onError = ({ errors, files }: any) => {
@@ -14,7 +18,7 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
     const maxNumber = 5;
     return <ImageUploading
         multiple
-        value={receipts}
+        value={imageList}
         onChange={onChange}
         maxNumber={maxNumber}
         onError={onError}
@@ -23,6 +27,7 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
         {({ imageList,
             onImageRemoveAll,
             onImageRemove,
+            onImageUpload,
             isDragging,
             dragProps,
             errors
@@ -45,20 +50,23 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
                     </div>
                 )}
                 <br />
-                <button onClick={onImageRemoveAll} className='remove-all-btn'>Remove All Receipts</button>
-                <br />
-                <br />
                 <div
+                    onClick={onImageUpload}
                     className="upload-area"
-                    style={isDragging ? { background: 'lightsteelblue' } : undefined}
+                    style={isDragging ? { background: 'cadetblue', opacity: '50%' } : undefined}
                     {...dragProps}>
-                    <p className="description">Drop Receipt Images Here</p>
+                    <h2 className="description">Click to Upload <br /> or <br /> Drop Receipt Images Here</h2>
                 </div>
-
+                <br />
+                {imageList.length > 0 && <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <button onClick={onImageRemoveAll} className='remove-all-btn'>Remove All Receipts</button>
+                    <h3 style={{ textAlign: 'center' }}>{receipts.length} Attached Receipt{receipts.length === 0 && 's'}{receipts.length > 1 && "s"} </h3>
+                </div>}
                 <div className="image-container">
                     {imageList.map((image, index) => <div key={index} className="image-item">
-                        <a className='remove' onClick={() => onImageRemove(index)}><p>X</p></a>
-                        <Image src={image['data_url'] || image} alt="" width="200" height="200" />
+                        <a onClick={() => onImageRemove(index)}><h1 className='remove' >X</h1>
+                            <Image src={image['data_url'] || image} alt="" width="200" height="200" />
+                        </a>
                     </div>
                     )}
                 </div>

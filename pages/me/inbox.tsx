@@ -82,7 +82,7 @@ export default function MyInbox({ userdata }: { userdata: UserOverview }) {
                 </tbody>
             </table>
         </>
-            : <h1>Nothing Todo Yet</h1>
+            : <h1>No Notifications</h1>
         }
     </main>
 }

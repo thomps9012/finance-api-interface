@@ -31,6 +31,7 @@ export default function CreateRequest() {
     const removePurchase = (e: any) => { e.preventDefault(); setRows(rowCount - 1) }
     const submitRequest = async (e: any) => {
         e.preventDefault();
+        console.log(vendorAddress)
         if (grantID === "") { alert('select a grant'); return }
         if (vendorName === "") { alert('enter vendor name'); return }
         if (vendorAddress.website === "") { alert('enter complete vendor address'); return }
@@ -99,10 +100,9 @@ export default function CreateRequest() {
                 <option value="1234">Card 1</option>
                 <option value="5678">Card 2</option>
             </select>
-            <h3>{receipts.length} Receipt{receipts.length === 0 && 's'}{receipts.length > 1 && "s"} Attached</h3>
+            <h3>Receipts</h3>
             <span className="description">Limit 5 Receipts in PNG or JPEG Format</span>
             <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />
-            <div className="hr" />
             <br />
             <button className='submit' onClick={submitRequest}>Submit Request</button>
         </form>

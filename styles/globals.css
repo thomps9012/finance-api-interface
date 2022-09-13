@@ -166,7 +166,12 @@ a:hover {
 
 .remove {
   color: red;
-  font-weight: bold;
+  text-shadow: black 1px 0 5px;
+  font-weight: 1000;
+  position: relative;
+  top: 70px;
+  left: 160px;
+  z-index: 1;
 }
 
 .hr {
@@ -234,8 +239,9 @@ button:active {
 }
 
 .upload-area {
-  /* height: 10ch; */
-  border: 1px dashed dimgray;
+  cursor: pointer;
+  border: 5px dashed cadetblue;
+  opacity: 50%;
   display: flex;
   text-align: center;
   justify-content: center;
@@ -243,8 +249,17 @@ button:active {
 }
 
 .image-container {
-  display: inline;
-  margin-top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: -100px;
+  margin-bottom: 100px;
+}
+
+.image-item {
+  margin: 15px;
+  padding: 10px;
+  height: 200px;
 }
 
 .table-cell {

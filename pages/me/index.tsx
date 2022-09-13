@@ -80,6 +80,7 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
     res.data.remove_vehicle ? router.push('/me') : null;
   }
   return <main className={styles.container}>
+
     <div style={{ margin: 10, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
       <div style={{ flexDirection: 'column' }}>
         <Link href="/me/mileage"><a><h1>Mileage</h1></a></Link>
@@ -108,6 +109,7 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
           ) : <p className="ARCHIVED">None</p>}
       </div>
     </div>
+    <a href='/directDeposit.pdf' style={{ textAlign: 'right' }} download><h3>Download Direct Deposit Form</h3></a>
     <div className="hr" />
     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
       <div style={{ padding: 20 }}>
