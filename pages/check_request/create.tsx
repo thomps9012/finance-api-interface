@@ -97,8 +97,8 @@ export default function CreateRequest() {
             <select name='creditCard' value={creditCard} onChange={(e: any) => setCreditCard(e.target.value)} defaultValue="">
                 <option value="" disabled hidden>Select Credit Card..</option>
                 <option value="N/A">No</option>
-                <option value="1234">Card 1</option>
-                <option value="5678">Card 2</option>
+                <option value="1234">Card Ending in 1234</option>
+                <option value="5678">Card Ending in 5678</option>
             </select>
             <h3>Receipts</h3>
             <span className="description">Limit 5 Receipts in PNG or JPEG Format</span>

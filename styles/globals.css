@@ -62,7 +62,7 @@ header {
   ;
 }
 
-@media only screen and (max-width: 685px) {
+@media only screen and (max-width: 782px) {
 
   header,
   nav {
@@ -86,7 +86,7 @@ header {
   display: none;
 }
 
-@media only screen and (max-width: 430px) {
+@media only screen and (max-width: 512px) {
   #mobile-sign-out {
     display: block;
   }
@@ -95,7 +95,7 @@ header {
   }
 }
 
-@media only screen and (max-width: 685px) {
+@media only screen and (max-width: 782px) {
   .navIcons-true {
     display: flex;
     flex-direction: column;

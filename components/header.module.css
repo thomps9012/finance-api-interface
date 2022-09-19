@@ -8,7 +8,6 @@
   transition: all 0.2s ease-in;
 }
 
-
 .signedInText {
   position: absolute;
   padding-top: 0.8rem;
@@ -77,7 +76,7 @@
   display: none;
 }
 
-@media only screen and (max-width: 430px) {
+@media only screen and (max-width: 512px) {
   .menuOption {
     position: absolute;
     top: 10px;
@@ -85,7 +84,22 @@
   }
 }
 
-@media only screen and (max-width: 685px) {
+@media only screen and (max-width: 369px) {
+  .avatar, .signedInText {
+    text-align: center;
+    font-size: x-large;
+    padding: 10px;
+    margin-bottom: 75px;
+    right: -3%;
+  }
+  .menuOption {
+    top: 95px;
+    text-align: center;
+    right: -3%;
+  }
+}
+
+@media only screen and (max-width: 782px) {
   .mobileHeader {
     display: flex;
     justify-content: space-between;
@@ -122,7 +136,7 @@
   font-size: small;
 }
 
-@media only screen and (max-width: 973px) {
+@media only screen and (max-width: 1048px) {
   .navSpan {
     display: none;
   }
@@ -137,7 +151,7 @@
 }
 
 .navIcons {
-  margin-left: 1rem;
+  margin-left: 7rem;
   padding-left: 100px;
   list-style: none;
   display: flex;
