@@ -5,7 +5,6 @@ export default function AccessDenied() {
         <h1>Access Denied</h1>
         <div className="hr-red" />
         <h1>You are Attempting to Visit a Protected Website</h1>
-        <div className="hr-red" />
         <br />
         <br />
         <div>

@@ -59,7 +59,7 @@ export default function CreateUser({ jwt, user_list, userRole }: { userRole: str
                 role: userData.role,
                 manager_id: managerInfo.id,
                 manager_email: managerInfo.email,
-                email: `${userData.email}@norainc.org`
+                email: `${userData.email}`
             }
         })
         console.log(res.data)
@@ -72,7 +72,7 @@ export default function CreateUser({ jwt, user_list, userRole }: { userRole: str
             <label>Full Name</label>
             <input type="text" max={20} name="name" />
             <label>Email</label>
-            <div style={{ display: 'flex', flexDirection: 'row' }}><input style={{ textAlign: 'right' }} type="text" max={20} name="email" /><label style={{ margin: 5 }}>@norainc.org</label></div>
+            <input type="text" max={40} name="email" />
             {/* possibly swap below to select */}
             <label>Role</label>
             <input type="text" max={20} name="role" />

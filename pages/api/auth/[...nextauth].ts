@@ -9,16 +9,10 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async signIn({ user, account, profile }) {
-            profile.hd != 'norainc.org' && false;
-            console.log('user email: ', user.email)
-            console.log('user name: ', user.name)
-            console.log('image:', user.image)
-            const api_route = `https://default-20220902t090710-sr3vwdfovq-uc.a.run.app/graphql?query=mutation+_{sign_in(email:"${user.email}", name:"${user.name}")}`
+            const api_route = process.env.PUBLIC_GRAPHQL_URI + `?query=mutation+_{sign_in(email:"${user.email}", name:"${user.name}")}`
             const json = await fetch(api_route).then(res => res.json())
             if (json) {
                 user.token = json.data.sign_in
-                console.log('api json', json.data.sign_in)
-                console.log('user token', user.token)
                 return true
             }
             return false
