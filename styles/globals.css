@@ -156,6 +156,8 @@ header {
 
 a:hover {
   cursor: pointer;
+  text-decoration: underline;
+  color: cadetblue;
 }
 
 #vehicleInput {

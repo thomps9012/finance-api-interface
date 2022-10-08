@@ -54,18 +54,19 @@ export default function UsersInfo({ userdata }: { userdata: UserType[] }) {
         setRoles(emptyArr)
     }
     return <main className={styles.container}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
             <h1>Active Users</h1>
+            <div className="hr" />
             <div style={{ flexDirection: 'column', margin: 10 }}>
-                <h3>Filter by Role</h3>
-                <select onChange={handleChange} value={selectedRoles} style={{ height: 80 }} multiple>
+                <h3 style={{ textAlign: 'center' }}>Filter by Role (Multi Select)</h3>
+                <select onChange={handleChange} value={selectedRoles} style={{ height: 80, width: '80%', textAlign: 'center', marginLeft: '10%' }} multiple>
                     <option value="CHIEF">CHIEF</option>
                     <option value="MANAGER">MANAGER</option>
                     <option value="EMPLOYEE">EMPLOYEE</option>
                 </select>
             </div>
         </div>
-        <hr />
+        <br />
         {userList.map((user: UserType) => {
             const { name, id, email, role } = user;
             return <div key={id}>
@@ -74,7 +75,6 @@ export default function UsersInfo({ userdata }: { userdata: UserType[] }) {
                 </Link>
                 <p>{role}</p>
                 <p>{email}</p>
-                <div className="hr" />
             </div>
         })}
     </main>
