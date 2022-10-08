@@ -79,19 +79,19 @@ export default function CreateRequest() {
             <h4>Description</h4>
             <textarea rows={5} maxLength={75} name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
             <span>{description.length}/75 characters</span>
-            <div className="hr" />
             <VendorInput setAddress={setVendorAddress} setName={setVendorName} address={vendorAddress} name={vendorName} />
             <h3>Purchases</h3>
             <span className="description">Limit 5 Purchases per Request</span>
             <br />
-            <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />
-            {rowCount >= 2 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />}
-            {rowCount >= 3 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />}
-            {rowCount >= 4 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />}
-            {rowCount >= 5 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} />}
+            <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} row={1} />
+            {rowCount >= 2 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} row={2} />}
+            {rowCount >= 3 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} row={3} />}
+            {rowCount >= 4 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} row={4} />}
+            {rowCount >= 5 && <PurchaseInput purchase={{ grant_line_item: '', description: '', amount: 0.0 }} row={5} />}
+            <br />
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                <button onClick={addPurchase}>Add Purchase</button>
-                <button onClick={removePurchase}>Remove Last</button>
+                {rowCount < 5 && <button onClick={addPurchase}>Add Purchase</button>}
+                {rowCount > 1 && <button onClick={removePurchase}>Remove Last</button>}
             </div>
             <h3>Company Credit Card Used?</h3>
             <select name='creditCard' value={creditCard} onChange={(e: any) => setCreditCard(e.target.value)} defaultValue="">

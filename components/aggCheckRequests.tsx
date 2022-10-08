@@ -7,7 +7,7 @@ export default function AggCheckRequests({ check_requests }: { check_requests: C
     const { requests, total_amount, vendors } = check_requests;
     const session = useSession();
     const user_name = session?.data?.user.name;
-    if (total_amount === 0) { return <h1>No Check Requests for {user_name}</h1> }
+    if (total_amount === 0) { return <main className={styles.main}><h1>No Check Requests for {user_name}</h1></main> }
     return <main className={styles.main}>
         <h1>{user_name} Check Requests</h1>
         <h2>Total Amount: ${Math.floor(total_amount).toPrecision(4)}</h2>

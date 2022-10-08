@@ -7,7 +7,7 @@ export default function AggPettyCash({ petty_cash }: { petty_cash: PettyCashOver
     const { requests, total_amount } = petty_cash;
     const session = useSession();
     const user_name = session?.data?.user.name;
-    if (total_amount === 0) { return <h1>No Petty Cash Requests for {user_name}</h1> }
+    if (total_amount === 0) { return <main className={styles.main}><h1>No Petty Cash Requests for {user_name}</h1></main> }
     return <main className={styles.main}>
         <h1>{user_name} Petty Cash</h1>
         <div className="hr" />

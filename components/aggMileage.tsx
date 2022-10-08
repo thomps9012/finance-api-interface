@@ -7,7 +7,7 @@ export default function AggMileage({ mileage_requests }: { mileage_requests: Mil
     const { mileage, requests, parking, tolls, reimbursement } = mileage_requests;
     const session = useSession();
     const user_name = session?.data?.user.name;
-    if (mileage === 0) { return <h1>No Mileage Requests for {user_name}</h1> }
+    if (mileage === 0) { return <main className={styles.main}><h1>No Mileage Requests for {user_name}</h1></main> }
     return <main className={styles.main}>
         <h1>{user_name} Mileage</h1>
         <table>

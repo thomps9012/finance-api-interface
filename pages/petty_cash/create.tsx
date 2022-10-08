@@ -48,7 +48,6 @@ export default function CreateRequest() {
             <textarea rows={5} maxLength={75} name="description" value={description} onChange={(e: any) => setDescription(e.target.value)} />
             <br />
             <span>{description.length}/75 characters</span>
-            <div className="hr" />
             <h3>Receipts</h3>
             <span className="description">Limit 5 Receipts in PNG or JPEG Format</span>
             <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />

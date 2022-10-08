@@ -50,11 +50,11 @@ export default function GrantSelect({ state, setState }: any) {
     },
     {
         ID: "H79TI083662",
-        Name: "IOP New Syrenity Intensive outpatient Program"
+        Name: "IOP New Serenity Intensive Outpatient Program"
     },
     {
         ID: "H79TI085495",
-        Name: "RAP AID (Recover from Addition to Prevent Aids)"
+        Name: "RAP AID (Recover from Addiction to Prevent Aids)"
     },
     {
         ID: "H79TI085410",

@@ -55,7 +55,7 @@ export default function ReceiptUpload({ receipts, setReceipts }: any) {
                     className="upload-area"
                     style={isDragging ? { background: 'cadetblue', opacity: '50%' } : undefined}
                     {...dragProps}>
-                    <h2 className="description">Click or Drag and Drop <br /> to <br /> Upload Receipt Images</h2>
+                    <h2 className="description"><a className="upload-link">Click Here</a><br />or <br /> Drag and Drop <br />to Upload Receipts</h2>
                 </div>
                 <br />
                 {imageList.length > 0 && <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>

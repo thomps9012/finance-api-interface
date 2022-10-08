@@ -70,7 +70,6 @@ export default function CreateRequest() {
             <input name="tolls" type="number" value={tolls} onChange={(e: any) => setTolls(parseFloat(e.target.value))} />
             <h4>Parking</h4>
             <input name="parking" type="number" value={parking} onChange={(e: any) => setParking(parseFloat(e.target.value))} />
-            <div className="hr" />
             <br />
             <button onClick={handleSubmit}>Submit Request</button>
         </form>

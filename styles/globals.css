@@ -239,7 +239,6 @@ button:active {
 }
 
 .upload-area {
-  cursor: pointer;
   border: 5px dashed cadetblue;
   opacity: 50%;
   display: flex;
@@ -274,6 +273,11 @@ button:active {
 }
 
 .record-link:hover {
+  text-decoration: underline;
+  color: #0070f3;
+}
+
+.upload-link {
   text-decoration: underline;
   color: #0070f3;
 }
