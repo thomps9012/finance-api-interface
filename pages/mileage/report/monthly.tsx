@@ -55,15 +55,15 @@ export default function UserMonthlyMileageReport({ base_report, jwt }: { base_re
         <h1>Mileage Reports for <input className={styles.calendar} type='month' defaultValue={Date.now()} onChange={handleChange} /></h1>
         <table>
             <thead>
-                    <th className='table-cell'>Employee</th>
-                    <th className='table-cell'>Mileage</th>
-                    <th className='table-cell'>Tolls</th>
-                    <th className='table-cell'>Parking</th>
-                    <th className='table-cell'>Total Reimbursement</th>
-                    <th className='table-cell'>Request Links</th>
+                <th className='table-cell'>Employee</th>
+                <th className='table-cell'>Mileage</th>
+                <th className='table-cell'>Tolls</th>
+                <th className='table-cell'>Parking</th>
+                <th className='table-cell'>Total Reimbursement</th>
+                <th className='table-cell'>Request Links</th>
             </thead>
             <tbody>
-                {results.map((record: MonthlyMileage) => <tr id='table' key={record.user_id}>
+                {results.map((record: MonthlyMileage) => record.mileage != 0 && <tr id='table' key={record.user_id}>
                     <td className='table-cell'><Link href={`/user/${record.user_id}`}>{record.name}</Link></td>
                     <td className='table-cell'>{record.mileage}</td>
                     <td className='table-cell'>{record.tolls}</td>
