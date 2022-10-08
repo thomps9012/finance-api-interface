@@ -46,12 +46,12 @@ export default function Landing({ notifications, last_login }: { notifications: 
   console.log('role', user_role)
   return <main className={styles.landing}>
     <div className={styles.container}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+      <header style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
         <h1>Finance Request Hub</h1>
-        <Link href={'/me/inbox'}>
-          <a><h2>{notifications} New Action Items</h2><h2>Since {dateFormat(last_login)}</h2></a>
-        </Link>
       </header>
+      <Link href={'/me/inbox'}>
+        <a><h2>{notifications} New Action Items</h2><h2>Since {dateFormat(last_login)}</h2></a>
+      </Link>
       <br />
       <h2>🚗 Mileage </h2>
       <hr />

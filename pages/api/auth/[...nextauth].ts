@@ -11,6 +11,7 @@ export const authOptions: NextAuthOptions = {
         async signIn({ user, account, profile }) {
             const api_route = process.env.PUBLIC_GRAPHQL_URI + `?query=mutation+_{sign_in(email:"${user.email}", name:"${user.name}")}`
             const json = await fetch(api_route).then(res => res.json())
+            console.log(json)
             if (json) {
                 user.token = json.data.sign_in
                 return true

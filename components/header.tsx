@@ -10,7 +10,7 @@ export default function Header() {
     const [openNav, setOpenNav] = useState(false);
     const user_token: { role: string } = jwtDecode(session?.user.token)
     const user_role = user_token?.role;
-    console.log('role', user_role)
+    console.log('role', user_token)
     return <>
         <div className={styles.mobileHeader}>
             {session?.user && (
@@ -43,6 +43,9 @@ export default function Header() {
                         </div>
                     )}
                     <ul className={"navIcons-" + openNav}>
+                        <li className={styles.navIcon}>
+                                <a className={styles.navIcon} onClick={(e) => setOpenNav(false)}>❌ Close Menu</a>
+                        </li>
                         <li className={styles.navIcon}>
                             <Link href="/">
                                 <a className={styles.navIcon} onClick={(e) => setOpenNav(false)}>🏡 Home</a>
