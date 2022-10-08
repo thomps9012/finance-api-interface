@@ -72,10 +72,8 @@ export default function UserRecordOverview({ userdata }: { userdata: UserOvervie
     return <main className={styles.container}>
         <h1>Data for {name}</h1>
         {/* <h1>Data for {name} <Link href={`/users/${userdata.id}/edit`}><a>✏️</a></Link></h1> */}
-        <div className="hr" />
-        <h3>{role} with {incomplete_action_count} Incomplete Actions</h3>
-        <h3>Last Login: {dateFormat(last_login)}</h3>
-        <div className="hr" />
+        <h3 style={{color: 'cadetblue'}}>{role} with {incomplete_action_count} Incomplete Actions</h3>
+        <h3 style={{color: 'cadetblue'}}>Last Login: {dateFormat(last_login)}</h3>
         <h2>Recent Requests</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             <div style={{ flexDirection: 'column' }}>
@@ -84,7 +82,7 @@ export default function UserRecordOverview({ userdata }: { userdata: UserOvervie
                     userdata.mileage_requests.requests.slice(0, 3).map((mileage_req: any) => <div key={mileage_req.id}>
                         <Link href={`/mileage/detail/${mileage_req.id}`}><a><p className={mileage_req.current_status}>{dateFormat(mileage_req.date)} {mileage_req.current_status}</p></a></Link>
                     </div>
-                    ) : <p className="ARCHIVED">None</p>}
+                    ) : <p className="ARCHIVED" style={{textAlign: 'center'}}>None</p>}
             </div>
             <div style={{ flexDirection: 'column' }}>
                 <Link href={`/check_request/report/user/${id}`}><h3>Check</h3></Link>
@@ -93,7 +91,7 @@ export default function UserRecordOverview({ userdata }: { userdata: UserOvervie
 
                         <Link href={`/check_request/detail/${check_req.id}`}><a><p className={check_req.current_status}>{dateFormat(check_req.date)} {check_req.current_status}</p></a></Link>
                     </div>
-                    ) : <p className="ARCHIVED">None</p>}
+                    ) : <p className="ARCHIVED" style={{textAlign: 'center'}}>None</p>}
             </div>
             <div style={{ flexDirection: 'column' }}>
                 <Link href={`/petty_cash/report/user/${id}`}><h3>Petty Cash</h3></Link>
@@ -101,7 +99,7 @@ export default function UserRecordOverview({ userdata }: { userdata: UserOvervie
                     userdata.petty_cash_requests.requests.slice(0, 3).map((petty_cash_req: any) => <div key={petty_cash_req.id}>
                         <Link href={`/petty_cash/detail/${petty_cash_req.id}`}><a><p className={petty_cash_req.current_status}>{dateFormat(petty_cash_req.date)} {petty_cash_req.current_status}</p></a></Link>
                     </div>
-                    ) : <p className="ARCHIVED">None</p>}
+                    ) : <p className="ARCHIVED" style={{textAlign: 'center'}}>None</p>}
             </div>
         </div>
     </main>

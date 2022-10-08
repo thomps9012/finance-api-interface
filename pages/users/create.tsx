@@ -75,14 +75,19 @@ export default function CreateUser({ jwt, user_list, userRole }: { userRole: str
             <input type="text" max={40} name="email" />
             {/* possibly swap below to select */}
             <label>Role</label>
-            <input type="text" max={20} name="role" />
+            <select name="role" defaultValue="">
+                <option value={""} hidden disabled>Select...</option>
+                <option value="EMPLOYEE">Employee</option>
+                <option value="MANAGER">Manager</option>
+                <option value="CHIEF">Chief</option>
+                <option value="FINANCE">Finance Head</option>
+            </select>
             <label>Manager</label>
             <select value={selectedManager} name="manager_info" onChange={(e: any) => setManager(e.target.value)}>
                 <option value={""}>Select...</option>
                 {user_list.map((user: UserType) => <option key={user.id} value={JSON.stringify(user)}>{user.name}</option>)}
             </select>
             <br />
-            <div className='hr' />
             <br />
             <button type="submit" className="submit" style={{ padding: 10, margin: 10 }}>Create Account</button>
         </form>
