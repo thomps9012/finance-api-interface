@@ -11,37 +11,29 @@ import styles from '../../styles/Home.module.css';
 import { gql } from "@apollo/client";
 
 const GET_MY_INFO = gql`query me {
-    me {
-      id
-      name
-      vehicles {
-        id
-        name
-        description
-      }
-      mileage_requests {
-        requests {
-          id
-          current_status
-          date
-        }
-      }
-      check_requests {
-        requests {
-          id
-          current_status
-          date
-        }
-      }
-      petty_cash_requests {
-        requests {
-          id
-          current_status
-          date
-        }
-      }
-    }
-  }`;
+	me {
+		id
+		permissions
+		mileage_requests {
+			mileage
+			reimbursement
+			total_requests
+		}
+		petty_cash_requests {
+			total_amount
+			total_requests
+		}
+		check_requests {
+			total_requests
+			total_amount
+		}
+		incomplete_action_count
+		vehicles {
+			id
+			name
+		}
+	}
+}`;
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const sessionData = await unstable_getServerSession(

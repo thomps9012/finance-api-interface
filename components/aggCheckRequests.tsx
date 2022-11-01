@@ -13,12 +13,15 @@ export default function AggCheckRequests({ check_requests }: { check_requests: C
         <h2>Total Amount: ${Math.floor(total_amount).toPrecision(4)}</h2>
         <div className="hr" />
         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {vendors?.map((vendor: Vendor) => <div key={vendor.name} className={styles.card}>
-                <h2>{vendor.name}</h2>
-                <p>{vendor.address.street}</p>
-                <p>{vendor.address.city}, {vendor.address.state}</p>
-                <p>{vendor.address.website}</p>
-            </div>)}
+            {vendors?.map((vendor: Vendor) => {
+                const {name, address} = vendor;
+                const {street, city, state, website} = address;
+            return <div key={name} className={styles.card}>
+                <h2>{name}</h2>
+                <p>{street}</p>
+                <p>{city}, {state}</p>
+                <p>{website}</p>
+            </div>})}
         </div>
         <div className="hr" />
         <table>

@@ -277,3 +277,47 @@ button:active {
   text-decoration: underline;
   color: #0070f3;
 }
+
+.loader {
+  --s: 17vh;
+  
+  --_d: calc(0.353*var(--s));
+  height: var(--s); 
+  aspect-ratio: 3;
+  display: flex;
+}
+.loader:before,
+.loader:after {
+  content: "";
+  clip-path: polygon(var(--_d) 0,100% 0,100% calc(100% - var(--_d)),calc(100% - var(--_d)) 100%,0 100%,0 var(--_d));
+  background:
+    conic-gradient(from -90deg at calc(100% - var(--_d)) var(--_d),
+     #fff 135deg,#666 0 270deg,#aaa 0);
+}
+.loader:before {  
+  background-color: #3385cc;
+  background-blend-mode: multiply;
+  margin-right: calc(var(--_d)/-2);
+  animation: load 2.5s infinite linear;
+}
+.loader:after {
+  margin-left: calc(var(--_d)/-2);
+  opacity: 0.4;
+  flex: 1;
+}
+
+@keyframes  load {
+  0%,
+  5%   {width: 0%}
+  95%,
+  100% {width: 100%}
+}
+
+
+.loader-body {
+  margin: 0;
+  height: 100vh;
+  display: grid;
+  place-content: center;
+  background: white;
+}

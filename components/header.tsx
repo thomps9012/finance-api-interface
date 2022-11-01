@@ -3,14 +3,12 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "./header.module.css"
-import NavLinks from "./navLinks";
 
 export default function Header() {
     const { data: session } = useSession();
     const [openNav, setOpenNav] = useState(false);
-    const user_token: { role: string } = jwtDecode(session?.user.token)
-    const user_role = user_token?.role;
-    console.log('role', user_role)
+    const user_token: { permissions: string[] } = jwtDecode(session?.user.token)
+    const user_permissions = user_token?.permissions;
     return <>
         <div className={styles.mobileHeader}>
             {session?.user && (
@@ -68,7 +66,7 @@ export default function Header() {
                                 <a className={styles.navIcon} onClick={(e) => setOpenNav(false)}>📑 Check Request</a>
                             </Link>
                         </li>
-                        {user_role != 'EMPLOYEE' && <li className={styles.navIcon}>
+                        {user_permissions.find(() => "ADMIN") != undefined && <li className={styles.navIcon}>
                             <Link href="/users">
                                 <a className={styles.navIcon} onClick={(e) => setOpenNav(false)}>👨‍👦‍👦 Users</a>
                             </Link>
@@ -106,12 +104,12 @@ export default function Header() {
                         <ul className={styles.navIcons}>
                             <li className={styles.navIcon}>
                                 <Link href="/">
-                                    <a className={styles.navIcon}>🏡</a>
+                                    <a className={styles.navIcon}>🏡<span className={styles.navSpan}>Home</span></a>
                                 </Link>
                             </li>
                             <li className={styles.navIcon}>
                                 <Link href="/me/inbox">
-                                    <a className={styles.navIcon}>📭</a>
+                                    <a className={styles.navIcon}>📭<span className={styles.navSpan}>Inbox</span></a>
                                 </Link>
                             </li>
                             <li className={styles.navIcon}>
@@ -129,7 +127,7 @@ export default function Header() {
                                     <a className={styles.navIcon}>📑<span className={styles.navSpan}>Check Request</span></a>
                                 </Link>
                             </li>
-                            {user_role != 'EMPLOYEE' && <li className={styles.navIcon}>
+                            {user_permissions.find(() => "ADMIN") != undefined && <li className={styles.navIcon}>
                                 <Link href="/users">
                                     <a className={styles.navIcon}>👨‍👦‍👦<span className={styles.navSpan}>Users</span></a>
                                 </Link>
@@ -145,7 +143,6 @@ export default function Header() {
                     </>
                 )}
             </div>
-            <NavLinks />
         </header>
     </>
 }

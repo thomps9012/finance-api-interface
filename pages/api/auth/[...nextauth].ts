@@ -13,11 +13,14 @@ export const authOptions: NextAuthOptions = {
             console.log('user email: ', user.email)
             console.log('user name: ', user.name)
             console.log('image:', user.image)
-            const api_route = `https://default-20220902t090710-sr3vwdfovq-uc.a.run.app/graphql?query=mutation+_{sign_in(email:"${user.email}", name:"${user.name}")}`
+            console.log('user id:', user.id)
+            const api_route = `https://default-20220902t090710-sr3vwdfovq-uc.a.run.app/graphql?query=mutation+_{login(id: "${user.id}", email:"${user.email}", name:"${user.name}")}`
+            console.log(api_route)
             const json = await fetch(api_route).then(res => res.json())
+            console.log(json)
             if (json) {
-                user.token = json.data.sign_in
-                console.log('api json', json.data.sign_in)
+                user.token = json.data.login
+                console.log('api json', json.data.login)
                 console.log('user token', user.token)
                 return true
             }
