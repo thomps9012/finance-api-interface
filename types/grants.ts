@@ -1,4 +1,3 @@
-import { CheckDetail, Vendor } from "./checkrequests";
 import { MileageDetail } from "./mileage";
 import { PettyCashDetail } from "./pettycash";
 
@@ -13,17 +12,18 @@ export interface GrantMileage {
     tolls: number;
     parking: number;
     reimbursement: number;
-    requests: [MileageDetail];
+    requests: MileageDetail[];
 }
 export interface GrantPettyCash {
     total_amount: number;
-    requests: [PettyCashDetail];
+    grant: GrantInfo;
+    total_requests: number;
+    requests: PettyCashDetail[];
 }
 
 export interface GrantCheckRequest {
     grant: GrantInfo;
-    vendors: [Vendor];
-    credit_cards: [string];
+    requests: PettyCashDetail[]
     total_amount: number;
-    requests: [CheckDetail];
+    total_requests: number;
 }
