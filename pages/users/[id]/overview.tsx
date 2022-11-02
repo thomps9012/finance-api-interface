@@ -43,7 +43,7 @@ export default function UserRecordOverview({
       {/* <h1>Data for {name} <Link href={`/users/${userdata.id}/edit`}><a>✏️</a></Link></h1> */}
       <h3>Permissions </h3>
       {permissions.map((permission) => (
-        <p>{permission}</p>
+        <p key={permission}>{permission}</p>
       ))}
       <div className="hr" />
       <h2>Request Overview</h2>

@@ -136,7 +136,7 @@ export default function RecordDetail({ recorddata, user_role, userID, jwt, grant
                 {action_history.slice(0, 3).map((action: Action) => {
                     const { id, user, created_at, status } = action;
                     return <tr key={id} className={status}>
-                        <td className="table-cell">{user.name}</td>
+                        <td className="table-cell">{user}</td>
                         <td className="table-cell">{status}</td>
                         <td className="table-cell">{dateFormat(created_at)}</td>
                     </tr>

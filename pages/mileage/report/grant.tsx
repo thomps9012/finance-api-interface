@@ -10,34 +10,9 @@ import { GrantInfo, GrantMileage } from '../../../types/grants';
 import dateFormat from '../../../utils/dateformat';
 import titleCase from '../../../utils/titlecase';
 import Link from 'next/link';
+import { GET_GRANTS, GRANT_MILEAGE } from '../../../graphql/queries';
 // need to build out on backend
-const MILEAGE_REPORT = gql`query grantMileageReport($start_date: String!, $end_date: String!, $grant_id: ID!) {
-    grant_mileage_report(start_date: $start_date, end_date: $end_date, grant_id: $grant_id){
-        grant {
-            id
-            name
-        }
-        mileage
-        tolls
-        parking
-        reimbursement
-        requests {
-            id
-            date
-            current_status
-            reimbursement
-            trip_mileage
-        }
-    }
-}`;
 
-// need to build out query for backend
-const GRANT_LIST = gql`query getGrants {
-    all_grants {
-        id
-        name
-    }
-}`
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const sessionData = await unstable_getServerSession(
@@ -49,13 +24,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     const grantID = "H79TI082369"
     const client = createClient(jwt);
     const today = new Date().toISOString();
-    const monthAgo = parseInt(today.split('-')[1]) - 1;
-    const monthString = monthAgo > 9 ? monthAgo : '0' + monthAgo
-    const startDate = today.split('-')[0] + '-' + monthString + '-' + today.split('-')[2]
-    const res = await client.query({ query: MILEAGE_REPORT, variables: { grant_id: grantID, start_date: startDate, end_date: today } })
-    const grants = await client.query({ query: GRANT_LIST })
-    console.log(res)
-    console.log(grants)
+    const startDate = new Date(2018, 0, 1)
+    const res = await client.query({ query: GRANT_MILEAGE, variables: { grant_id: grantID, start_date: startDate, end_date: today } })
+    const grants = await client.query({ query: GET_GRANTS })
     return {
         props: {
             base_report: sessionData ? res.data.grant_mileage_report : null,
@@ -66,7 +37,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 }
 
 export default function UserMonthlyMileageReport({ base_report, jwt, grant_list }: { base_report: GrantMileage, grant_list: GrantInfo[], jwt: string }) {
-    const [start_date, setStart] = useState(new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString())
+    const [start_date, setStart] = useState(new Date(2018, 0, 1).toISOString())
     const [end_date, setEnd] = useState(new Date().toISOString())
     const [selectedGrant, setSelectedGrant] = useState("H79TI082369")
     const [results, setResults] = useState(base_report)
@@ -89,7 +60,7 @@ export default function UserMonthlyMileageReport({ base_report, jwt, grant_list 
     useEffect(() => {
         const fetch_data = async () => {
             const client = createClient(jwt);
-            const res = await client.query({ query: MILEAGE_REPORT, variables: { grant_id: selectedGrant, start_date: start_date, end_date: end_date } })
+            const res = await client.query({ query: GRANT_MILEAGE, variables: { grant_id: selectedGrant, start_date: start_date, end_date: end_date } })
             const new_data = res.data.grant_mileage_report;
             setResults(new_data)
         }

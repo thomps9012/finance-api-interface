@@ -4,27 +4,11 @@ import { unstable_getServerSession } from 'next-auth';
 import Link from 'next/link';
 import { useState } from 'react';
 import createClient from '../../../graphql/client';
+import { MONTHLY_MILEAGE } from '../../../graphql/queries';
 import styles from '../../../styles/Home.module.css';
 import { MileageDetail, MonthlyMileage } from '../../../types/mileage';
 import dateFormat from '../../../utils/dateformat';
 import { authOptions } from '../../api/auth/[...nextauth]';
-
-const ORG_MILEAGE_REPORT = gql`query monthlyMileageReport($month: Int!, $year: Int!) {
-    mileage_monthly_report(month: $month, year: $year){
-        user_id
-        name
-        month
-        year
-        mileage
-        tolls
-        parking
-        reimbursement
-        requests {
-            id
-            date
-        }
-    }
-}`;
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const sessionData = await unstable_getServerSession(
@@ -34,7 +18,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     )
     const jwt = sessionData?.user.token
     const client = createClient(jwt);
-    const res = await client.query({ query: ORG_MILEAGE_REPORT, variables: { month: new Date().getMonth(), year: new Date().getFullYear() } })
+    const res = await client.query({ query: MONTHLY_MILEAGE, variables: { month: new Date().getMonth(), year: new Date().getFullYear() } })
     return {
         props: {
             base_report: sessionData ? res.data.mileage_monthly_report : null,
@@ -48,7 +32,7 @@ export default function UserMonthlyMileageReport({ base_report, jwt }: { base_re
     const client = createClient(jwt);
     const handleChange = async (e: any) => {
         const selectDate = e.target.value.split('-')
-        const res = await client.query({ query: ORG_MILEAGE_REPORT, variables: { month: parseInt(selectDate[1]), year: parseInt(selectDate[0]) } })
+        const res = await client.query({ query: MONTHLY_MILEAGE, variables: { month: parseInt(selectDate[1]), year: parseInt(selectDate[0]) } })
         setResults(res.data.mileage_monthly_report)
     }
     return <main className={styles.main}>

@@ -77,7 +77,7 @@ export default function EditRecord({ recorddata, jwt }: { jwt: string, recorddat
     }
     return <main className={styles.main}>
         <form id='petty-cash-form'>
-            <GrantSelect state={grantID} setState={setGrantID} />
+            {/* <GrantSelect state={grantID} setState={setGrantID} /> */}
             <h4>Amount</h4>
             <input type="number" value={amount} onChange={(e: any) => setAmount(parseFloat(e.target.value))} />
             <h4>Date {dateFormat(requestDate)}</h4>

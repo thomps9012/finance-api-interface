@@ -87,7 +87,7 @@ export default function UsersInfo({ userdata }: { userdata: UserInfo[] }) {
               </a>
             </Link>
             {permissions.map((permission) => (
-              <p>{permission}</p>
+              <p key={permission}>{permission}</p>
             ))}
             <p>{email}</p>
             <div className="hr" />

@@ -89,7 +89,7 @@ export default function EditMileage({ recorddata, jwt }: { recorddata: MileageDe
     }
     return <main className={styles.main}>
         <form id="mileage-form">
-            <GrantSelect state={grantID} setState={setGrantID} />
+            {/* <GrantSelect state={grantID} setState={setGrantID} /> */}
             <h4>Trip Date {dateFormat(requestDate)}</h4>
             <input type="date" value={requestDate} name="date" onChange={(e: any) => setDate(new Date(e.target.value).toISOString())} />
             <h4>Starting Location</h4>
