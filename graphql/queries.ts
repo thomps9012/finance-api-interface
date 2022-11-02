@@ -469,6 +469,7 @@ export const GRANT_CHECK_REQUEST = gql`
       total_requests
       requests {
         id
+        date
         is_active
         current_status
         created_at

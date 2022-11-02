@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client"
 import { GetServerSidePropsContext } from "next"
 import { unstable_getServerSession } from "next-auth"
 import { useState, useEffect } from "react"
@@ -9,36 +8,8 @@ import styles from '../../../styles/Home.module.css';
 import { CheckDetail, Vendor } from "../../../types/checkrequests"
 import { GrantCheckRequest, GrantInfo } from "../../../types/grants"
 import Link from "next/link"
-const GRANT_CHECK_REPORT = gql`query grantCheckRequests($grant_id: ID!, $start_date: String!, $end_date: String!) {
-    grant_check_requests(grant_id: $grant_id, start_date: $start_date, end_date: $end_date){
-        total_amount
-        vendors {
-            name
-            address {
-                street
-                city
-                state
-                website
-            }
-        }
-        requests {
-            id
-            created_at
-            date
-            current_status
-            order_total
-            purchases {
-                amount
-            }
-        }
-    }
-}`
-const GRANT_LIST = gql`query getGrants {
-    all_grants {
-        id
-        name
-    }
-}`
+import { GET_GRANTS, GRANT_CHECK_REQUEST } from "../../../graphql/queries"
+
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const sessionData = await unstable_getServerSession(
         context.req,
@@ -48,12 +19,10 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     const jwt = sessionData?.user.token
     const grantID = "H79TI082369"
     const client = createClient(jwt);
-    const today = new Date().toISOString();
-    const monthAgo = parseInt(today.split('-')[1]) - 1;
-    const monthString = monthAgo > 9 ? monthAgo : '0' + monthAgo
-    const startDate = today.split('-')[0] + '-' + monthString + '-' + today.split('-')[2]
-    const res = await client.query({ query: GRANT_CHECK_REPORT, variables: { grant_id: grantID, start_date: startDate, end_date: today } })
-    const grants = await client.query({ query: GRANT_LIST })
+    const end_date = new Date().toISOString();
+    const start_date = new Date(2018,0,1)
+    const res = await client.query({ query: GRANT_CHECK_REQUEST, variables: { grant_id: grantID, start_date: start_date, end_date: end_date } })
+    const grants = await client.query({ query: GET_GRANTS })
     console.log(res)
     return {
         props: {
@@ -64,7 +33,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     }
 }
 export default function GrantCheckRequestReport({ base_report, grant_list, jwt }: { jwt: string, grant_list: GrantInfo[], base_report: GrantCheckRequest }) {
-    const [start_date, setStart] = useState(new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString())
+    const [start_date, setStart] = useState(new Date(2018, 0, 1).toISOString())
     const [end_date, setEnd] = useState(new Date().toISOString())
     const [selectedGrant, setSelectedGrant] = useState("H79TI082369")
     const [results, setResults] = useState(base_report)
@@ -85,7 +54,7 @@ export default function GrantCheckRequestReport({ base_report, grant_list, jwt }
     useEffect(() => {
         const fetch_data = async () => {
             const client = createClient(jwt);
-            const res = await client.query({ query: GRANT_CHECK_REPORT, variables: { grant_id: selectedGrant, start_date: start_date, end_date: end_date } })
+            const res = await client.query({ query: GRANT_CHECK_REQUEST, variables: { grant_id: selectedGrant, start_date: start_date, end_date: end_date } })
             const new_data = res.data.grant_check_requests;
             setResults(new_data)
         }

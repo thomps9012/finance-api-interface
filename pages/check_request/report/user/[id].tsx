@@ -23,7 +23,9 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     const decoded_token: CustomJWT = jwtDecode(jwt);
     const userID = decoded_token.id;
     const client = createClient(jwt);
-    const res = await client.query({ query: GET_USER_CHECK_REQUESTS, variables: { id: id != "null" ? id : userID} })
+    const start_date = new Date(2018, 0, 1)
+    const end_date = new Date()
+    const res = await client.query({ query: GET_USER_CHECK_REQUESTS, variables: { id: id != "null" ? id : userID, start_date: start_date, end_date} })
     const users = await client.query({ query: ALL_USERS })
     console.log(res)
     return {
@@ -36,7 +38,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     }
 }
 export default function UserPettyCashReport({ base_report, userID, user_list, jwt }: { jwt: string, user_list: UserInfo[], userID: string, base_report: UserCheckRequests }) {
-    const [start_date, setStart] = useState(new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString())
+    const [start_date, setStart] = useState(new Date(2018, 0, 1).toISOString())
     const [end_date, setEnd] = useState(new Date().toISOString())
     const [selectedUserID, setSelectedUserID] = useState(userID)
     const [results, setResults] = useState(base_report)
@@ -68,14 +70,14 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
         <div className={styles.inputRow}>
             <div className={styles.inputCol}>
                 <h3>Start Date</h3>
-                <hr />
                 <h3>{dateFormat(start_date)}</h3>
+                <hr />
                 <input type="date" name="start_date" value={start_date} onChange={handleChange} />
             </div>
             <div className={styles.inputCol}>
                 <h3>End Date</h3>
-                <hr />
                 <h3>{dateFormat(end_date)}</h3>
+                <hr />
                 <input type="date" name="end_date" value={end_date} onChange={handleChange} />
             </div>
             <div className={styles.inputCol}>
@@ -107,7 +109,7 @@ export default function UserPettyCashReport({ base_report, userID, user_list, jw
                     <th className='table-cell'>Total</th>
                 </thead>
                 <tbody>
-                    {results.requests.map((request: CheckDetail) => {
+                    {results.requests?.map((request: CheckDetail) => {
                         const { id, date, current_status, order_total, purchases } = request;
                         return <Link key={id} href={`/check_request/detail/${id}`}>
                             <tr id='table-row' className={current_status}>
