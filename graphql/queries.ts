@@ -1,4 +1,11 @@
 import { gql } from "@apollo/client";
+// utils 
+export const GET_GRANTS = gql`query AllGrants {
+	all_grants{
+		id
+		name
+	}
+}`
 // user
 export const GET_MY_INBOX = gql`
   query me {

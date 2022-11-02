@@ -25,7 +25,7 @@ export default function CategorySelect({
   };
   return (
     <>
-      <h3>Request Location / Category</h3>
+      <h3>Request Category</h3>
       <select
         name={state}
         onChange={handleChange}
