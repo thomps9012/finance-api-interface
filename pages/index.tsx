@@ -89,12 +89,9 @@ export default function Landing({ notifications, last_login }: { notifications: 
       {user_permissions.find(() =>"ADMIN") != undefined && <>
         <h2>👨‍👦‍👦 Users </h2>
         <hr />
-        <Link href={'/users/create'}>
-          <a><h3>New Account</h3></a>
-        </Link>
         <Link href={'/users'}>
           <a>
-            <h3>All Actions</h3>
+            <h3>View All</h3>
           </a>
         </Link>
       </>

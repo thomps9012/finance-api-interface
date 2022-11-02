@@ -31,7 +31,7 @@ export interface Action {
 export interface CheckRequestOverview {
     created_at: string;
     current_status: string;
-    date: Date;
+    date: string;
     grant: GrantInfo;
     grant_id: string;
     id: string;
@@ -43,8 +43,8 @@ export interface CheckRequestOverview {
 }
 
 export interface UserCheckRequests {
-    end_date: Date;
-    start_date: Date;
+    end_date: string;
+    start_date: string;
     requests: CheckDetail[];
     total_amount: number;
     user: UserInfo;
@@ -54,10 +54,10 @@ export interface UserCheckRequests {
 export interface CheckDetail {
     action_history: Action[];
     category: string;
-    created_at: Date;
+    created_at: string;
     current_status: string;
     current_user: string;
-    date: Date;
+    date: string;
     description: string;
     grant_id: string;
     id: string;
