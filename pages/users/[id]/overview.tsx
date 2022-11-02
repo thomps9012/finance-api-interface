@@ -89,12 +89,12 @@ export default function UserRecordOverview({
           <h3>Check Requests</h3>
           {check_requests.total_requests > 0 ? (
             <>
-            <Link href={`/mileage/report/user/${id}`}>
-              <a>View All of {name}'s Mileage</a>
+            <Link href={`/check_request/report/user/${id}`}>
+              <a>View All of {name}'s Check Requests</a>
             </Link>
             <p>{check_requests.total_requests} Total Requests</p>
             <Link
-              href={`/mileage/detail/${check_requests.last_request.id}`}
+              href={`/check_request/detail/${check_requests.last_request.id}`}
             >
               <a>
                 <h4>Most Recent Request</h4>
@@ -120,12 +120,12 @@ export default function UserRecordOverview({
           <h3>Petty Cash</h3>
           {petty_cash_requests.total_requests > 0 ? (
             <>
-            <Link href={`/mileage/report/user/${id}`}>
-              <a>View All of {name}'s Mileage</a>
+            <Link href={`/petty_cash/report/user/${id}`}>
+              <a>View All of {name}'s Petty Cash Requests</a>
             </Link>
             <p>{petty_cash_requests.total_requests} Total Requests</p>
             <Link
-              href={`/mileage/detail/${petty_cash_requests.last_request.id}`}
+              href={`/petty_cash/detail/${petty_cash_requests.last_request.id}`}
             >
               <a>
                 <h4>Most Recent Request</h4>

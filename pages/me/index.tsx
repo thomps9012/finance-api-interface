@@ -8,32 +8,9 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import createClient from "../../graphql/client";
 import styles from '../../styles/Home.module.css';
-import { gql } from "@apollo/client";
+import { GET_MY_INFO } from "../../graphql/queries";
 
-const GET_MY_INFO = gql`query me {
-	me {
-		id
-		permissions
-		mileage_requests {
-			mileage
-			reimbursement
-			total_requests
-		}
-		petty_cash_requests {
-			total_amount
-			total_requests
-		}
-		check_requests {
-			total_requests
-			total_amount
-		}
-		incomplete_action_count
-		vehicles {
-			id
-			name
-		}
-	}
-}`;
+
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const sessionData = await unstable_getServerSession(
@@ -71,48 +48,19 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
     const res = await client.mutate({ mutation: REMOVE_VEHICLE, variables: { vehicle_id } })
     res.data.remove_vehicle ? router.push('/me') : null;
   }
+  const {mileage_requests, vehicles, check_requests, petty_cash_requests} = userdata;
   return <main className={styles.container}>
-
-    <div style={{ margin: 10, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-      <div style={{ flexDirection: 'column' }}>
-        <Link href="/me/mileage"><a><h1>Mileage</h1></a></Link>
-        {userdata.mileage_requests.requests.length > 0 ?
-          userdata.mileage_requests.requests.slice(0, 3).map((mileage_req: any) => <div key={mileage_req.id}>
-            <Link href={`/mileage/detail/${mileage_req.id}`}><a><p className={mileage_req.current_status}>{dateFormat(mileage_req.date)} {mileage_req.current_status}</p></a></Link>
-          </div>
-          ) : <p className="ARCHIVED">None</p>}
-      </div>
-
-      <div style={{ flexDirection: 'column' }}>
-        <Link href="/me/checkRequests"><a><h1>Check Requests</h1></a></Link>
-        {userdata.check_requests.requests.length > 0 ?
-          userdata.check_requests.requests.slice(0, 3).map((check_req: any) => <div key={check_req.id}>
-            <Link href={`/check_request/detail/${check_req.id}`}><a><p className={check_req.current_status}>{dateFormat(check_req.date)} {check_req.current_status}</p></a></Link>
-          </div>
-          ) : <p className="ARCHIVED">None</p>}
-      </div>
-
-      <div style={{ flexDirection: 'column' }}>
-        <Link href="/me/pettyCash"><a><h1>Petty Cash</h1></a></Link>
-        {userdata.petty_cash_requests.requests.length > 0 ?
-          userdata.petty_cash_requests.requests.slice(0, 3).map((petty_cash_req: any) => <div key={petty_cash_req.id}>
-            <Link href={`/petty_cash/detail/${petty_cash_req.id}`}><a><p className={petty_cash_req.current_status}>{dateFormat(petty_cash_req.date)} {petty_cash_req.current_status}</p></a></Link>
-          </div>
-          ) : <p className="ARCHIVED">None</p>}
-      </div>
-    </div>
-    <br />
-    <a href='/directDeposit.pdf' style={{ textAlign: 'right' }} download><h3>Download Direct Deposit Form</h3></a>
-    <div className="hr" />
+ <a href='/directDeposit.pdf' style={{ textAlign: 'right' }} download><h3>Download Direct Deposit Form</h3></a>
     <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
       <div style={{ padding: 20 }}>
-        {userdata.vehicles?.length > 0 && (<h2>Current Vehicles</h2>)}
-        {userdata.vehicles?.map((vehicle: Vehicle) => {
-          return <a onClick={() => removeVehicle(vehicle.id)} key={vehicle.id} >
+        {vehicles?.length > 0 && (<h2>Current Vehicles</h2>)}
+        {vehicles?.map((vehicle: Vehicle) => {
+          const {id, name, description} = vehicle;
+          return <a onClick={() => removeVehicle(id)} key={id} >
             <h1 className='remove'>X</h1>
             <div style={{ textAlign: 'left' }}>
-              <h3>{vehicle.name}</h3>
-              <h4>{vehicle.description}</h4>
+              <h3>{name}</h3>
+              <h4>{description}</h4>
               <hr />
             </div>
           </a>
@@ -128,6 +76,101 @@ export default function MePage({ userdata, jwt }: { userdata: UserOverview, jwt:
         <button type="submit" className="submit" style={{ padding: 10, margin: 10 }}>Add Vehicle</button>
       </form>
     </div>
-
+    <div className="hr" />
+    <div style={{ margin: 10, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+    <div style={{ flexDirection: "column" }}>
+          <h3>Mileage</h3>
+          {mileage_requests.total_requests > 0 ? (
+            <>
+              <Link href={`/me/mileage`}>
+                <a>View All</a>
+              </Link>
+              <p>{mileage_requests.total_requests} Total Requests</p>
+              <Link
+                href={`/mileage/detail/${mileage_requests.last_request.id}`}
+              >
+                <a>
+                  <h4>Most Recent Request</h4>
+                </a>
+              </Link>
+              <h3 className={mileage_requests.last_request.current_status}>
+                {mileage_requests.last_request.current_status
+                  .split("_")
+                  .join(" ")}
+              </h3>
+              <p>Date - {dateFormat(mileage_requests.last_request.date)}</p>
+              <p>
+                Created - {dateFormat(mileage_requests.last_request.created_at)}
+              </p>
+            </>
+          ) : (
+            <p className="ARCHIVED">
+              {mileage_requests.total_requests} Total Requests
+            </p>
+          )}
+        </div>
+        <div style={{ flexDirection: "column" }}>
+          <h3>Check Requests</h3>
+          {check_requests.total_requests > 0 ? (
+            <>
+            <Link href={`/me/checkRequests`}>
+              <a>View All</a>
+            </Link>
+            <p>{check_requests.total_requests} Total Requests</p>
+            <Link
+              href={`/check_request/detail/${check_requests.last_request.id}`}
+            >
+              <a>
+                <h4>Most Recent Request</h4>
+              </a>
+            </Link>
+            <h3 className={check_requests.last_request.current_status}>
+              {check_requests.last_request.current_status
+                .split("_")
+                .join(" ")}
+            </h3>
+            <p>Date - {dateFormat(check_requests.last_request.date)}</p>
+            <p>
+              Created - {dateFormat(check_requests.last_request.created_at)}
+            </p>
+          </>
+          ) : (
+            <p className="ARCHIVED">
+              {check_requests.total_requests} Total Requests
+            </p>
+          )}
+        </div>
+        <div style={{ flexDirection: "column" }}>
+          <h3>Petty Cash Requests</h3>
+          {petty_cash_requests.total_requests > 0 ? (
+            <>
+            <Link href={`/me/pettyCash`}>
+              <a>View All</a>
+            </Link>
+            <p>{petty_cash_requests.total_requests} Total Requests</p>
+            <Link
+              href={`/petty_cash/detail/${petty_cash_requests.last_request.id}`}
+            >
+              <a>
+                <h4>Most Recent Request</h4>
+              </a>
+            </Link>
+            <h3 className={petty_cash_requests.last_request.current_status}>
+              {petty_cash_requests.last_request.current_status
+                .split("_")
+                .join(" ")}
+            </h3>
+            <p>Date - {dateFormat(petty_cash_requests.last_request.date)}</p>
+            <p>
+              Created - {dateFormat(petty_cash_requests.last_request.created_at)}
+            </p>
+          </>
+          ) : (
+            <p className="ARCHIVED">
+              {petty_cash_requests.total_requests} Total Requests
+            </p>
+          )}
+        </div>
+    </div>
   </main>
 }

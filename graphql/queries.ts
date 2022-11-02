@@ -35,32 +35,50 @@ export const GET_NOTIFICATIONS = gql`
     }
   }
 `;
-export const GET_MY_INFO = gql`
-  query me {
-    me {
-      id
-      permissions
-      mileage_requests {
-        mileage
-        reimbursement
-        total_requests
-      }
-      petty_cash_requests {
-        total_amount
-        total_requests
-      }
-      check_requests {
-        total_requests
-        total_amount
-      }
-      incomplete_action_count
-      vehicles {
+export const GET_MY_INFO = gql`query me {
+	me {
+		id
+		permissions
+		mileage_requests {
+      mileage
+      total_requests
+      last_request {
         id
-        name
+        current_status
+        date
+        created_at
+        is_active
       }
     }
-  }
-`;
+    check_requests {
+      total_amount
+      total_requests
+      last_request {
+        id
+        current_status
+        date
+        created_at
+        is_active
+      }
+    }
+    petty_cash_requests {
+      total_amount
+      total_requests
+      last_request {
+        id
+        current_status
+        date
+        created_at
+        is_active
+      }
+    }
+		incomplete_action_count
+		vehicles {
+			id
+			name
+		}
+	}
+}`;
 export const ALL_USERS = gql`
   query AllUsers {
     all_users {

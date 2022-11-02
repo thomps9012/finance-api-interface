@@ -47,9 +47,9 @@ export default function Landing({ notifications, last_login }: { notifications: 
   return <main className={styles.landing}>
     <div className={styles.container}>
       <header style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-        <h1>Finance Request Hub</h1>
+        <h1>Financial Request Hub</h1>
         <Link href={'/me/inbox'}>
-          <a><h2>{notifications} New Action Items</h2><h2>Since {dateFormat(last_login)}</h2></a>
+          <a><h2>{notifications} New Action Items</h2></a>
         </Link>
       </header>
       <br />
