@@ -155,6 +155,9 @@ export const GET_USER_CHECK_REQUESTS = gql`
         date
         category
         created_at
+        purchases {
+          amount
+        }
         order_total
         current_user
         current_status
