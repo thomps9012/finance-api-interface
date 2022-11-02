@@ -86,7 +86,11 @@ export default function CreateRequest({
   return (
     <main className={styles.container}>
       <form id="petty-cash-form">
-        <GrantSelect state={grantID} setState={setGrantID} grants={grant_data} />
+        <GrantSelect
+          state={grantID}
+          setState={setGrantID}
+          grants={grant_data}
+        />
         <CategorySelect state={category} setState={setCategory} />
         <h4>Amount</h4>
         <input
