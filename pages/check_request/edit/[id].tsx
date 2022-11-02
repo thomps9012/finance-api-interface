@@ -1,4 +1,3 @@
-import { gql } from "@apollo/client";
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
@@ -12,40 +11,11 @@ import { CheckDetail } from "../../../types/checkrequests";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import styles from '../../../styles/Home.module.css';
 import dateFormat from "../../../utils/dateformat";
+import { CHECK_DETAIL, GET_GRANTS } from "../../../graphql/queries";
+import { EDIT_CHECK_REQ } from "../../../graphql/mutations";
+import { GrantInfo } from "../../../types/grants";
+import CategorySelect from "../../../components/categorySelect";
 
-const EDIT_CHECK_REQUEST = gql`mutation editCheckRequest($request_id: ID!, $grant_id: ID!, $request: CheckRequestInput!) {
-    edit_check_request(request_id: $request_id, grant_id: $grant_id, request: $request){
-        id
-        current_status
-    }
-}`
-
-const CHECK_DETAIL = gql`query checkDetail($id: ID!){
-    check_request_detail(id: $id) {
-      id
-      grant_id
-      date
-      vendor {
-        name
-        address {
-          website
-          street
-          city
-          state
-          zip
-        }
-      }
-      description
-      purchases {
-        amount
-        description
-        grant_line_item
-      }
-      receipts
-      order_total
-      credit_card
-    }
-  }`;
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const { id } = context.query
@@ -57,17 +27,20 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     const jwt = sessionData?.user.token
     const client = createClient(jwt);
     const res = await client.query({ query: CHECK_DETAIL, variables: { id } })
+    const grants = await client.query({query: GET_GRANTS})
     return {
         props: {
             recorddata: sessionData ? res.data.check_request_detail : [],
-            jwt: jwt ? jwt : ""
+            jwt: jwt ? jwt : "",
+            grants: sessionData ? grants.data.all_grants : []
         }
     }
 }
 
-export default function EditCheckRequest({ recorddata, jwt }: { recorddata: CheckDetail, jwt: string }) {
+export default function EditCheckRequest({ recorddata, jwt, grants }: { recorddata: CheckDetail, jwt: string, grants: GrantInfo[]}) {
     const router = useRouter();
     const [receipts, setReceipts] = useState(recorddata.receipts);
+    const [category, setCategory] = useState(recorddata.category)
     const [grantID, setGrantID] = useState(recorddata.grant_id)
     const [vendorName, setVendorName] = useState(recorddata.vendor.name)
     const [vendorAddress, setVendorAddress] = useState(recorddata.vendor.address)
@@ -91,11 +64,12 @@ export default function EditCheckRequest({ recorddata, jwt }: { recorddata: Chec
         }
         const client = createClient(jwt);
         const res = await client.mutate({
-            mutation: EDIT_CHECK_REQUEST,
+            mutation: EDIT_CHECK_REQ,
             variables: {
                 request_id: recorddata.id,
                 grant_id: grantID,
                 request: {
+                    category: category,
                     receipts: receipts,
                     date: requestDate,
                     purchases: purchaseArr,
@@ -109,7 +83,8 @@ export default function EditCheckRequest({ recorddata, jwt }: { recorddata: Chec
     return <main className={styles.main}>
         <form>
             <h4>Grant</h4>
-            <GrantSelect state={grantID} setState={setGrantID} />
+            <GrantSelect state={grantID} setState={setGrantID} grants={grants} />
+            <CategorySelect state={category} setState={setCategory} />
             <h4>Date {dateFormat(requestDate)}</h4>
             <input type="date" value={requestDate} name="date" onChange={(e: any) => setDate(new Date(e.target.value).toISOString())} />
             <h4>Description</h4>

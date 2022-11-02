@@ -67,4 +67,5 @@ export interface CheckDetail {
     receipts: string[];
     user_id: string;
     vendor: Vendor;
+    credit_card: string;
 }

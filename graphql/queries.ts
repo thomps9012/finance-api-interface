@@ -1,5 +1,12 @@
 import { gql } from "@apollo/client";
 // utils 
+export const GET_GRANT = gql`query SingleGrant($id: ID!){
+	single_grant(id: $id) {
+		__typename
+		id
+		name
+	}
+}`
 export const GET_GRANTS = gql`query AllGrants {
 	all_grants{
 		id
@@ -413,6 +420,7 @@ export const CHECK_DETAIL = gql`
       }
       credit_card
       date
+      current_status
       description
       grant_id
       order_total

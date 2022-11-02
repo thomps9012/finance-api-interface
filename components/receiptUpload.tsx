@@ -3,7 +3,14 @@ import Image from "next/image";
 import { useState } from "react";
 let imageState: ImageType[]
 export default function ReceiptUpload({ receipts, setReceipts }: any) {
-    const [imageList, setImageList] = useState(imageState)
+    const format_image_list = () => {
+        const image_state = receipts.map((receipt: string) => ({
+            data_url: receipt,
+            file: "An Image",
+        }))
+        return image_state
+    }
+    const [imageList, setImageList] = useState(format_image_list())
     const onChange = (
         receiptList: ImageListType,
     ) => {
