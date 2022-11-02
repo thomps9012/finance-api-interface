@@ -41,6 +41,7 @@ export interface PettyCashInput {
     request: PettyCashRequestInput;
 }
 export interface UserPettyCash {
+    user: UserInfo;
     end_date: string;
     requests: PettyCashDetail[];
     start_date: string;

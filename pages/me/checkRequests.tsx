@@ -3,37 +3,11 @@ import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
 import createClient from "../../graphql/client";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { UserOverview } from "../../types/users";
-import { gql } from "@apollo/client";
-const GET_MY_CHECKS = gql`{
-    me {
-      id
-      name
-      last_login
-      check_requests {
-        vendors {
-          name
-          address {
-            street
-            city
-            state
-            website
-          }
-        }
-        requests {
-          id
-          current_status
-          date
-          order_total
-          purchases {
-            amount
-          }
-        }
-        total_amount
-      }
-    }
-  }
-  `;
+import { GET_USER_CHECK_REQUESTS } from "../../graphql/queries";
+import jwtDecode from "jwt-decode";
+import { CustomJWT } from "../../types/next-auth";
+import { UserCheckRequests } from "../../types/checkrequests";
+
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const sessionData = await unstable_getServerSession(
         context.req,
@@ -41,16 +15,18 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
         authOptions
     )
     const jwt = sessionData?.user.token
+    const decoded_jwt: CustomJWT = jwtDecode(jwt)
     const client = createClient(jwt);
-    const res = await client.query({ query: GET_MY_CHECKS, fetchPolicy: 'no-cache' })
-    console.log(res.data, "userdata on server")
+    const res = await client.query({ query: GET_USER_CHECK_REQUESTS, variables: {
+      id: decoded_jwt.id
+    }, fetchPolicy: 'no-cache' })
     return {
         props: {
-            userdata: sessionData ? res.data.me : []
+            user_check_requests: sessionData ? res.data.user_check_requests : []
         }
     }
 }
 
-export default function MyCheckRequests({ userdata }: { userdata: UserOverview }) {
-    return <AggCheckRequests check_requests={userdata.check_requests} />
+export default function MyCheckRequests({ user_check_requests }: { user_check_requests: UserCheckRequests }) {
+    return <AggCheckRequests check_requests={user_check_requests} />
 }

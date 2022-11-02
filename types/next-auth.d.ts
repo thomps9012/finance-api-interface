@@ -26,3 +26,11 @@ declare module "next-auth/jwt" {
         idToken?: string;
     }
 }
+
+export interface CustomJWT {
+    admin: boolean;
+    exp: number;
+    id: string;
+    name: string;
+    permissions: string[];
+}

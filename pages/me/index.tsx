@@ -75,22 +75,6 @@ export default function MePage({
           justifyContent: "space-between",
         }}
       >
-        <div style={{ padding: 20 }}>
-          {vehicles?.length > 0 && <h2>Current Vehicles</h2>}
-          {vehicles?.map((vehicle: Vehicle) => {
-            const { id, name, description } = vehicle;
-            return (
-              <a onClick={() => removeVehicle(id)} key={id}>
-                <h1 className="remove">X</h1>
-                <div style={{ textAlign: "left" }}>
-                  <h3>{name}</h3>
-                  <h4>{description}</h4>
-                  <hr />
-                </div>
-              </a>
-            );
-          })}
-        </div>
         <form onSubmit={handleAdd} id="vehicleInput">
           <h2>Add Vehicle</h2>
           <label>Name</label>
@@ -101,18 +85,35 @@ export default function MePage({
           <button
             type="submit"
             className="submit"
-            style={{ padding: 10, margin: 10 }}
+            style={{ padding: 10, margin: 10, zIndex: 0 }}
           >
             Add Vehicle
           </button>
         </form>
-        <div style={{
-          marginTop: 100,
-          textAlign: 'right',
-          color: 'cadetblue',
-          maxWidth: '30%',
-          fontSize: 30
-        }}>
+        <div style={{ padding: 20 }}>
+          {vehicles?.length > 0 && <h2>Current Vehicles</h2>}
+          {vehicles?.map((vehicle: Vehicle) => {
+            const { id, name, description } = vehicle;
+            return (
+              <a onClick={() => removeVehicle(id)} key={id}>
+                <h1 className="remove">X</h1>
+                <div style={{ textAlign: "left" }}>
+                  <h3>{name}</h3>
+                  <h4>{description}</h4>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+        <div
+          style={{
+            marginTop: 100,
+            textAlign: "right",
+            color: "cadetblue",
+            maxWidth: "30%",
+            fontSize: 30,
+          }}
+        >
           <a href="/directDeposit.pdf" download>
             <h3>Download Direct Deposit Form</h3>
           </a>
@@ -128,25 +129,35 @@ export default function MePage({
         }}
       >
         <div style={{ flexDirection: "column" }}>
-          <h3>Mileage</h3>
           {mileage_requests.total_requests > 0 ? (
             <>
               <Link href={`/me/mileage`}>
-                <a>View All</a>
+                <a>
+                  <h3>Mileage</h3>
+                  View All
+                </a>
               </Link>
-              <p>{mileage_requests.total_requests} Total Requests</p>
+              <p>
+                {mileage_requests.total_requests} Total Request
+                {mileage_requests.total_requests > 1 && "s"}
+              </p>
               <Link
                 href={`/mileage/detail/${mileage_requests.last_request.id}`}
               >
                 <a>
-                  <h4>Most Recent Request</h4>
+                  <h4>
+                    Most Recent{" "}
+                    <span
+                      className={mileage_requests.last_request.current_status}
+                    >
+                      {mileage_requests.last_request.current_status
+                        .split("_")
+                        .join(" ")}{" "}
+                      Request
+                    </span>
+                  </h4>
                 </a>
               </Link>
-              <h3 className={mileage_requests.last_request.current_status}>
-                {mileage_requests.last_request.current_status
-                  .split("_")
-                  .join(" ")}
-              </h3>
               <p>Date - {dateFormat(mileage_requests.last_request.date)}</p>
               <p>
                 Created - {dateFormat(mileage_requests.last_request.created_at)}
@@ -154,30 +165,40 @@ export default function MePage({
             </>
           ) : (
             <p className="ARCHIVED">
-              {mileage_requests.total_requests} Total Requests
+              {mileage_requests.total_requests} Mileage Requests
             </p>
           )}
         </div>
         <div style={{ flexDirection: "column" }}>
-          <h3>Check Requests</h3>
           {check_requests.total_requests > 0 ? (
             <>
               <Link href={`/me/checkRequests`}>
-                <a>View All</a>
+                <a>
+                  <h3> Check Requests</h3>
+                  View All
+                </a>
               </Link>
-              <p>{check_requests.total_requests} Total Requests</p>
+              <p>
+                {check_requests.total_requests} Total Request
+                {check_requests.total_requests > 1 && "s"}
+              </p>
               <Link
                 href={`/check_request/detail/${check_requests.last_request.id}`}
               >
                 <a>
-                  <h4>Most Recent Request</h4>
+                  <h4>
+                    Most Recent{" "}
+                    <span
+                      className={check_requests.last_request.current_status}
+                    >
+                      {check_requests.last_request.current_status
+                        .split("_")
+                        .join(" ")}{" "}
+                      Request
+                    </span>
+                  </h4>
                 </a>
               </Link>
-              <h3 className={check_requests.last_request.current_status}>
-                {check_requests.last_request.current_status
-                  .split("_")
-                  .join(" ")}
-              </h3>
               <p>Date - {dateFormat(check_requests.last_request.date)}</p>
               <p>
                 Created - {dateFormat(check_requests.last_request.created_at)}
@@ -185,30 +206,42 @@ export default function MePage({
             </>
           ) : (
             <p className="ARCHIVED">
-              {check_requests.total_requests} Total Requests
+              {check_requests.total_requests} Check Requests
             </p>
           )}
         </div>
         <div style={{ flexDirection: "column" }}>
-          <h3>Petty Cash Requests</h3>
           {petty_cash_requests.total_requests > 0 ? (
             <>
               <Link href={`/me/pettyCash`}>
-                <a>View All</a>
+                <a>
+                  <h3>Petty Cash Requests</h3>
+                  View All
+                </a>
               </Link>
-              <p>{petty_cash_requests.total_requests} Total Requests</p>
+              <p>
+                {petty_cash_requests.total_requests} Total Request
+                {petty_cash_requests.total_requests > 1 && "s"}
+              </p>
               <Link
                 href={`/petty_cash/detail/${petty_cash_requests.last_request.id}`}
               >
                 <a>
-                  <h4>Most Recent Request</h4>
+                  <h4>
+                    Most Recent{" "}
+                    <span
+                      className={
+                        petty_cash_requests.last_request.current_status
+                      }
+                    >
+                      {petty_cash_requests.last_request.current_status
+                        .split("_")
+                        .join(" ")}{" "}
+                      Request
+                    </span>
+                  </h4>
                 </a>
               </Link>
-              <h3 className={petty_cash_requests.last_request.current_status}>
-                {petty_cash_requests.last_request.current_status
-                  .split("_")
-                  .join(" ")}
-              </h3>
               <p>Date - {dateFormat(petty_cash_requests.last_request.date)}</p>
               <p>
                 Created -{" "}
@@ -217,7 +250,7 @@ export default function MePage({
             </>
           ) : (
             <p className="ARCHIVED">
-              {petty_cash_requests.total_requests} Total Requests
+              {petty_cash_requests.total_requests} Petty Cash Requests
             </p>
           )}
         </div>

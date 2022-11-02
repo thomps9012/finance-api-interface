@@ -1,15 +1,12 @@
 import Link from "next/link";
-import { PettyCashDetail, PettyCashOverview } from "../types/pettycash";
+import { PettyCashDetail, UserPettyCash } from "../types/pettycash";
 import dateFormat from "../utils/dateformat";
 import styles from '../styles/Home.module.css';
-import { useSession } from "next-auth/react";
-export default function AggPettyCash({ petty_cash }: { petty_cash: PettyCashOverview }) {
+export default function AggPettyCash({ petty_cash }: { petty_cash: UserPettyCash }) {
     const { requests, total_amount } = petty_cash;
-    const session = useSession();
-    const user_name = session?.data?.user.name;
-    if (total_amount === 0) { return <h1>No Petty Cash Requests for {user_name}</h1> }
+    if (total_amount === 0) { return <h1>No Petty Cash Requests for {petty_cash.user.name}</h1> }
     return <main className={styles.main}>
-        <h1>{user_name} Petty Cash</h1>
+        <h1>{petty_cash.user.name} Petty Cash</h1>
         <div className="hr" />
         <h1>Total Amount: ${Math.floor(total_amount).toPrecision(4)}</h1>
         <table>
@@ -17,15 +14,19 @@ export default function AggPettyCash({ petty_cash }: { petty_cash: PettyCashOver
                 <th className='table-cell'>Date</th>
                 <th className='table-cell'>Status</th>
                 <th className='table-cell'>Amount</th>
+                <th className='table-cell'>Category</th>
+                <th className='table-cell'>Created @</th>
             </thead>
             <tbody>
                 {requests.map((request: PettyCashDetail) => {
-                    const { id, date, current_status, amount } = request;
+                    const { id, date, current_status, amount, category, created_at } = request;
                     return <Link key={id} href={`/petty_cash/detail/${id}`}>
                         <tr id='table-row' className={current_status}>
                             <td className='table-cell'>{dateFormat(date)}</td>
                             <td className='table-cell'>{current_status}</td>
                             <td className='table-cell'>${amount}</td>
+                            <td className='table-cell'>{category}</td>
+                            <td className='table-cell'>{dateFormat(created_at)}</td>
                         </tr>
                     </Link>
                 })}
