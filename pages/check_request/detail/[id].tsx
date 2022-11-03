@@ -65,7 +65,6 @@ export default function RecordDetail({
   userID: string;
 }) {
   const [execReview, setExecReview] = useState(false);
-  console.log(recorddata);
   const {
     id,
     current_user,
