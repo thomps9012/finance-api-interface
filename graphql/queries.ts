@@ -421,6 +421,7 @@ export const CHECK_DETAIL = gql`
       credit_card
       date
       current_status
+      current_user
       description
       grant_id
       order_total

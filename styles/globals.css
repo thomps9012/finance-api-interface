@@ -319,3 +319,13 @@ button:active {
   place-content: center;
   background: white;
 }
+
+.check-box {
+  height: 25px;
+  width: 25px;
+  margin-right: 10px;
+}
+
+.check-box-label {
+  font-size: 25px;
+}
