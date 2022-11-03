@@ -143,7 +143,7 @@ export default function UserPettyCashReport({
           </select>
         </div>
       </div>
-      <h1>{results.user.name} Check Requests Report</h1>
+      <h1>{results.user.name} Check Requests</h1>
       {results.total_amount != 0 ? (
         <>
           <h2>

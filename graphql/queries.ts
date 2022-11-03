@@ -312,6 +312,9 @@ export const GRANT_MILEAGE = gql`
       requests {
         id
         date
+        trip_mileage
+        reimbursement
+        current_status
       }
     }
   }

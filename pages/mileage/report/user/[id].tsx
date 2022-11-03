@@ -143,7 +143,7 @@ export default function UserMonthlyMileageReport({
         {
           results.user.name
         }{" "}
-        Mileage Report
+        Mileage
       </h1>
       {results.reimbursement != 0 ? (
         <>

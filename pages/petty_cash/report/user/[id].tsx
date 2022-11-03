@@ -140,7 +140,7 @@ export default function UserPettyCashReport({
       </div>
       <h1>
         {results.user.name}{" "}
-        Petty Cash Report
+        Petty Cash
       </h1>
       {results.total_amount != 0 ? (
           <>

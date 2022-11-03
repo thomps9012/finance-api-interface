@@ -29,14 +29,17 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
 export default function UserMonthlyMileageReport({ base_report, jwt }: { base_report: MonthlyMileage[], jwt: string }) {
     const [results, setResults] = useState(base_report)
+    const [month, setMonth] = useState(new Date().toDateString().split(" ")[1])
     const client = createClient(jwt);
     const handleChange = async (e: any) => {
         const selectDate = e.target.value.split('-')
         const res = await client.query({ query: MONTHLY_MILEAGE, variables: { month: parseInt(selectDate[1]), year: parseInt(selectDate[0]) } })
+        setMonth(new Date(2000, selectDate[1]-1).toDateString().split(" ")[1])
         setResults(res.data.mileage_monthly_report)
     }
     return <main className={styles.main}>
-        <h1>Mileage Reports for <input className={styles.calendar} type='month' defaultValue={Date.now()} onChange={handleChange} /></h1>
+        <h1>{month} Mileage Report</h1>
+        <input className={styles.calendar} type='month' defaultValue={Date.now()} onChange={handleChange} />
         <table>
             <thead>
                     <th className='table-cell'>Employee</th>
