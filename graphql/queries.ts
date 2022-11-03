@@ -234,6 +234,7 @@ export const MILEAGE_DETAIL = gql`
       }
       category
       created_at
+      current_user
       current_status
       date
       destination

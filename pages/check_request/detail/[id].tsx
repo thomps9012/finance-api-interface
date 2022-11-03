@@ -125,6 +125,12 @@ export default function RecordDetail({
           {category.split("_").join(" ")} Check Request
         </span>
       </h1>
+      {userID === user_id &&
+        (current_status === "REJECTED" || current_status === "PENDING") && (
+          <Link href={`/check_request/edit/${id}`}>
+            <a className={styles.editLink}>Edit Request</a>
+          </Link>
+        )}
       {user_permissions.find(() => "ADMIN") != undefined &&
         current_user === userID &&
         current_status != "REJECTED" && (
@@ -184,17 +190,8 @@ export default function RecordDetail({
         <p>{zip}</p>
       </div>
       <h3>Created on {dateFormat(created_at)}</h3>
-      {(current_status === "REJECTED" || current_status === "PENDING") && (
-        <Link href={`/check_request/edit/${id}`}>
-          <a className={styles.editLink}>Edit Request</a>
-        </Link>
-      )}
       <br />
-      {(user_permissions.find(() => "FINANCE_TEAM") != undefined ||
-        userID === user_id ||
-        (userID === user_id && current_status === "ORGANIZATION_APPROVED") ||
-        (user_permissions.find(() => "FINANCE_TEAM") != undefined &&
-          current_status === "ORGANIZATION_APPROVED")) && (
+      {(userID === user_id && current_status != "ARCHIVED") && (
         <button onClick={archiveRequest}>Archive Request</button>
       )}
       <div className="hr" />
