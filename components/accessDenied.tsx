@@ -11,7 +11,7 @@ export default function AccessDenied() {
                 onClick={(e: any) => {
                     e.preventDefault()
                     signIn("google")
-                }} className={styles.buttonPrimary}>
+                }} className="archive-btn">
                 Sign In
             </a>
         </div>

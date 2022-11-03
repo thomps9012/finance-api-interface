@@ -41,7 +41,7 @@ footer {
   display: flex;
   flex: 1;
   padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
+  /* border-top: 1px solid #eaeaea; */
   justify-content: space-around;
   align-items: center;
 }
@@ -63,7 +63,7 @@ header {
   display: none;
 }
 
-@media only screen and (max-width: 782px) {
+@media only screen and (max-width: 695px) {
   header,
   nav {
     display: none;
@@ -88,7 +88,7 @@ header {
   }
 }
 
-@media only screen and (max-width: 782px) {
+@media only screen and (max-width: 695px) {
   .navIcons-true {
     display: flex;
     flex-direction: column;
@@ -169,7 +169,7 @@ a:hover {
 .hr-red {
   padding: 5px;
   margin: 5px;
-  border-bottom: 5px dashed rgb(160, 95, 95);
+  border-bottom: 5px solid rgb(160, 95, 95);
   opacity: 50%;
   width: 100%;
 }

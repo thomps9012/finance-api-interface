@@ -2,12 +2,11 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import jwtDecode from 'jwt-decode'
-import { gql } from '@apollo/client'
 import { GetServerSidePropsContext } from 'next'
 import { unstable_getServerSession } from 'next-auth'
 import createClient from '../graphql/client'
 import { authOptions } from './api/auth/[...nextauth]'
-import dateFormat from '../utils/dateformat'
+import { GET_NOTIFICATIONS } from '../graphql/queries'
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const sessionData = await unstable_getServerSession(
     context.req,
@@ -17,12 +16,6 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   const jwt = sessionData?.user.token
   if (jwt) {
     const client = createClient(jwt);
-    const GET_NOTIFICATIONS = gql`query me {
-        me {
-          incomplete_action_count
-          last_login 
-        }
-  }`
     const res = await client.query({ query: GET_NOTIFICATIONS })
     return {
       props: {
@@ -45,44 +38,44 @@ export default function Landing({ notifications, last_login }: { notifications: 
   const user_permissions = user_token?.permissions;
   console.log('role', user_permissions)
   return <main className={styles.landing}>
-    <div className={styles.container}>
+      <br />
       <header style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         <h1>Financial Request Hub</h1>
         <Link href={'/me/inbox'}>
-          <a><h2>{notifications} New Action Items</h2></a>
+          <a><p className='req-overview'>{notifications} New Action Items</p></a>
         </Link>
       </header>
-      <br />
+    <div className={styles.container}>
       <h2>🚗 Mileage </h2>
       <hr />
       <Link href={'/mileage/create'}>
-        <a><h3>New Request</h3></a>
+        <a><h3 style={{fontWeight: 100}}>New Request</h3></a>
       </Link>
       <Link href={'/mileage'}>
         <a>
-          <h3>All Actions</h3>
+          <h3 style={{fontWeight: 100}}>All Actions</h3>
         </a>
       </Link>
       <br />
       <h2>💸 Petty Cash </h2>
       <hr />
       <Link href={'/petty_cash/create'}>
-        <a><h3>New Request</h3></a>
+        <a><h3 style={{fontWeight: 100}}>New Request</h3></a>
       </Link>
       <Link href={'/petty_cash'}>
         <a>
-          <h3>All Actions</h3>
+          <h3 style={{fontWeight: 100}}>All Actions</h3>
         </a>
       </Link>
       <br />
       <h2>📑 Check Requests </h2>
       <hr />
       <Link href={'/check_request/create'}>
-        <a><h3>New Request</h3></a>
+        <a><h3 style={{fontWeight: 100}}>New Request</h3></a>
       </Link>
       <Link href={'/check_request'}>
         <a>
-          <h3>All Actions</h3>
+          <h3 style={{fontWeight: 100}}>All Actions</h3>
         </a>
       </Link>
       <br />
@@ -91,7 +84,7 @@ export default function Landing({ notifications, last_login }: { notifications: 
         <hr />
         <Link href={'/users'}>
           <a>
-            <h3>View All</h3>
+            <h3 style={{fontWeight: 100}}>View All</h3>
           </a>
         </Link>
       </>
