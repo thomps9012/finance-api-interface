@@ -152,13 +152,13 @@ export default function CreateRequest({
           grants={grant_data}
         />
         <CategorySelect state={category} setState={setCategory} />
-        <h4>Date</h4>
+        <h3>Date</h3>
         <input
           type="date"
           name="date"
           onChange={(e: any) => setDate(new Date(e.target.value).toISOString())}
         />
-        <h4>Description</h4>
+        <h3>Description</h3>
         <textarea
           rows={5}
           maxLength={75}
@@ -167,14 +167,14 @@ export default function CreateRequest({
           onChange={(e: any) => setDescription(e.target.value)}
         />
         <span>{description.length}/75 characters</span>
-        <div className="hr" />
+        <br />
         <VendorInput
           setAddress={setVendorAddress}
           setName={setVendorName}
           address={vendorAddress}
           name={vendorName}
         />
-        <h3>Purchases</h3>
+        <h2>Purchases</h2>
         <span className="description">Limit 5 Purchases per Request</span>
         <br />
         <PurchaseInput
@@ -200,9 +200,9 @@ export default function CreateRequest({
             purchase={{ grant_line_item: "", description: "", amount: 0.0 }}
           />
         )}
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <button onClick={addPurchase}>Add Purchase</button>
-          <button onClick={removePurchase}>Remove Last</button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <a onClick={addPurchase} className='archive-btn'>Add Purchase</a>
+          <a onClick={removePurchase} className='reject-btn'>Remove Last</a>
         </div>
         <h3>Company Credit Card Used?</h3>
         <select
@@ -224,9 +224,10 @@ export default function CreateRequest({
         </span>
         <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />
         <br />
-        <button className="submit" onClick={submitRequest}>
+        <a className="archive-btn" onClick={submitRequest}>
           Submit Request
-        </button>
+        </a>
+        <br />
       </form>
     </main>
   );

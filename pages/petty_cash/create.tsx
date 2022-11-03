@@ -114,16 +114,17 @@ export default function CreateRequest({
         />
         <br />
         <span>{description.length}/75 characters</span>
-        <div className="hr" />
+        <br />
         <h3>Receipts</h3>
         <span className="description">
           Limit 5 Receipts in PNG or JPEG Format
         </span>
         <ReceiptUpload receipts={receipts} setReceipts={setReceipts} />
         <br />
-        <button className="submit" onClick={submitRequest}>
+        <a className="archive-btn" onClick={submitRequest}>
           Submit Request
-        </button>
+        </a>
+        <br />
       </form>
     </main>
   );

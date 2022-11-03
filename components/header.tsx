@@ -27,7 +27,7 @@ export default function Header() {
                             </span>
                         </a>
                     </Link>
-                    <a className={styles.menuOption} onClick={() => setOpenNav(!openNav)}>Nav Menu</a>
+                    <a className={styles.menuOption} onClick={() => setOpenNav(!openNav)} style={{fontSize: '35px'}}>Nav</a>
                     {session?.user && (
                         <div className='mobileSignOut'>
                             <a href={`/api/auth/signout`}
@@ -36,7 +36,7 @@ export default function Header() {
                                     e.preventDefault()
                                     signOut({ callbackUrl: '/' })
                                 }}>
-                                Sign Out
+                                Logout
                             </a>
                         </div>
                     )}

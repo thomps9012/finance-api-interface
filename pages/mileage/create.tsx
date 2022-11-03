@@ -144,7 +144,7 @@ export default function CreateRequest({
           onChange={(e: any) => setPurpose(e.target.value)}
         />
         <span>{purpose.length}/75 characters</span>
-        <div className="hr" />
+        <br />
         <h4>Start Odometer</h4>
         <input
           name="start_odometer"
@@ -176,9 +176,9 @@ export default function CreateRequest({
           value={parking}
           onChange={(e: any) => setParking(parseFloat(e.target.value))}
         />
-        <div className="hr" />
         <br />
-        <button onClick={handleSubmit}>Submit Request</button>
+        <a onClick={handleSubmit} className="archive-btn">Submit Request</a>
+        <br />
       </form>
     </main>
   );

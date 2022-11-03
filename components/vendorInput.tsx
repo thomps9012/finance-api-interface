@@ -27,6 +27,6 @@ export default function VendorInput({ setName, setAddress, address, name }: {set
         </select>
         <h4>Zip</h4>
         <input defaultValue={zip} type='text' name='zip' onChange={handleAddressChange} />
-        <div className="hr" />
+        <br />
     </form>
 }

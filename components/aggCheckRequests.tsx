@@ -14,17 +14,14 @@ export default function AggCheckRequests({
   return (
     <main className={styles.main}>
       <h1>{check_requests.user.name} Check Requests</h1>
-      <h2>Total Amount: ${Math.floor(total_amount).toPrecision(4)}</h2>
+      <h2>Total Amount - ${Math.floor(total_amount).toPrecision(4)}</h2>
       <div className="hr" />
       <table>
         <thead>
-          <tr id="table-row">
             <th className="table-cell">Date</th>
             <th className="table-cell">Status</th>
-            <th className="table-cell">Items</th>
             <th className="table-cell">Category</th>
-            <th className="table-cell">Created @</th>
-          </tr>
+            <th className="table-cell">Total</th>
         </thead>
         <tbody>
           {requests.map((request: CheckDetail) => {
@@ -42,7 +39,6 @@ export default function AggCheckRequests({
                   <td className="table-cell">{dateFormat(date)}</td>
                   <td className="table-cell">{current_status}</td>
                   <td className="table-cell">{category}</td>
-                  <td className="table-cell">{dateFormat(created_at)}</td>
                   <td className="table-cell">
                     ${Math.floor(order_total).toPrecision(4)}
                   </td>

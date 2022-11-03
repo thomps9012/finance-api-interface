@@ -86,9 +86,6 @@ header {
   #mobile-sign-out {
     display: block;
   }
-  #mobile-btn {
-    display: none;
-  }
 }
 
 @media only screen and (max-width: 782px) {
@@ -113,36 +110,20 @@ header {
 /* different status stylings */
 .PENDING {
   color: goldenrod;
-  font-weight: bold;
 }
 
 .ARCHIVED {
-  font-weight: bold;
   color: #b2b0b0;
 }
 
-.MANAGER_APPROVED {
-  font-weight: bold;
-  color: greenyellow;
+.MANAGER_APPROVED, .SUPERVISOR_APPROVED, .FINANCE_APPROVED, .ORGANIZATION_APPROVED, .EXECUTIVE_APPROVED  {
+  color: rgb(134, 164, 10);
 }
-
-.FINANCE_APPROVED {
-  font-weight: bold;
-  color: greenyellow;
-}
-
-.ORG_APPROVED {
-  font-weight: bold;
-  color: green;
-}
-
 .REJECTED {
-  font-weight: bold;
-  color: red;
+  color: rgb(121, 10, 10);
 }
 
 .REJECTED_EDIT {
-  font-weight: bold;
   color: rosybrown;
 }
 
@@ -155,12 +136,19 @@ a:hover {
   text-decoration: underline;
 }
 
-#vehicleInput {
+#vehicleInput-shown {
   display: inline-flex;
   flex-direction: column;
-  padding: 20px;
 }
-
+#hidden {
+  background-color: white;
+  border: 0px;
+  width: max-content;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  padding-top: 20px;
+}
 .remove {
   color: red;
   font-weight: 1000;
@@ -173,7 +161,7 @@ a:hover {
 .hr {
   padding: 5px;
   margin: 5px;
-  border-bottom: 5px dashed cadetblue;
+  border-bottom: 5px solid cadetblue;
   opacity: 50%;
   width: 100%;
 }
@@ -248,8 +236,6 @@ button:active {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: -100px;
-  margin-bottom: 100px;
 }
 
 .image-item {
@@ -265,7 +251,7 @@ button:active {
 }
 
 #table-row:hover {
-  background-color: #f0f0f0;
+  color: #0070f3;
   cursor: pointer;
 }
 
@@ -393,4 +379,20 @@ button:active {
 .button-row > h1,
 .button-row > a {
   margin: 15px;
+}
+
+.req-overview {
+  font-size: 25px;
+}
+
+#vehicles,
+#hide-btn,
+#hidden-btn {
+  display: none;
+}
+
+#vehicles-shown,
+#show-btn,
+#shown-btn {
+  display: block;
 }

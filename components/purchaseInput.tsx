@@ -9,6 +9,6 @@ export default function PurchaseInput({purchase}: {purchase: Purchase}) {
         <input defaultValue={description} type="text" name="description" />
         <label>Amount</label>
         <input defaultValue={amount} type="number" name="amount" />
-        <div className="hr"/>
+        <br />
     </form>
 }

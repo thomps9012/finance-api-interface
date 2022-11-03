@@ -7,12 +7,7 @@ export default function AggMileage({ mileage_requests }: { mileage_requests: Use
     if (mileage === 0) { return <h1>No Mileage Requests for {mileage_requests.user.name}</h1> }
     return <main className={styles.main}>
         <h1>{mileage_requests.user.name} Mileage</h1>
-        <table>
-        <table>
-                <tr><th className='table-cell'>Total Reimbursement</th><td className='table-cell'>${Math.floor(reimbursement).toPrecision(4)}</td><th className='table-cell'>Total Mileage</th><td className='table-cell'>{mileage}</td></tr>
-                <tr><th className='table-cell'>Total Tolls</th><td className='table-cell'>{tolls}</td><th className='table-cell'>Total Parking</th><td className='table-cell'>{parking}</td></tr>
-            </table>
-        </table>
+        <h2>Total Reimbursement - ${reimbursement}</h2>
         <div className="hr" />
         <table>
             <thead>
@@ -20,7 +15,6 @@ export default function AggMileage({ mileage_requests }: { mileage_requests: Use
                 <th className='table-cell'>Status</th>
                 <th className='table-cell'>Category</th>
                 <th className='table-cell'>Reimbursement</th>
-                <th className='table-cell'>Created @</th>
             </thead>
             <tbody>
                 {requests.map((request: MileageDetail) => {
@@ -31,7 +25,6 @@ export default function AggMileage({ mileage_requests }: { mileage_requests: Use
                             <td className='table-cell'>{current_status}</td>
                             <td className='table-cell'>{category}</td>
                             <td className='table-cell'>${Math.floor(reimbursement).toPrecision(4)}</td>
-                            <td className='table-cell'>{dateFormat(created_at)}</td>
                         </tr>
                     </Link>
                 }
