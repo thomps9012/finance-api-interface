@@ -8,6 +8,11 @@ import { UserOverview } from "../../types/users";
 import { Action } from "../../types/checkrequests";
 import styles from "../../styles/Home.module.css";
 import { GET_MY_INBOX } from "../../graphql/queries";
+import { useRouter } from "next/router";
+import {
+  CLEAR_NOTIFICATION,
+  CLEAR_ALL_NOTIFICATIONS,
+} from "../../graphql/mutations";
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
@@ -22,13 +27,40 @@ export const getServerSideProps = async (
   return {
     props: {
       userdata: sessionData ? res.data.me : [],
+      jwt: jwt ? jwt : "",
     },
   };
 };
 
-export default function MyInbox({ userdata }: { userdata: UserOverview }) {
+export default function MyInbox({
+  userdata,
+  jwt,
+}: {
+  userdata: UserOverview;
+  jwt: string;
+}) {
+  const router = useRouter();
+  const client = createClient(jwt);
   const { incomplete_actions, incomplete_action_count } = userdata;
-  console.table(incomplete_actions);
+  const clear_notification = async (action_id: string) => {
+    const res = await client.mutate({
+      mutation: CLEAR_NOTIFICATION,
+      variables: { id: action_id },
+    });
+    res.data.clear_notification ? router.push("/me/inbox") : null;
+  };
+  const clear_all_notifications = async () => {
+    const sure = confirm(
+      "                                 *-*-*-*-*-*-*-*-*-*-*-*-*-*-* \n                                           WARNING \n                          YOU CANNOT UNDO THIS ACTION \n                      \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n Once you clear all notifications you will lose the request information from your inbox. cannot undo this action."
+    );
+    if (!sure) {
+      return;
+    }
+    const res = await client.mutate({
+      mutation: CLEAR_ALL_NOTIFICATIONS,
+    });
+    res.data.clear_all_notifications ? router.push("/me/inbox") : null;
+  };
   return (
     <main className={styles.main}>
       <h1>
@@ -37,12 +69,16 @@ export default function MyInbox({ userdata }: { userdata: UserOverview }) {
       </h1>
       {incomplete_actions.length > 0 && (
         <>
+        <button onClick={clear_all_notifications}>Clear Inbox</button>
           <table>
             <thead>
               <th className="table-cell">Type</th>
               <th className="table-cell">Status</th>
               <th className="table-cell">Created At</th>
               <th className="table-cell">By</th>
+              <th className="table-cell" id="inbox-remove">
+                Clear Notification
+              </th>
             </thead>
             <tbody>
               {incomplete_actions?.map((action: Action) => {
@@ -71,6 +107,13 @@ export default function MyInbox({ userdata }: { userdata: UserOverview }) {
                       </td>
                       <td className="table-cell">{dateFormat(created_at)}</td>
                       <td className="table-cell">{user}</td>
+                      <td
+                        className="table-cell"
+                        id="inbox-remove"
+                        onClick={() => clear_notification(id)}
+                      >
+                        X
+                      </td>
                     </tr>
                   </Link>
                 );

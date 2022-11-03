@@ -329,3 +329,7 @@ button:active {
 .check-box-label {
   font-size: 25px;
 }
+
+#inbox-remove {
+  color: red;
+}
