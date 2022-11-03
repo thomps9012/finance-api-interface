@@ -121,7 +121,9 @@ export default function RecordDetail({
     <main className={styles.main} id={is_active ? "active" : "inactive"}>
       <h1>
         {grant_info.name}{" "}
-        <span className={current_status}>{category} Petty Cash Request</span>
+        <span className={current_status}>
+          {category.split("_").join(" ")} Petty Cash Request
+        </span>
       </h1>
       {userID === user_id &&
         (current_status === "REJECTED" || current_status === "PENDING") && (

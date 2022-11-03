@@ -100,7 +100,7 @@ export default function CreateRequest({
   };
   return (
     <main className={styles.container}>
-       <h1>New Mileage request</h1>
+      <h1>New Mileage request</h1>
       <form id="mileage-form">
         <GrantSelect
           state={grantID}

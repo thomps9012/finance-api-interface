@@ -38,8 +38,16 @@ export const CREATE_MILEAGE = gql`
   }
 `;
 export const EDIT_MILEAGE = gql`
-  mutation EditMileage($request_id: ID!, $request: mileage_input!) {
-    edit_mileage(request: $request, request_id: $request_id) {
+  mutation EditMileage(
+    $request_id: ID!
+    $request: mileage_input!
+    $grant_id: ID!
+  ) {
+    edit_mileage(
+      request: $request
+      request_id: $request_id
+      grant_id: $grant_id
+    ) {
       id
       current_user
       current_status
@@ -91,8 +99,16 @@ export const CREATE_PETTY_CASH = gql`
   }
 `;
 export const EDIT_PETTY_CASH = gql`
-  mutation UpdatePettyCash($request_id: ID!, $request: petty_cash_input) {
-    edit_petty_cash(request_id: $request_id, request: $request) {
+  mutation UpdatePettyCash(
+    $request_id: ID!
+    $request: petty_cash_input
+    $grant_id: ID!
+  ) {
+    edit_petty_cash(
+      request_id: $request_id
+      request: $request
+      grant_id: $grant_id
+    ) {
       id
       current_user
       current_status
@@ -152,8 +168,16 @@ export const CREATE_CHECK_REQ = gql`
   }
 `;
 export const EDIT_CHECK_REQ = gql`
-  mutation EditCheckRequest($request_id: ID!, $request: check_request_input) {
-    edit_check_request(request_id: $request_id, request: $request) {
+  mutation EditCheckRequest(
+    $request_id: ID!
+    $request: check_request_input
+    $grant_id: ID!
+  ) {
+    edit_check_request(
+      request_id: $request_id
+      request: $request
+      grant_id: $grant_id
+    ) {
       id
       current_user
       current_status
