@@ -19,6 +19,7 @@ import {
 import { CustomJWT } from "../../../types/next-auth";
 import { useState } from "react";
 import StatusHandler from "../../../utils/statusHandler";
+import ApproveRejectRow from "../../../components/approveRejectBtns";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -118,56 +119,50 @@ export default function RecordDetail({
   };
   return (
     <main className={styles.main} id={is_active ? `active` : `inactive`}>
+      <h1>{dateFormat(date)}</h1>
+      <h1>${order_total}</h1>
       <h1>
         {grant_info.name}{" "}
         <span className={current_status}>
           {category.split("_").join(" ")} Check Request
         </span>
       </h1>
-      {userID === user_id &&
-        (current_status === "REJECTED" || current_status === "PENDING") && (
-          <Link href={`/check_request/edit/${id}`}>
-            <a className={styles.editLink}>Edit Request</a>
-          </Link>
-        )}
+
       {user_permissions.find(() => "ADMIN") != undefined &&
         current_user === userID &&
         current_status != "REJECTED" && (
-          <>
-            <div className="button-row">
-              <input
-                name="exec_review"
-                className="check-box"
-                type="checkbox"
-                onClick={() => setExecReview(!execReview)}
-              />
-              <label className="check-box-label">
-                Flag for Executive Review
-              </label>
-            </div>
-            <div className="button-row">
-              <button onClick={approveRequest}>Approve</button>
-              <button onClick={rejectRequest}>Reject</button>
-            </div>
-          </>
+          <ApproveRejectRow
+            execReview={execReview}
+            setExecReview={setExecReview}
+            approveRequest={approveRequest}
+            rejectRequest={rejectRequest}
+          />
         )}
       <div className="hr" />
-      <h2>{dateFormat(date)}</h2>
-      <h2>${order_total.toPrecision(4)}</h2>
-      <p>{description}</p>
-      <h3>Purchases</h3>
+      <p className="req-description">{description}</p>
+      <div className={styles.card}>
+        <h2>{vendorName}</h2>
+        <p>
+          {street}, {city}
+        </p>
+        <p>
+          {state}, {zip}
+        </p>
+        <p>{website}</p>
+      </div>
+      <h2>Purchases</h2>
       {purchases.map((purchase: Purchase, i: number) => {
         const { amount, description, grant_line_item } = purchase;
         return (
           <div className={styles.card} key={i}>
-            <p>{grant_line_item}</p>
-            <p>{description}</p>
-            <p>${amount}</p>
+            <p>
+              {grant_line_item} - {description} - ${amount}
+            </p>
           </div>
         );
       })}
-      <h3>Company Credit Card: {credit_card}</h3>
-      <h3>Receipts</h3>
+      <h2>Company Credit Card Used - {credit_card}</h2>
+      <h2>Receipts</h2>
       {receipts.map((receipt: string, i: number) => (
         <>
           <Image
@@ -180,38 +175,38 @@ export default function RecordDetail({
           <br />
         </>
       ))}
-      <div className={styles.card}>
-        <h2>{vendorName}</h2>
-        <p>{website}</p>
-        <p>{street}</p>
-        <p>{city}</p>
-        <p>{state}</p>
-        <p>{zip}</p>
-      </div>
-      <h3>Created on {dateFormat(created_at)}</h3>
+
+      <h2>Created on {dateFormat(created_at)}</h2>
       <br />
-      {(userID === user_id && current_status != "ARCHIVED") && (
-        <button onClick={archiveRequest}>Archive Request</button>
-      )}
+      <div className="button-row">
+        {userID === user_id &&
+          (current_status === "REJECTED" || current_status === "PENDING") && (
+            <Link href={`/check_request/edit/${id}`}>
+              <a className={styles.editLink}>Edit</a>
+            </Link>
+          )}
+        {userID === user_id && current_status != "ARCHIVED" && (
+          <a onClick={archiveRequest} className="archive-btn">
+            Archive
+          </a>
+        )}
+      </div>
       <div className="hr" />
-      <h4>Recent Actions</h4>
+      <h2>Recent Actions</h2>
       <table>
-        <thead>
-          <th>User</th>
-          <th>Status</th>
-          <th>Date</th>
-        </thead>
         <tbody>
-          {action_history.slice(0, 3).map((action: Action) => {
-            const { id, user, created_at, status } = action;
-            return (
-              <tr key={id} className={status}>
-                <td className="table-cell">{user}</td>
-                <td className="table-cell">{status}</td>
-                <td className="table-cell">{dateFormat(created_at)}</td>
-              </tr>
-            );
-          })}
+          {action_history
+            .slice(0, 3)
+            .sort((a, b) => -1)
+            .map((action: Action) => {
+              const { id, created_at, status } = action;
+              return (
+                <tr key={id} className={status}>
+                  <td className="table-cell">{status}</td>
+                  <td className="table-cell">{dateFormat(created_at)}</td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </main>

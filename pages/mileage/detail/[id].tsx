@@ -20,6 +20,7 @@ import {
   ARCHIVE_MILEAGE,
   REJECT_MILEAGE,
 } from "../../../graphql/mutations";
+import ApproveRejectRow from "../../../components/approveRejectBtns";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -120,91 +121,79 @@ export default function RecordDetail({
   };
   return (
     <main className={styles.main} id={is_active ? `active` : `inactive`}>
+      <h1>{dateFormat(date)}</h1>
       <h1>
         {grant_info.name}{" "}
         <span className={current_status}>
           {category.split("_").join(" ")} Mileage Request
         </span>
       </h1>
+      
+      {/* {user_permissions.find(() => "ADMIN") != undefined &&
+        current_user === userID &&
+        current_status != "REJECTED" && ( */}
+      <ApproveRejectRow
+        execReview={execReview}
+        setExecReview={setExecReview}
+        approveRequest={approveRequest}
+        rejectRequest={rejectRequest}
+      />
+      {/* )} */}
+      <div className="hr" />
+
+      <p className="req-description">
+        From {starting_location} to {destination}
+      </p>
+      <p className="req-description">{trip_purpose}</p>
+      <table>
+        <tr>
+          <th className="table-cell"><h2>Start Odometer</h2></th>
+          <td className="req-description">{start_odometer}</td>
+        </tr>
+        <tr>
+          <th className="table-cell"><h2>End Odometer</h2></th>
+          <td className="req-description">{end_odometer}</td>
+        </tr>
+        <tr>
+          <th className="table-cell"><h2>Mileage</h2></th>
+          <td className="req-description">{trip_mileage}</td>
+        </tr>
+        <tr>
+          <th className="table-cell"><h2>Tolls</h2></th>
+          <td className="req-description">{tolls}</td>
+        </tr>
+        <tr>
+          <th className="table-cell"><h2>Parking</h2></th>
+          <td className="req-description">{parking}</td>
+        </tr>
+        <tr>
+          <th className="table-cell"><h2>Reimbursement</h2></th>
+          <td className="req-description">{reimbursement.toPrecision(4)}</td>
+        </tr>
+      </table>
+      <h2>Created on {dateFormat(created_at)}</h2>
+      <br />
+      <div className="button-row">
       {userID === user_id &&
         (current_status === "REJECTED" || current_status === "PENDING") && (
           <Link href={`/mileage/edit/${id}`}>
-            <a className={styles.editLink}>Edit Request</a>
+            <a className={styles.editLink}>Edit</a>
           </Link>
         )}
-      {user_permissions.find(() => "ADMIN") != undefined &&
-        current_user === userID &&
-        current_status != "REJECTED" && (
-          <>
-            <div className="button-row">
-              <input
-                name="exec_review"
-                className="check-box"
-                type="checkbox"
-                onClick={() => setExecReview(!execReview)}
-              />
-              <label className="check-box-label">
-                Flag for Executive Review
-              </label>
-            </div>
-            <div className="button-row">
-              <button onClick={approveRequest}>Approve</button>
-              <button onClick={rejectRequest}>Reject</button>
-            </div>
-          </>
+        {userID === user_id && current_status != "ARCHIVED" && (
+          <a className="archive-btn" onClick={archiveRequest}>
+            Archive
+          </a>
         )}
+      </div>
       <div className="hr" />
-
-      <h2>{dateFormat(date)}</h2>
-      <p>
-        From {starting_location} to {destination}
-      </p>
-      <p>{trip_purpose}</p>
+      <h2>Recent Actions</h2>
       <table>
-        <tr>
-          <th className="table-cell">Start Odometer</th>
-          <td className="table-cell">{start_odometer}</td>
-        </tr>
-        <tr>
-          <th className="table-cell">End Odometer</th>
-          <td className="table-cell">{end_odometer}</td>
-        </tr>
-        <tr>
-          <th className="table-cell">Mileage</th>
-          <td className="table-cell">{trip_mileage}</td>
-        </tr>
-        <tr>
-          <th className="table-cell">Tolls</th>
-          <td className="table-cell">{tolls}</td>
-        </tr>
-        <tr>
-          <th className="table-cell">Parking</th>
-          <td className="table-cell">{parking}</td>
-        </tr>
-        <tr>
-          <th className="table-cell">Reimbursement</th>
-          <td className="table-cell">{reimbursement.toPrecision(4)}</td>
-        </tr>
-      </table>
-      <h3>Created on {dateFormat(created_at)}</h3>
-      <br />
-      {userID === user_id && current_status != "ARCHIVED" && (
-        <button onClick={archiveRequest}>Archive Request</button>
-      )}
-      <div className="hr" />
-      <h4>Recent Actions</h4>
-      <table>
-        <thead>
-          <th>User</th>
-          <th>Status</th>
-          <th>Date</th>
-        </thead>
         <tbody>
-          {action_history.slice(0, 3).map((action: Action) => {
+          {action_history.slice(0, 3).sort((a,b) => -1).map((action: Action) => {
             const { id, user, created_at, status } = action;
             return (
               <tr key={id} className={status}>
-                <td className="table-cell">{user}</td>
                 <td className="table-cell">{status}</td>
                 <td className="table-cell">{dateFormat(created_at)}</td>
               </tr>

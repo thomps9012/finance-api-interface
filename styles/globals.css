@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 * {
-font-family: "Bebas Neue", cursive;
+  font-family: "Bebas Neue", cursive;
 }
 html,
 body {
   padding: 0;
   margin: 0;
- }
+}
 
 a {
   color: inherit;
@@ -61,11 +61,9 @@ header {
 
 .mobileSignOut {
   display: none;
-  ;
 }
 
 @media only screen and (max-width: 782px) {
-
   header,
   nav {
     display: none;
@@ -278,39 +276,52 @@ button:active {
 
 .loader {
   --s: 17vh;
-  
-  --_d: calc(0.353*var(--s));
-  height: var(--s); 
+
+  --_d: calc(0.353 * var(--s));
+  height: var(--s);
   aspect-ratio: 3;
   display: flex;
 }
 .loader:before,
 .loader:after {
   content: "";
-  clip-path: polygon(var(--_d) 0,100% 0,100% calc(100% - var(--_d)),calc(100% - var(--_d)) 100%,0 100%,0 var(--_d));
-  background:
-    conic-gradient(from -90deg at calc(100% - var(--_d)) var(--_d),
-     #fff 135deg,#666 0 270deg,#aaa 0);
+  clip-path: polygon(
+    var(--_d) 0,
+    100% 0,
+    100% calc(100% - var(--_d)),
+    calc(100% - var(--_d)) 100%,
+    0 100%,
+    0 var(--_d)
+  );
+  background: conic-gradient(
+    from -90deg at calc(100% - var(--_d)) var(--_d),
+    #fff 135deg,
+    #666 0 270deg,
+    #aaa 0
+  );
 }
-.loader:before {  
+.loader:before {
   background-color: cadetblue;
   background-blend-mode: multiply;
-  margin-right: calc(var(--_d)/-2);
+  margin-right: calc(var(--_d) / -2);
   animation: load 2.5s infinite linear;
 }
 .loader:after {
-  margin-left: calc(var(--_d)/-2);
+  margin-left: calc(var(--_d) / -2);
   opacity: 0.4;
   flex: 1;
 }
 
-@keyframes  load {
+@keyframes load {
   0%,
-  5%   {width: 0%}
+  5% {
+    width: 0%;
+  }
   95%,
-  100% {width: 100%}
+  100% {
+    width: 100%;
+  }
 }
-
 
 .loader-body {
   margin: 0;
@@ -323,11 +334,14 @@ button:active {
 .check-box {
   height: 25px;
   width: 25px;
+  margin-top: 7px;
   margin-right: 10px;
+  color: cadetblue;
 }
 
 .check-box-label {
-  font-size: 25px;
+  font-size: 27px;
+  color: gray;
 }
 
 #inbox-remove {
@@ -339,4 +353,44 @@ button:active {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+
+.req-description {
+  font-size: 35px;
+}
+
+.archive-btn {
+  color: cadetblue;
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.archive-btn:hover,
+.reject-btn:hover,
+.approve-btn:hover {
+  text-decoration: underline;
+}
+
+.reject-btn {
+  color: rgb(160, 95, 95);
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.approve-btn {
+  color: rgb(103, 160, 95);
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.button-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.button-row > h1,
+.button-row > a {
+  margin: 15px;
 }
