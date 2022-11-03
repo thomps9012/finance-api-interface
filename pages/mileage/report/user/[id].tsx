@@ -12,7 +12,6 @@ import Link from "next/link";
 import jwtDecode from "jwt-decode";
 import { ALL_USERS, GET_USER_MILEAGE } from "../../../../graphql/queries";
 import { CustomJWT } from "../../../../types/next-auth";
-// possible conflict on backend
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -24,7 +23,7 @@ export const getServerSideProps = async (
   );
   const jwt = sessionData?.user.token;
   const decoded_token: CustomJWT = jwtDecode(jwt);
-    const userID = decoded_token.id;
+  const userID = decoded_token.id;
   const { id } = context.query;
   const client = createClient(jwt);
   const today = new Date().toISOString();
@@ -60,9 +59,7 @@ export default function UserMonthlyMileageReport({
   user_list: UserInfo[];
   jwt: string;
 }) {
-  const [start_date, setStart] = useState(
-    new Date(2018, 0, 1).toISOString()
-  );
+  const [start_date, setStart] = useState(new Date(2018, 0, 1).toISOString());
   const [end_date, setEnd] = useState(new Date().toISOString());
   const [selectedUserID, setSelectedUserID] = useState(userID);
   const [results, setResults] = useState(base_report);
@@ -99,12 +96,11 @@ export default function UserMonthlyMileageReport({
   }, [start_date, end_date, selectedUserID, jwt]);
   return (
     <main className={styles.main}>
-      <h1>User Mileage Report</h1>
       <div className={styles.inputRow}>
         <div className={styles.inputCol}>
+          <h3>{dateFormat(start_date)}</h3>
           <h3>Start Date</h3>
           <hr />
-          <h3>{dateFormat(start_date)}</h3>
           <input
             type="date"
             name="start_date"
@@ -113,9 +109,9 @@ export default function UserMonthlyMileageReport({
           />
         </div>
         <div className={styles.inputCol}>
+          <h3>{dateFormat(end_date)}</h3>
           <h3>End Date</h3>
           <hr />
-          <h3>{dateFormat(end_date)}</h3>
           <input
             type="date"
             name="end_date"
@@ -124,7 +120,10 @@ export default function UserMonthlyMileageReport({
           />
         </div>
         <div className={styles.inputCol}>
-          <h3>Employee Select</h3>
+          <h3>
+            {results.user.name}
+          </h3>
+          <h3>Employee</h3>
           <hr />
           <select
             name="selectedUserID"
@@ -139,25 +138,24 @@ export default function UserMonthlyMileageReport({
           </select>
         </div>
       </div>
-      <div className="hr" />
+      <h1>
+        {" "}
+        {
+          results.user.name
+        }{" "}
+        Mileage Report
+      </h1>
       {results.reimbursement != 0 ? (
         <>
-          <table>
-            <tr>
-              <th className="table-cell">Total Reimbursement</th>
-              <td className="table-cell">
-                ${Math.floor(results.reimbursement).toPrecision(4)}
-              </td>
-              <th className="table-cell">Total Mileage</th>
-              <td className="table-cell">{results.mileage}</td>
-            </tr>
-            <tr>
-              <th className="table-cell">Total Tolls</th>
-              <td className="table-cell">{results.tolls}</td>
-              <th className="table-cell">Total Parking</th>
-              <td className="table-cell">{results.parking}</td>
-            </tr>
-          </table>
+          <section className="table-header">
+            <p className="table-cell">
+              Reimbursement - $
+              {Math.floor(results.reimbursement).toPrecision(4)}
+            </p>
+            <p className="table-cell">Mileage - {results.mileage}</p>
+            <p className="table-cell">Tolls - {results.tolls}</p>
+            <p className="table-cell">Parking - {results.parking}</p>
+          </section>
           <div className="hr" />
           <table>
             <thead>

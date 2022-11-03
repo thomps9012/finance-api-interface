@@ -208,7 +208,7 @@ form {
 input,
 select {
   font-size: large;
-  height: 40px;
+  height: 45px;
   padding: 10px;
 }
 
@@ -332,4 +332,11 @@ button:active {
 
 #inbox-remove {
   color: red;
+}
+
+.table-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }

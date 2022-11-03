@@ -212,6 +212,7 @@ export const GET_USER_MILEAGE = gql`
       requests {
         id
         date
+        trip_mileage
         reimbursement
         current_user
         current_status
