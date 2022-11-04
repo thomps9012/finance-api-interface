@@ -6,8 +6,6 @@ import { PettyCashDetail } from "../../../types/pettycash";
 import dateFormat from "../../../utils/dateformat";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import createClient from "../../../graphql/client";
-import jwt_decode from "jwt-decode";
-import { gql } from "@apollo/client";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import styles from "../../../styles/Home.module.css";
@@ -38,6 +36,7 @@ export const getServerSideProps = async (
   const tokenData: CustomJWT = await jwtDecode(jwt as string);
   const user_permissions = tokenData.permissions;
   const userID = tokenData.id;
+  const user_admin = tokenData.admin;
   const res = await client.query({
     query: PETTY_CASH_DETAIL,
     variables: { id },
@@ -53,6 +52,7 @@ export const getServerSideProps = async (
       userID: sessionData ? userID : "",
       jwt: jwt ? jwt : "",
       grant_info: grant.data.single_grant,
+      admin: sessionData ? user_admin : false,
     },
   };
 };
@@ -63,8 +63,10 @@ export default function RecordDetail({
   userID,
   jwt,
   grant_info,
+  admin,
 }: {
   grant_info: GrantInfo;
+  admin: boolean;
   jwt: string;
   recorddata: PettyCashDetail;
   user_permissions: string[];
@@ -88,8 +90,11 @@ export default function RecordDetail({
   } = recorddata;
   const client = createClient(jwt);
   const approveRequest = async (e: any) => {
+    const selected_permission = (
+      document.getElementById("selected_permission") as HTMLSelectElement
+    ).value;
     const approval_status = StatusHandler({
-      user_permissions: user_permissions,
+      selected_permission: selected_permission,
       exec_review: execReview,
     });
     e.preventDefault();
@@ -130,16 +135,15 @@ export default function RecordDetail({
         <h1>{dateFormat(date)}</h1>
         <h1>${amount}</h1>
       </div>
-      {user_permissions.find(() => "ADMIN") != undefined &&
-        current_user === userID &&
-        current_status != "REJECTED" && (
-          <ApproveRejectRow
-            execReview={execReview}
-            setExecReview={setExecReview}
-            approveRequest={approveRequest}
-            rejectRequest={rejectRequest}
-          />
-        )}
+      {admin && current_user === userID && current_status != "REJECTED" && (
+        <ApproveRejectRow
+          user_permissions={user_permissions}
+          execReview={execReview}
+          setExecReview={setExecReview}
+          approveRequest={approveRequest}
+          rejectRequest={rejectRequest}
+        />
+      )}
       <div className="hr" />
       <p className="req-description">{description}</p>
       <h2>Receipts</h2>

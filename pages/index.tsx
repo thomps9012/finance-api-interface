@@ -1,7 +1,5 @@
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
-import jwtDecode from 'jwt-decode'
 import { GetServerSidePropsContext } from 'next'
 import { unstable_getServerSession } from 'next-auth'
 import createClient from '../graphql/client'
@@ -20,7 +18,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     return {
       props: {
         notifications: res.data.me.incomplete_action_count,
-        last_login: res.data.me.last_login
+        admin: res.data.me.admin
       }
     }
   } else {
@@ -32,11 +30,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     }
   }
 }
-export default function Landing({ notifications, last_login }: { notifications: number, last_login: string }) {
-  const session = useSession()
-  const user_token: { permissions: string[] } = jwtDecode(session?.data?.user.token)
-  const user_permissions = user_token?.permissions;
-  console.log('role', user_permissions)
+export default function Landing({ notifications, admin }: { notifications: number, admin: boolean }) {
   return <main className={styles.landing}>
       <br />
       <header style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
@@ -79,7 +73,7 @@ export default function Landing({ notifications, last_login }: { notifications: 
         </a>
       </Link>
       <br />
-      {user_permissions.find(() =>"ADMIN") != undefined && <>
+      {admin && <>
         <h2>👨‍👦‍👦 Users </h2>
         <hr />
         <Link href={'/users'}>

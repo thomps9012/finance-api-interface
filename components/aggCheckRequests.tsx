@@ -9,7 +9,11 @@ export default function AggCheckRequests({
 }) {
   const { requests, total_amount } = check_requests;
   if (total_amount === 0) {
-    return <h1>No Check Requests for {check_requests.user.name}</h1>;
+    return (
+      <main className={styles.main}>
+        <h1>No Check Requests for {check_requests.user.name}</h1>
+      </main>
+    );
   }
   return (
     <main className={styles.main}>
@@ -18,10 +22,10 @@ export default function AggCheckRequests({
       <div className="hr" />
       <table>
         <thead>
-            <th className="table-cell">Date</th>
-            <th className="table-cell">Status</th>
-            <th className="table-cell">Category</th>
-            <th className="table-cell">Total</th>
+          <th className="table-cell">Date</th>
+          <th className="table-cell">Status</th>
+          <th className="table-cell">Category</th>
+          <th className="table-cell">Total</th>
         </thead>
         <tbody>
           {requests.map((request: CheckDetail) => {

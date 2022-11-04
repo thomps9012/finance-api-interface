@@ -4,7 +4,7 @@ import dateFormat from "../utils/dateformat";
 import styles from '../styles/Home.module.css';
 export default function AggPettyCash({ petty_cash }: { petty_cash: UserPettyCash }) {
     const { requests, total_amount } = petty_cash;
-    if (total_amount === 0) { return <h1>No Petty Cash Requests for {petty_cash.user.name}</h1> }
+    if (total_amount === 0) { return <main className={styles.main}><h1>No Petty Cash Requests for {petty_cash.user.name}</h1> </main>}
     return <main className={styles.main}>
         <h1>{petty_cash.user.name} Petty Cash</h1>
         <h2>Total Amount - ${total_amount}</h2>

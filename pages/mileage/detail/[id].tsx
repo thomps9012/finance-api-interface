@@ -6,7 +6,6 @@ import { Action } from "../../../types/checkrequests";
 import dateFormat from "../../../utils/dateformat";
 import createClient from "../../../graphql/client";
 import styles from "../../../styles/Home.module.css";
-import { gql } from "@apollo/client";
 import Link from "next/link";
 import jwtDecode from "jwt-decode";
 import { useRouter } from "next/router";
@@ -35,6 +34,7 @@ export const getServerSideProps = async (
   const client = createClient(jwt);
   const tokenData: CustomJWT = await jwtDecode(jwt as string);
   const user_permissions = tokenData.permissions;
+  const user_admin = tokenData.admin
   const userID = tokenData.id;
   const res = await client.query({ query: MILEAGE_DETAIL, variables: { id } });
   const grant = await client.query({
@@ -48,6 +48,7 @@ export const getServerSideProps = async (
       userID: sessionData ? userID : "",
       jwt: jwt ? jwt : "",
       grant_info: grant.data.single_grant,
+      admin: sessionData ? user_admin : false,
     },
   };
 };
@@ -58,8 +59,10 @@ export default function RecordDetail({
   userID,
   jwt,
   grant_info,
+  admin
 }: {
   grant_info: GrantInfo;
+  admin: boolean;
   jwt: string;
   recorddata: MileageDetail;
   user_permissions: string[];
@@ -89,8 +92,11 @@ export default function RecordDetail({
   const router = useRouter();
   const client = createClient(jwt);
   const approveRequest = async (e: any) => {
+    const selected_permission = (
+      document.getElementById("selected_permission") as HTMLSelectElement
+    ).value;
     const approval_status = StatusHandler({
-      user_permissions: user_permissions,
+      selected_permission: selected_permission,
       exec_review: execReview,
     });
     e.preventDefault();
@@ -128,17 +134,18 @@ export default function RecordDetail({
           {category.split("_").join(" ")} Mileage Request
         </span>
       </h1>
-      
-      {/* {user_permissions.find(() => "ADMIN") != undefined &&
+
+      {admin &&
         current_user === userID &&
-        current_status != "REJECTED" && ( */}
-      <ApproveRejectRow
-        execReview={execReview}
-        setExecReview={setExecReview}
-        approveRequest={approveRequest}
-        rejectRequest={rejectRequest}
-      />
-      {/* )} */}
+        current_status != "REJECTED" && (
+          <ApproveRejectRow
+            user_permissions={user_permissions}
+            execReview={execReview}
+            setExecReview={setExecReview}
+            approveRequest={approveRequest}
+            rejectRequest={rejectRequest}
+          />
+        )}
       <div className="hr" />
 
       <p className="req-description">
@@ -147,39 +154,51 @@ export default function RecordDetail({
       <p className="req-description">{trip_purpose}</p>
       <table>
         <tr>
-          <th className="table-cell"><h2>Start Odometer</h2></th>
+          <th className="table-cell">
+            <h2>Start Odometer</h2>
+          </th>
           <td className="req-description">{start_odometer}</td>
         </tr>
         <tr>
-          <th className="table-cell"><h2>End Odometer</h2></th>
+          <th className="table-cell">
+            <h2>End Odometer</h2>
+          </th>
           <td className="req-description">{end_odometer}</td>
         </tr>
         <tr>
-          <th className="table-cell"><h2>Mileage</h2></th>
+          <th className="table-cell">
+            <h2>Mileage</h2>
+          </th>
           <td className="req-description">{trip_mileage}</td>
         </tr>
         <tr>
-          <th className="table-cell"><h2>Tolls</h2></th>
+          <th className="table-cell">
+            <h2>Tolls</h2>
+          </th>
           <td className="req-description">{tolls}</td>
         </tr>
         <tr>
-          <th className="table-cell"><h2>Parking</h2></th>
+          <th className="table-cell">
+            <h2>Parking</h2>
+          </th>
           <td className="req-description">{parking}</td>
         </tr>
         <tr>
-          <th className="table-cell"><h2>Reimbursement</h2></th>
+          <th className="table-cell">
+            <h2>Reimbursement</h2>
+          </th>
           <td className="req-description">{reimbursement.toPrecision(4)}</td>
         </tr>
       </table>
       <h2>Created on {dateFormat(created_at)}</h2>
       <br />
       <div className="button-row">
-      {userID === user_id &&
-        (current_status === "REJECTED" || current_status === "PENDING") && (
-          <Link href={`/mileage/edit/${id}`}>
-            <a className={styles.editLink}>Edit</a>
-          </Link>
-        )}
+        {userID === user_id &&
+          (current_status === "REJECTED" || current_status === "PENDING") && (
+            <Link href={`/mileage/edit/${id}`}>
+              <a className={styles.editLink}>Edit</a>
+            </Link>
+          )}
         {userID === user_id && current_status != "ARCHIVED" && (
           <a className="archive-btn" onClick={archiveRequest}>
             Archive
@@ -190,15 +209,18 @@ export default function RecordDetail({
       <h2>Recent Actions</h2>
       <table>
         <tbody>
-          {action_history.slice(0, 3).sort((a,b) => -1).map((action: Action) => {
-            const { id, user, created_at, status } = action;
-            return (
-              <tr key={id} className={status}>
-                <td className="table-cell">{status}</td>
-                <td className="table-cell">{dateFormat(created_at)}</td>
-              </tr>
-            );
-          })}
+          {action_history
+            .slice(0, 3)
+            .sort((a, b) => -1)
+            .map((action: Action) => {
+              const { id, user, created_at, status } = action;
+              return (
+                <tr key={id} className={status}>
+                  <td className="table-cell">{status}</td>
+                  <td className="table-cell">{dateFormat(created_at)}</td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </main>

@@ -1,15 +1,14 @@
 export default function StatusHandler({
-  user_permissions,
+  selected_permission,
   exec_review,
 }: {
-  user_permissions: string[];
+  selected_permission: string;
   exec_review: boolean;
 }) {
-  const user_permission = user_permissions[0];
-  if (exec_review && user_permission === "FINANCE_TEAM") {
+  if (exec_review && selected_permission === "FINANCE_TEAM") {
     return "FINANCE_APPROVED";
   }
-  switch (user_permission) {
+  switch (selected_permission) {
     case "MANAGER":
       return "MANAGER_APPROVED";
     case "SUPERVISOR":

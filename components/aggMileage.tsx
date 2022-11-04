@@ -4,7 +4,7 @@ import dateFormat from "../utils/dateformat";
 import styles from '../styles/Home.module.css';
 export default function AggMileage({ mileage_requests }: { mileage_requests: UserMileage }) {
     const { mileage, requests, parking, tolls, reimbursement } = mileage_requests;
-    if (mileage === 0) { return <h1>No Mileage Requests for {mileage_requests.user.name}</h1> }
+    if (mileage === 0) { return <main className={styles.main}><h1>No Mileage Requests for {mileage_requests.user.name}</h1></main> }
     return <main className={styles.main}>
         <h1>{mileage_requests.user.name} Mileage</h1>
         <h2>Total Reimbursement - ${reimbursement}</h2>

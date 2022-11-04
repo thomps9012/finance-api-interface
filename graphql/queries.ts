@@ -38,6 +38,7 @@ export const GET_NOTIFICATIONS = gql`
       id
       name
       last_login
+      admin
       incomplete_action_count
     }
   }

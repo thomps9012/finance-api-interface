@@ -34,6 +34,7 @@ export const getServerSideProps = async (
   const client = createClient(jwt);
   const tokenData: CustomJWT = await jwtDecode(jwt as string);
   const user_permissions = tokenData.permissions;
+  const user_admin = tokenData.admin;
   const userID = tokenData.id;
   const res = await client.query({ query: CHECK_DETAIL, variables: { id } });
   const grant = await client.query({
@@ -47,6 +48,7 @@ export const getServerSideProps = async (
       user_permissions: sessionData ? user_permissions : "",
       userID: sessionData ? userID : "",
       jwt: jwt ? jwt : "",
+      admin: sessionData ? user_admin : false,
       grant_info: grant.data.single_grant,
     },
   };
@@ -58,8 +60,10 @@ export default function RecordDetail({
   userID,
   jwt,
   grant_info,
+  admin,
 }: {
   grant_info: GrantInfo;
+  admin: boolean;
   jwt: string;
   recorddata: CheckDetail;
   user_permissions: string[];
@@ -87,8 +91,11 @@ export default function RecordDetail({
   const { website, street, city, zip, state } = recorddata.vendor.address;
   const client = createClient(jwt);
   const approveRequest = async (e: any) => {
+    const selected_permission = (
+      document.getElementById("selected_permission") as HTMLSelectElement
+    ).value;
     const approval_status = StatusHandler({
-      user_permissions: user_permissions,
+      selected_permission: selected_permission,
       exec_review: execReview,
     });
     e.preventDefault();
@@ -128,16 +135,15 @@ export default function RecordDetail({
         </span>
       </h1>
 
-      {user_permissions.find(() => "ADMIN") != undefined &&
-        current_user === userID &&
-        current_status != "REJECTED" && (
-          <ApproveRejectRow
-            execReview={execReview}
-            setExecReview={setExecReview}
-            approveRequest={approveRequest}
-            rejectRequest={rejectRequest}
-          />
-        )}
+      {admin && current_user === userID && current_status != "REJECTED" && (
+        <ApproveRejectRow
+          user_permissions={user_permissions}
+          execReview={execReview}
+          setExecReview={setExecReview}
+          approveRequest={approveRequest}
+          rejectRequest={rejectRequest}
+        />
+      )}
       <div className="hr" />
       <p className="req-description">{description}</p>
       <div className={styles.card}>
