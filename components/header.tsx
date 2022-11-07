@@ -102,7 +102,7 @@ export default function Header() {
                   </a>
                 </Link>
               </li>
-              {admin != undefined && (
+              {admin && (
                 <li className={styles.navIcon}>
                   <Link href="/users">
                     <a
