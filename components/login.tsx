@@ -19,24 +19,16 @@ export default function Login() {
   };
   const sign_up = async () => {
     if (full_name === "") {
-      document
-        .getElementById("name-accept")
-        ?.setAttribute("id", "name-reject");
+      document.getElementById("name-accept")?.setAttribute("id", "name-reject");
       return;
     } else {
-      document
-        .getElementById("name-reject")
-        ?.setAttribute("id", "name-accept");
+      document.getElementById("name-reject")?.setAttribute("id", "name-accept");
     }
     if (permissions.length === 0) {
-      document
-        .getElementById("role-accept")
-        ?.setAttribute("id", "role-reject");
+      document.getElementById("role-accept")?.setAttribute("id", "role-reject");
       return;
     } else {
-      document
-        .getElementById("role-reject")
-        ?.setAttribute("id", "role-accept");
+      document.getElementById("role-reject")?.setAttribute("id", "role-accept");
     }
     if (
       !email.match(
@@ -177,14 +169,14 @@ export default function Login() {
           Login Instead
         </h3>
         <h3
-          className="archive-btn"
+          className="approve-btn"
           id="sign_up-header-hid"
           onClick={display_signup}
         >
-          Sign Up
+          Sign Up Instead
         </h3>
       </nav>
-      <form id="sign_up-shown" style={{margin: 10}}>
+      <form id="sign_up-shown" style={{ margin: 10 }}>
         <h3>As A..</h3>
         <select
           defaultValue=""
@@ -227,10 +219,10 @@ export default function Login() {
         <br />
         <br />
         <a onClick={sign_up} className="archive-btn">
-          Enter
+          Sign Up
         </a>
       </form>
-      <form id="login" style={{margin: 10}}>
+      <form id="login" style={{ margin: 10 }}>
         <h3>Email</h3>
         <input
           type="email"
@@ -243,7 +235,7 @@ export default function Login() {
         <br />
         <br />
         <a onClick={login} className="archive-btn">
-          Enter
+          Login
         </a>
       </form>
     </div>
