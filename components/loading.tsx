@@ -1,3 +1,5 @@
 export default function Loading() {
-    return <p>Loading...</p>
+    return <main className="loader-body">
+        <section className="loader" />
+        </main>
 }

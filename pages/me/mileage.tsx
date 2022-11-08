@@ -1,49 +1,40 @@
 import AggMileage from "../../components/aggMileage";
-import { GetServerSidePropsContext } from "next";
-import { unstable_getServerSession } from "next-auth";
+import { NextApiRequest, NextApiResponse } from "next";
 import createClient from "../../graphql/client";
-import { authOptions } from "../api/auth/[...nextauth]";
-import { UserOverview } from "../../types/users";
-import { gql } from "@apollo/client";
-const GET_MY_MILEAGE = gql`{
-    me {
-      id
-      name
-      last_login
-      mileage_requests {
-        mileage
-        parking
-        tolls
-        requests {
-          id
-          current_status
-          date
-          trip_mileage
-          reimbursement
-        }
-        reimbursement
-      }
-    }
-  }
-  `;
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const sessionData = await unstable_getServerSession(
-        context.req,
-        context.res,
-        authOptions
-    )
-    const jwt = sessionData?.user.token
-    const client = createClient(jwt);
-    const res = await client.query({ query: GET_MY_MILEAGE, fetchPolicy: 'no-cache' })
-    console.log(res.data.me.mileage_requests, "userdata on server")
-    return {
-        props: {
-            userdata: sessionData ? res.data.me : []
-        }
-    }
-}
+import { GET_USER_MILEAGE } from "../../graphql/queries";
+import { UserMileage } from "../../types/mileage";
+import jwtDecode from "jwt-decode";
+import { CustomJWT } from "../../types/next-auth";
+import { getCookie } from "cookies-next";
 
+export const getServerSideProps = async ({
+  req,
+  res,
+}: {
+  req: NextApiRequest;
+  res: NextApiResponse;
+}) => {
+  const jwt = getCookie("jwt", { req, res }) as string;
+  const client = createClient(jwt);
+  const decoded_jwt: CustomJWT = jwtDecode(jwt);
+  const response = await client.query({
+    query: GET_USER_MILEAGE,
+    variables: {
+      id: decoded_jwt.id,
+    },
+    fetchPolicy: "no-cache",
+  });
+  return {
+    props: {
+      user_mileage: jwt != undefined ? response.data.user_mileage : [],
+    },
+  };
+};
 
-export default function MyMileage({ userdata }: { userdata: UserOverview }) {
-    return <AggMileage mileage_requests={userdata.mileage_requests} />
+export default function MyMileage({
+  user_mileage,
+}: {
+  user_mileage: UserMileage;
+}) {
+  return <AggMileage mileage_requests={user_mileage} />;
 }

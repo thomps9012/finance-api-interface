@@ -1,9 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+* {
+  font-family: "Bebas Neue", cursive;
+}
 html,
 body {
+  font-family: "Bebas Neue", cursive;
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 a {
@@ -39,7 +42,7 @@ footer {
   display: flex;
   flex: 1;
   padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
+  /* border-top: 1px solid #eaeaea; */
   justify-content: space-around;
   align-items: center;
 }
@@ -59,11 +62,9 @@ header {
 
 .mobileSignOut {
   display: none;
-  ;
 }
 
-@media only screen and (max-width: 782px) {
-
+@media only screen and (max-width: 715px) {
   header,
   nav {
     display: none;
@@ -71,10 +72,6 @@ header {
 
   .mobileSignOut {
     display: block;
-  }
-
-  thead {
-    display: none;
   }
 
   select {
@@ -90,12 +87,9 @@ header {
   #mobile-sign-out {
     display: block;
   }
-  #mobile-btn {
-    display: none;
-  }
 }
 
-@media only screen and (max-width: 782px) {
+@media only screen and (max-width: 745px) {
   .navIcons-true {
     display: flex;
     flex-direction: column;
@@ -105,7 +99,7 @@ header {
     left: 0%;
     top: -10px;
     height: 100vh;
-    z-index: 1;
+    z-index: 7;
     transition: all var(--duration);
   }
 
@@ -117,36 +111,24 @@ header {
 /* different status stylings */
 .PENDING {
   color: goldenrod;
-  font-weight: bold;
 }
 
 .ARCHIVED {
-  font-weight: bold;
   color: #b2b0b0;
 }
 
-.MANAGER_APPROVED {
-  font-weight: bold;
-  color: greenyellow;
+.MANAGER_APPROVED,
+.SUPERVISOR_APPROVED,
+.FINANCE_APPROVED,
+.ORGANIZATION_APPROVED,
+.EXECUTIVE_APPROVED {
+  color: rgb(134, 164, 10);
 }
-
-.FINANCE_APPROVED {
-  font-weight: bold;
-  color: greenyellow;
-}
-
-.ORG_APPROVED {
-  font-weight: bold;
-  color: green;
-}
-
 .REJECTED {
-  font-weight: bold;
-  color: red;
+  color: rgb(121, 10, 10);
 }
 
 .REJECTED_EDIT {
-  font-weight: bold;
   color: rosybrown;
 }
 
@@ -159,27 +141,32 @@ a:hover {
   text-decoration: underline;
 }
 
-
-#vehicleInput {
+#vehicleInput-shown {
   display: inline-flex;
   flex-direction: column;
-  padding: 20px;
 }
-
+#hidden {
+  background-color: white;
+  border: 0px;
+  width: max-content;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  padding-top: 20px;
+}
 .remove {
   color: red;
-  text-shadow: black 1px 0 5px;
   font-weight: 1000;
   position: relative;
-  top: 70px;
-  left: 160px;
+  top: 30px;
+  left: 110px;
   z-index: 1;
 }
 
 .hr {
   padding: 5px;
   margin: 5px;
-  border-bottom: 5px dashed cadetblue;
+  border-bottom: 5px solid cadetblue;
   opacity: 50%;
   width: 100%;
 }
@@ -187,7 +174,7 @@ a:hover {
 .hr-red {
   padding: 5px;
   margin: 5px;
-  border-bottom: 5px dashed rgb(160, 95, 95);
+  border-bottom: 5px solid rgb(160, 95, 95);
   opacity: 50%;
   width: 100%;
 }
@@ -212,7 +199,7 @@ form {
 input,
 select {
   font-size: large;
-  height: 40px;
+  height: 45px;
   padding: 10px;
 }
 
@@ -253,8 +240,6 @@ button:active {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: -100px;
-  margin-bottom: 100px;
 }
 
 .image-item {
@@ -270,7 +255,7 @@ button:active {
 }
 
 #table-row:hover {
-  background-color: #f0f0f0;
+  color: #0070f3;
   cursor: pointer;
 }
 
@@ -279,7 +264,166 @@ button:active {
   color: #0070f3;
 }
 
-.upload-link {
+.loader {
+  --s: 17vh;
+
+  --_d: calc(0.353 * var(--s));
+  height: var(--s);
+  aspect-ratio: 3;
+  display: flex;
+}
+.loader:before,
+.loader:after {
+  content: "";
+  clip-path: polygon(
+    var(--_d) 0,
+    100% 0,
+    100% calc(100% - var(--_d)),
+    calc(100% - var(--_d)) 100%,
+    0 100%,
+    0 var(--_d)
+  );
+  background: conic-gradient(
+    from -90deg at calc(100% - var(--_d)) var(--_d),
+    #fff 135deg,
+    #666 0 270deg,
+    #aaa 0
+  );
+}
+.loader:before {
+  background-color: cadetblue;
+  background-blend-mode: multiply;
+  margin-right: calc(var(--_d) / -2);
+  animation: load 2.5s infinite linear;
+}
+.loader:after {
+  margin-left: calc(var(--_d) / -2);
+  opacity: 0.4;
+  flex: 1;
+}
+
+@keyframes load {
+  0%,
+  5% {
+    width: 0%;
+  }
+  95%,
+  100% {
+    width: 100%;
+  }
+}
+
+.loader-body {
+  margin: 0;
+  height: 100vh;
+  display: grid;
+  place-content: center;
+  background: white;
+}
+
+.check-box {
+  height: 25px;
+  width: 25px;
+  margin-top: 7px;
+  margin-right: 10px;
+  color: cadetblue;
+}
+
+.check-box-label {
+  font-size: 27px;
+  color: gray;
+}
+
+#inbox-remove {
+  color: red;
+}
+
+.table-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.req-description {
+  font-size: 35px;
+}
+
+.archive-btn {
+  color: cadetblue;
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.archive-btn:hover,
+.reject-btn:hover,
+.approve-btn:hover {
   text-decoration: underline;
-  color: #0070f3;
+}
+
+.reject-btn {
+  color: rgb(160, 95, 95);
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.approve-btn {
+  color: rgb(103, 160, 95);
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.button-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.button-row > h1,
+.button-row > a {
+  margin: 15px;
+}
+
+.req-overview {
+  font-size: 25px;
+}
+
+#vehicles,
+#hide-btn,
+#hidden-btn {
+  display: none;
+}
+
+#vehicles-shown,
+#show-btn,
+#shown-btn {
+  display: block;
+}
+
+
+#login-header,
+#sign_up-header,
+#sign_up-shown,
+#login-shown {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#login-btn,
+#sign_up-btn,
+#sign_up,
+#login,
+#sign_up-header-hid,
+#email-accept,
+#name-accept,
+#role-accept,
+#login-header-hid {
+  display: none;
+}
+
+
+.email-reject, .role-reject, .name-reject {
+  color: rgb(160, 95, 95);
 }

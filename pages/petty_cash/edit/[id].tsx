@@ -1,58 +1,42 @@
-import { gql } from "@apollo/client";
-import { GetServerSidePropsContext } from "next";
-import { unstable_getServerSession } from "next-auth";
+import { NextApiRequest, NextApiResponse } from "next";
 import { useRouter } from "next/router";
 import createClient from "../../../graphql/client";
-import { authOptions } from "../../api/auth/[...nextauth]";
-import jwt_decode from "jwt-decode";
 import { PettyCashDetail } from "../../../types/pettycash";
 import { useState } from "react";
 import styles from '../../../styles/Home.module.css';
 import GrantSelect from "../../../components/grantSelect";
 import ReceiptUpload from "../../../components/receiptUpload";
 import dateFormat from "../../../utils/dateformat";
-const PETTY_CASH_DETAIL = gql`query PettyCashDetail($id: ID!){
-    petty_cash_detail(id: $id) {
-      id
-      grant_id
-      date
-      description
-      amount
-      receipts
-    }
-  }`;
-const EDIT_PETTY_CASH = gql`mutation editPettyCash($request_id: ID!, $grant_id: ID!, $request: PettyCashInput!){
-    edit_petty_cash(request_id: $request_id, grant_id: $grant_id, request: $request){
-        id
-        action_history {
-            id
-            status
-            created_at
-        }
-        current_status
-    }
-}
-`;
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const { id } = context.query
-    const sessionData = await unstable_getServerSession(
-        context.req,
-        context.res,
-        authOptions
-    )
-    const jwt = sessionData?.user.token;
+import { GrantInfo } from "../../../types/grants";
+import CategorySelect from "../../../components/categorySelect";
+import { EDIT_PETTY_CASH } from "../../../graphql/mutations";
+import { PETTY_CASH_DETAIL, GET_GRANTS } from "../../../graphql/queries";
+import { getCookie } from "cookies-next";
+
+export const getServerSideProps = async ({
+    req,
+    res,
+  }: {
+    req: NextApiRequest;
+    res: NextApiResponse;
+  }) => {
+    const jwt = getCookie("jwt", { req, res });
     const client = createClient(jwt);
-    const res = await client.query({ query: PETTY_CASH_DETAIL, variables: { id } })
+    const { id } = req.query;
+    const response = await client.query({ query: PETTY_CASH_DETAIL, variables: { id } })
+    const grants = await client.query({ query: GET_GRANTS });
     return {
         props: {
-            recorddata: sessionData ? res.data.petty_cash_detail : [],
-            jwt: jwt ? jwt : ""
+            recorddata: jwt != undefined ? response.data.petty_cash_detail : [],
+            jwt: jwt ? jwt : "",
+            grants: jwt != undefined ? grants.data.all_grants : []
         }
     }
 }
 
-export default function EditRecord({ recorddata, jwt }: { jwt: string, recorddata: PettyCashDetail }) {
+export default function EditRecord({ recorddata, jwt, grants }: { jwt: string, recorddata: PettyCashDetail, grants: GrantInfo[] }) {
     const router = useRouter();
+    const [category, setCategory] = useState(recorddata.category)
     const [receipts, setReceipts] = useState(recorddata.receipts);
     const [requestDate, setDate] = useState(recorddata.date)
     const [description, setDescription] = useState(recorddata.description)
@@ -66,6 +50,7 @@ export default function EditRecord({ recorddata, jwt }: { jwt: string, recorddat
                 request_id: recorddata.id, 
                 grant_id: grantID, 
                 request: {
+                    category: category,
                     amount: amount,
                     description: description,
                     receipts: receipts,
@@ -77,7 +62,8 @@ export default function EditRecord({ recorddata, jwt }: { jwt: string, recorddat
     }
     return <main className={styles.main}>
         <form id='petty-cash-form'>
-            <GrantSelect state={grantID} setState={setGrantID} />
+            <GrantSelect state={grantID} setState={setGrantID} grants={grants}/>
+            <CategorySelect state={category} setState={setCategory} />
             <h4>Amount</h4>
             <input type="number" value={amount} onChange={(e: any) => setAmount(parseFloat(e.target.value))} />
             <h4>Date {dateFormat(requestDate)}</h4>

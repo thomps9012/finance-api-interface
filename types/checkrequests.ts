@@ -1,3 +1,4 @@
+import { GrantInfo } from "./grants";
 import { UserInfo } from "./users";
 
 export interface Purchase {
@@ -10,7 +11,7 @@ export interface Address {
     street: string;
     city: string;
     state: string;
-    zip: string;
+    zip: number;
     website: string;
 }
 
@@ -22,40 +23,49 @@ export interface Action {
     id: string;
     created_at: string;
     status: string;
-    user: UserInfo;
+    user: string;
     request_id: string;
     request_type: string;
 }
 
 export interface CheckRequestOverview {
-    purchases: [Purchase];
-    receipts: [string];
-    total_amount: number;
-    vendors: [Vendor];
-    requests: [CheckDetail];
-    last_request: CheckDetail;
+    created_at: string;
+    current_status: string;
+    date: string;
+    grant: GrantInfo;
+    grant_id: string;
+    id: string;
+    is_active: boolean;
+    order_total: number;
+    user: UserInfo;
+    user_id: string;
+    vendor: Vendor;
 }
 
 export interface UserCheckRequests {
+    end_date: string;
+    start_date: string;
+    requests: CheckDetail[];
     total_amount: number;
-    vendors: [Vendor];
-    requests: [CheckDetail];
+    user: UserInfo;
+    vendors: Vendor[];
 }
 
 export interface CheckDetail {
-    id: string;
-    user_id: string;
-    grant_id: string;
-    date: string;
-    vendor: Vendor;
-    description: string;
-    purchases: Purchase[];
-    receipts: [string];
-    order_total: number;
-    credit_card: string;
+    action_history: Action[];
+    category: string;
     created_at: string;
-    action_history: [Action];
     current_status: string;
     current_user: string;
+    date: string;
+    description: string;
+    grant_id: string;
+    id: string;
     is_active: boolean;
+    order_total: number;
+    purchases: Purchase[];
+    receipts: string[];
+    user_id: string;
+    vendor: Vendor;
+    credit_card: string;
 }

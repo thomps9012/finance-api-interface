@@ -2,7 +2,8 @@ import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
-    uri: "https://default-20220902t121147-sr3vwdfovq-uc.a.run.app/graphql"
+    // uri: process.env.PUBLIC_GRAPHQL_URI
+    uri: 'https://default-20220902t121147-sr3vwdfovq-uc.a.run.app/graphql'
 })
 const createClient = (context: any) => {
     console.log('client context', context)
