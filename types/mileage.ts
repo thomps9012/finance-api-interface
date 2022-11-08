@@ -2,54 +2,58 @@ import { Action } from "./checkrequests";
 import { UserInfo } from "./users";
 
 export interface MileageDetail {
-    id: string;
-    grant_id: string;
-    user_id: string;
-    date: string;
-    starting_location: string;
-    destination: string;
-    trip_purpose: string;
-    start_odometer: number;
-    end_odometer: number;
-    tolls: number;
-    parking: number;
-    trip_mileage: number;
-    reimbursement: number;
+    action_history: Action[];
+    category: string;
     created_at: string;
-    action_history: [Action];
     current_status: string;
     current_user: string;
-    is_active: string;
+    date: string;
+    destination: string;
+    end_odometer: number;
+    grant_id: string;
+    id: string;
+    is_active: boolean;
+    parking: number;
+    reimbursement: number;
+    start_odometer: number;
+    starting_location: string;
+    tolls: number;
+    trip_mileage: number;
+    trip_purpose: string;
+    user_id: string;
 }
 
 
 export interface MileageOverview {
-    mileage: number;
-    parking: number;
+    created_at: Date;
+    current_status: string;
+    date: Date;
+    grant_id: string;
+    id: string;
+    is_active: boolean;
     reimbursement: number;
-    requests: [MileageDetail];
-    last_request: MileageDetail;
-    tolls: number;
+    trip_mileage: number;
+    user: UserInfo;
+    user_id: string;
 }
 
 export interface MonthlyMileage {
-    grant_ids: [string];
-    user_id: string;
-    name: string;
-    month: number;
-    year: number;
     mileage: number;
-    tolls: number;
+    month: string;
+    name: string;
     parking: number;
     reimbursement: number;
-    requests: [MileageDetail];
+    requests: MileageDetail[];
+    tolls: number;
+    user_id: string;
+    year: number;
 }
 
 export interface UserMileage {
-    user: UserInfo;
     mileage: number;
-    tolls: number;
     parking: number;
     reimbursement: number;
-    requests: [MileageDetail]
+    requests: MileageDetail[]
+    tolls: number;
+    user: UserInfo;
 }

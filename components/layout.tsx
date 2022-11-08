@@ -1,30 +1,33 @@
 import Header from "./header";
 import Footer from "./footer";
-import { useSession } from "next-auth/react";
-import AccessDenied from "./accessDenied";
-import Loading from "./loading";
 import Head from "next/head";
-
+import { getCookie } from "cookies-next";
+import Login from "./login";
 interface Props {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export default function Layout({ children }: Props) {
-    const { data: session, status } = useSession();
-    const loading = status === "loading";
-    if(!session && loading) {return <Loading />}
-    if (!session) { return <AccessDenied /> }
-    return <>
-     <Head>
+  const jwt = getCookie("jwt") as string;
+  const profile_img = getCookie("profile_img") as string;
+  if (jwt === undefined) return <Login />;
+  return (
+    <>
+      <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="true"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
           rel="stylesheet"
         />
       </Head>
-        <Header />
-        <main>{children}</main>
-        <Footer />
+      <Header jwt={jwt} profile_img={profile_img} />
+      <main>{children}</main>
+      <Footer />
     </>
+  );
 }

@@ -13,17 +13,19 @@ export interface GrantMileage {
     tolls: number;
     parking: number;
     reimbursement: number;
-    requests: [MileageDetail];
+    requests: MileageDetail[];
 }
 export interface GrantPettyCash {
     total_amount: number;
-    requests: [PettyCashDetail];
+    grant: GrantInfo;
+    total_requests: number;
+    requests: PettyCashDetail[];
 }
 
 export interface GrantCheckRequest {
     grant: GrantInfo;
-    vendors: [Vendor];
-    credit_cards: [string];
+    vendors: Vendor[];
+    requests: CheckDetail[];
     total_amount: number;
-    requests: [CheckDetail];
+    total_requests: number;
 }

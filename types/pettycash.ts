@@ -1,18 +1,21 @@
 import { Action } from "./checkrequests";
+import { GrantInfo } from "./grants";
+import { UserInfo } from "./users";
 
 export interface PettyCashDetail {
-    id: string;
-    user_id: string;
-    grant_id: string;
-    date: string;
-    description: string;
+    action_history: Action[];
     amount: number;
-    receipts: [string];
+    category: string;
     created_at: string;
-    action_history: [Action];
     current_status: string;
     current_user: string;
-    is_active: string;
+    date: string;
+    description: string;
+    grant_id: string;
+    id: string;
+    is_active: boolean;
+    receipts: string[];
+    user_id: string;
 }
 export interface PettyCashOverview {
     receipts: [string];
@@ -22,9 +25,15 @@ export interface PettyCashOverview {
 }
 interface PettyCashRequestInput {
     amount: number;
-    date: string;
-    receipts: string[];
-    description: string;
+    created_at: Date;
+    current_status: string;
+    date: Date;
+    grant: GrantInfo;
+    grant_id: string;
+    id: string;
+    is_active: boolean;
+    user: UserInfo;
+    user_id: string;
 }
 export interface PettyCashInput {
     user_id: string;
@@ -32,8 +41,10 @@ export interface PettyCashInput {
     request: PettyCashRequestInput;
 }
 export interface UserPettyCash {
+    user: UserInfo;
+    end_date: string;
+    requests: PettyCashDetail[];
+    start_date: string;
     total_amount: number;
-    requests: [PettyCashDetail];
-    last_request: PettyCashDetail;
 }
 

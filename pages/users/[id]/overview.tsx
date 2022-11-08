@@ -1,106 +1,192 @@
-import { GetServerSidePropsContext } from "next";
-import { unstable_getServerSession } from "next-auth";
+import { NextApiRequest, NextApiResponse } from "next";
 import { UserOverview } from "../../../types/users";
 import dateFormat from "../../../utils/dateformat";
-import { authOptions } from "../../api/auth/[...nextauth]";
 import createClient from "../../../graphql/client";
-import styles from '../../../styles/Home.module.css';
-import { gql } from "@apollo/client";
+import styles from "../../../styles/Home.module.css";
 import Link from "next/link";
-const USER_OVERVIEW = gql`query UserOverview($id: ID!) {
-    user_overview(id:$id) {
-        id
-        manager_id
-        name
-        role
-        last_login
-        incomplete_action_count
-        mileage_requests {
-            mileage
-            parking
-            tolls
-            requests {
-            id
-            current_status
-            date
-            }
-            reimbursement
-        }
-        check_requests {
-            vendors {
-            name
-            }
-            requests {
-            id
-            current_status
-            date
-            }
-            total_amount
-        }
-        petty_cash_requests {
-            requests {
-            id
-            current_status
-            date
-            }
-            total_amount
-        }
-    }
-}`;
-export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-    const { id } = context.query
-    const sessionData = await unstable_getServerSession(
-        context.req,
-        context.res,
-        authOptions
-    )
-    const jwt = sessionData?.user.token
-    const client = createClient(jwt);
-    const res = await client.query({ query: USER_OVERVIEW, variables: { id } })
-    console.log(res.data, 'user overview')
-    return {
-        props: {
-            userdata: sessionData ? res.data.user_overview : []
-        }
-    }
-}
+import { USER_OVERVIEW } from "../../../graphql/queries";
+import { getCookie } from "cookies-next";
+export const getServerSideProps = async ({
+  req,
+  res,
+}: {
+  req: NextApiRequest;
+  res: NextApiResponse;
+}) => {
+  const jwt = getCookie("jwt", { req, res });
+  const client = createClient(jwt);
+  const { id } = req.query;
+  const response = await client.query({ query: USER_OVERVIEW, variables: { id } });
+  return {
+    props: {
+      userdata: jwt != undefined ? response.data.user_overview : [],
+    },
+  };
+};
 
-
-export default function UserRecordOverview({ userdata }: { userdata: UserOverview }) {
-    const { name, id, incomplete_action_count, last_login, role } = userdata;
-
-    return <main className={styles.container}>
-        <h1>Data for {name}</h1>
-        {/* <h1>Data for {name} <Link href={`/users/${userdata.id}/edit`}><a>✏️</a></Link></h1> */}
-        <h3 style={{color: 'cadetblue'}}>{role} with {incomplete_action_count} Incomplete Actions</h3>
-        <h3 style={{color: 'cadetblue'}}>Last Login: {dateFormat(last_login)}</h3>
-        <h2>Recent Requests</h2>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-            <div style={{ flexDirection: 'column' }}>
-                <Link href={`/mileage/report/user/${id}`}><h3>Mileage</h3></Link>
-                {userdata.mileage_requests.requests.length > 0 ?
-                    userdata.mileage_requests.requests.slice(0, 3).map((mileage_req: any) => <div key={mileage_req.id}>
-                        <Link href={`/mileage/detail/${mileage_req.id}`}><a><p className={mileage_req.current_status}>{dateFormat(mileage_req.date)} {mileage_req.current_status}</p></a></Link>
-                    </div>
-                    ) : <p className="ARCHIVED">None</p>}
-            </div>
-            <div style={{ flexDirection: 'column' }}>
-                <Link href={`/check_request/report/user/${id}`}><h3>Check</h3></Link>
-                {userdata.check_requests.requests.length > 0 ?
-                    userdata.check_requests.requests.slice(0, 3).map((check_req: any) => <div key={check_req.id}>
-
-                        <Link href={`/check_request/detail/${check_req.id}`}><a><p className={check_req.current_status}>{dateFormat(check_req.date)} {check_req.current_status}</p></a></Link>
-                    </div>
-                    ) : <p className="ARCHIVED">None</p>}
-            </div>
-            <div style={{ flexDirection: 'column' }}>
-                <Link href={`/petty_cash/report/user/${id}`}><h3>Petty Cash</h3></Link>
-                {userdata.petty_cash_requests.requests.length > 0 ?
-                    userdata.petty_cash_requests.requests.slice(0, 3).map((petty_cash_req: any) => <div key={petty_cash_req.id}>
-                        <Link href={`/petty_cash/detail/${petty_cash_req.id}`}><a><p className={petty_cash_req.current_status}>{dateFormat(petty_cash_req.date)} {petty_cash_req.current_status}</p></a></Link>
-                    </div>
-                    ) : <p className="ARCHIVED">None</p>}
-            </div>
+export default function UserRecordOverview({
+  userdata,
+}: {
+  userdata: UserOverview;
+}) {
+  const { name, id, incomplete_action_count, last_login, permissions } =
+    userdata;
+  const { mileage_requests, check_requests, petty_cash_requests } = userdata;
+  return (
+    <main className={styles.container}>
+      <h1>{name}</h1>
+      <p>{incomplete_action_count} Incomplete Actions</p>
+      <p>Last Login: {dateFormat(last_login)}</p>
+      {/* <h1>Data for {name} <Link href={`/users/${userdata.id}/edit`}><a>✏️</a></Link></h1> */}
+      <h3>Permissions </h3>
+      {permissions.map((permission) => (
+        <p key={permission}>{permission}</p>
+      ))}
+      <div className="hr" />
+      <h2>Request Overview</h2>
+      <div
+        style={{
+          margin: 10,
+          display: "flex",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+        }}
+      >
+        <div style={{ flexDirection: "column" }}>
+          {mileage_requests.total_requests > 0 ? (
+            <>
+              <h1>Mileage</h1>
+              <Link href={`/me/mileage`}>
+                <a>
+                  <p className="req-overview">View All</p>
+                </a>
+              </Link>
+              <p className="req-overview">
+                {mileage_requests.total_requests} Total Request
+                {mileage_requests.total_requests > 1 && "s"}
+              </p>
+              <Link
+                href={`/mileage/detail/${mileage_requests.last_request.id}`}
+              >
+                <a>
+                  <h1>
+                    Most Recent{" "}
+                    <span
+                      className={mileage_requests.last_request.current_status}
+                    >
+                      {mileage_requests.last_request.current_status
+                        .split("_")
+                        .join(" ")}{" "}
+                      Request
+                    </span>
+                  </h1>
+                </a>
+              </Link>
+              <p className="req-overview">
+                Date - {dateFormat(mileage_requests.last_request.date)}
+              </p>
+              <p className="req-overview">
+                Created - {dateFormat(mileage_requests.last_request.created_at)}
+              </p>
+            </>
+          ) : (
+            <h1 className="ARCHIVED">
+              {mileage_requests.total_requests} Mileage Requests
+            </h1>
+          )}
         </div>
+        <div className="hr" />
+        <div style={{ flexDirection: "column" }}>
+          {check_requests.total_requests > 0 ? (
+            <>
+              <h1> Check Requests</h1>
+              <Link href={`/me/checkRequests`}>
+                <a>
+                  <p className="req-overview">View All</p>
+                </a>
+              </Link>
+              <p className="req-overview">
+                {check_requests.total_requests} Total Request
+                {check_requests.total_requests > 1 && "s"}
+              </p>
+              <Link
+                href={`/check_request/detail/${check_requests.last_request.id}`}
+              >
+                <a>
+                  <h1>
+                    Most Recent{" "}
+                    <span
+                      className={check_requests.last_request.current_status}
+                    >
+                      {check_requests.last_request.current_status
+                        .split("_")
+                        .join(" ")}{" "}
+                      Request
+                    </span>
+                  </h1>
+                </a>
+              </Link>
+              <p className="req-overview">
+                Date - {dateFormat(check_requests.last_request.date)}
+              </p>
+              <p className="req-overview">
+                Created - {dateFormat(check_requests.last_request.created_at)}
+              </p>
+            </>
+          ) : (
+            <h1 className="ARCHIVED">
+              {check_requests.total_requests} Check Requests
+            </h1>
+          )}
+        </div>
+        <div className="hr" />
+        <div style={{ flexDirection: "column" }}>
+          {petty_cash_requests.total_requests > 0 ? (
+            <>
+              <h1>Petty Cash Requests</h1>
+              <Link href={`/me/pettyCash`}>
+                <a>
+                  <p className="req-overview">View All</p>
+                </a>
+              </Link>
+              <p className="req-overview">
+                {petty_cash_requests.total_requests} Total Request
+                {petty_cash_requests.total_requests > 1 && "s"}
+              </p>
+              <Link
+                href={`/petty_cash/detail/${petty_cash_requests.last_request.id}`}
+              >
+                <a>
+                  <h1>
+                    Most Recent{" "}
+                    <span
+                      className={
+                        petty_cash_requests.last_request.current_status
+                      }
+                    >
+                      {petty_cash_requests.last_request.current_status
+                        .split("_")
+                        .join(" ")}{" "}
+                      Request
+                    </span>
+                  </h1>
+                </a>
+              </Link>
+              <p className="req-overview">
+                Date - {dateFormat(petty_cash_requests.last_request.date)}
+              </p>
+              <p className="req-overview">
+                Created -{" "}
+                {dateFormat(petty_cash_requests.last_request.created_at)}
+              </p>
+            </>
+          ) : (
+            <h1 className="ARCHIVED">
+              {petty_cash_requests.total_requests} Petty Cash Requests
+            </h1>
+          )}
+        </div>
+      </div>
     </main>
+  );
 }
