@@ -102,6 +102,16 @@ export default function Header() {
                   </a>
                 </Link>
               </li>
+              <li className={styles.navIcon}>
+                <Link href="/how_to">
+                  <a
+                    className={styles.navIcon}
+                    onClick={(e) => setOpenNav(false)}
+                  >
+                    🆘 Help / How To
+                  </a>
+                </Link>
+              </li>
               {admin && (
                 <li className={styles.navIcon}>
                   <Link href="/users">
@@ -183,6 +193,13 @@ export default function Header() {
                   <Link href="/check_request">
                     <a className={styles.navIcon}>
                       📑<span className={styles.navSpan}>Check Request</span>
+                    </a>
+                  </Link>
+                </li>
+                <li className={styles.navIcon}>
+                  <Link href="/how_to">
+                    <a className={styles.navIcon}>
+                      🆘<span className={styles.navSpan}>Help / How To</span>
                     </a>
                   </Link>
                 </li>

@@ -8,7 +8,18 @@ body {
   padding: 0;
   margin: 0;
 }
+.how_to_section_hidden {
+  display: none;
+}
+.how_to_section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 
+.how_to_section p {
+  font-size: xx-large;
+}
 a {
   color: inherit;
   text-decoration: none;
@@ -24,8 +35,8 @@ a {
   }
 
   body {
-    color: white;
-    background: black;
+    color: whitesmoke;
+    background-color: rgb(48, 48, 48);
   }
 }
 
@@ -64,7 +75,7 @@ header {
   display: none;
 }
 
-@media only screen and (max-width: 695px) {
+@media only screen and (max-width: 720px) {
   header,
   nav {
     display: none;
@@ -88,8 +99,7 @@ header {
     display: block;
   }
 }
-
-@media only screen and (max-width: 695px) {
+@media only screen and (max-width: 720px) {
   .navIcons-true {
     display: flex;
     flex-direction: column;
@@ -102,7 +112,21 @@ header {
     z-index: 7;
     transition: all var(--duration);
   }
-
+}
+@media (prefers-color-scheme: dark) and (max-width: 720px) {
+  .navIcons-true {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: absolute;
+    color: whitesmoke;
+    background-color: rgb(48, 48, 48);
+    left: 0%;
+    top: -10px;
+    height: 100vh;
+    z-index: 7;
+    transition: all var(--duration);
+  }
   .navIcons-false {
     display: none;
   }
@@ -117,7 +141,11 @@ header {
   color: #b2b0b0;
 }
 
-.MANAGER_APPROVED, .SUPERVISOR_APPROVED, .FINANCE_APPROVED, .ORGANIZATION_APPROVED, .EXECUTIVE_APPROVED  {
+.MANAGER_APPROVED,
+.SUPERVISOR_APPROVED,
+.FINANCE_APPROVED,
+.ORGANIZATION_APPROVED,
+.EXECUTIVE_APPROVED {
   color: rgb(134, 164, 10);
 }
 .REJECTED {

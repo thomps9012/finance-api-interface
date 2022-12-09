@@ -93,7 +93,7 @@
   }
 }
 
-@media only screen and (max-width: 695px) {
+@media only screen and (max-width: 720px) {
   .mobileHeader {
     display: flex;
     justify-content: space-between;
@@ -127,7 +127,7 @@
   font-size: 25px;
 }
 
-@media only screen and (max-width: 1230px) {
+@media only screen and (max-width: 1307px) {
   .navIcons {
     font-size: 25px;
   }
@@ -135,7 +135,7 @@
     font-size: 15px;
   }
 }
-@media only screen and (max-width: 1047px) {
+@media only screen and (max-width: 1103px) {
   .navSpan {
     display: none;
   }

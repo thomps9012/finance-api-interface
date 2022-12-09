@@ -1,7 +1,21 @@
 .container {
   padding: 0 2rem;
 }
-
+.how_to_section,
+.show_hide {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.show_hide {
+  justify-content: space-around;
+}
+.show_hide a {
+  font-size: x-large;
+}
+.how_to_section p {
+  font-size: xx-large;
+}
 .main {
   min-height: 50vh;
   padding: 1rem;
@@ -11,7 +25,13 @@
   justify-content: center;
   align-items: center;
 }
-
+.instructions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
+}
 .calendar {
   font-size: 1.5rem;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -85,7 +105,6 @@
   text-decoration: underline;
 }
 
-
 .title,
 .description {
   text-align: center;
@@ -145,7 +164,6 @@
 }
 
 @media (prefers-color-scheme: dark) {
-
   .card,
   .footer {
     border-color: #222;
