@@ -2,10 +2,11 @@ import jwtDecode from 'jwt-decode';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import styles from '../../styles/Home.module.css';
+import { CustomJWT } from '../../types/next-auth';
 export default function CheckRequestLanding() {
     const session = useSession()
-    const user_token: { role: string } = jwtDecode(session?.data?.user.token)
-    const user_role = user_token?.role;
+    const user_token: CustomJWT = jwtDecode(session?.data?.user.token);
+    const admin = user_token?.admin;
     return <main className={styles.landing}>
         <h1>Check Request</h1>
         <div className='hr' />
@@ -15,7 +16,7 @@ export default function CheckRequestLanding() {
         <Link href={'/me/checkRequests'}>
             <a><h2>Your Active Requests</h2></a>
         </Link>
-        {user_role != 'EMPLOYEE' && <>
+        {admin && <>
             <Link href="/check_request/report/user/null">
                 <a><h2>User Requests</h2></a>
             </Link>

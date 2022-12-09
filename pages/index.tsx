@@ -32,45 +32,42 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 }
 export default function Landing({ notifications, admin }: { notifications: number, admin: boolean }) {
   return <main className={styles.landing}>
-      <br />
-      <header style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-        <h1>Financial Request Hub</h1>
-        <Link href={'/me/inbox'}>
-          <a><p className='req-overview'>{notifications} New Action Items</p></a>
-        </Link>
-      </header>
-    <div className={styles.container}>
-      <h2>🚗 Mileage </h2>
-      <hr />
-      <Link href={'/mileage/create'}>
-        <a><h3 style={{fontWeight: 100}}>New Request</h3></a>
+    <br />
+    <header style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+      <h1>Financial Request Hub</h1>
+      <Link href={'/me/inbox'}>
+        <a><p className='req-overview'>{notifications} New Action Items</p></a>
       </Link>
+    </header>
+    <div className={styles.container}>
       <Link href={'/mileage'}>
         <a>
-          <h3 style={{fontWeight: 100}}>All Actions</h3>
+          <h2>🚗 Mileage </h2>
         </a>
       </Link>
-      <br />
-      <h2>💸 Petty Cash </h2>
       <hr />
-      <Link href={'/petty_cash/create'}>
-        <a><h3 style={{fontWeight: 100}}>New Request</h3></a>
+      <Link href={'/mileage/create'}>
+        <a><h3 style={{ fontWeight: 100 }}>New Request</h3></a>
       </Link>
+      <br />
       <Link href={'/petty_cash'}>
         <a>
-          <h3 style={{fontWeight: 100}}>All Actions</h3>
+          <h2>💸 Petty Cash </h2>
         </a>
+      </Link>
+      <hr />
+      <Link href={'/petty_cash/create'}>
+        <a><h3 style={{ fontWeight: 100 }}>New Request</h3></a>
       </Link>
       <br />
-      <h2>📑 Check Requests </h2>
-      <hr />
-      <Link href={'/check_request/create'}>
-        <a><h3 style={{fontWeight: 100}}>New Request</h3></a>
-      </Link>
       <Link href={'/check_request'}>
         <a>
-          <h3 style={{fontWeight: 100}}>All Actions</h3>
+          <h2>📑 Check Requests </h2>
         </a>
+      </Link>
+      <hr />
+      <Link href={'/check_request/create'}>
+        <a><h3 style={{ fontWeight: 100 }}>New Request</h3></a>
       </Link>
       <br />
       {admin && <>
@@ -78,7 +75,7 @@ export default function Landing({ notifications, admin }: { notifications: numbe
         <hr />
         <Link href={'/users'}>
           <a>
-            <h3 style={{fontWeight: 100}}>View All</h3>
+            <h3 style={{ fontWeight: 100 }}>View All</h3>
           </a>
         </Link>
       </>
