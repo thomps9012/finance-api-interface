@@ -69,16 +69,16 @@ export default function MyInbox({
       </h1>
       {incomplete_actions.length > 0 && (
         <>
-        <button onClick={clear_all_notifications}>Clear Inbox</button>
+          <a id="inbox-remove" onClick={clear_all_notifications}><h1>Clear Inbox</h1></a>
           <table>
             <thead>
               <th className="table-cell">Type</th>
               <th className="table-cell">Status</th>
               <th className="table-cell">Created At</th>
               <th className="table-cell">By</th>
-              <th className="table-cell" id="inbox-remove">
+              {/* <th className="table-cell" id="inbox-remove">
                 Clear Notification
-              </th>
+              </th> */}
             </thead>
             <tbody>
               {incomplete_actions?.map((action: Action) => {
@@ -97,25 +97,27 @@ export default function MyInbox({
                   request_nav = request_type.toLowerCase();
                 }
                 return (
-                  <Link href={`/${request_nav}/detail/${request_id}`} key={id}>
-                    <tr id="table-row" key={id} className={status}>
-                      <td className="table-cell">
-                        {request_type.split("_").join(" ")}
-                      </td>
-                      <td className="table-cell">
-                        {status.split("_").join(" ")}
-                      </td>
-                      <td className="table-cell">{dateFormat(created_at)}</td>
-                      <td className="table-cell">{user}</td>
-                      <td
-                        className="table-cell"
-                        id="inbox-remove"
-                        onClick={() => clear_notification(id)}
-                      >
-                        X
-                      </td>
-                    </tr>
-                  </Link>
+                  <>
+                    <a
+                      style={{ textAlign: "right", right: -500, display: "inline", position: "relative" }}
+                      id="inbox-remove"
+                      onClick={() => clear_notification(id)}
+                    >
+                      Clear
+                    </a>
+                    <Link href={`/${request_nav}/detail/${request_id}`} key={id}>
+                      <tr id="table-row" key={id} className={status}>
+                        <td className="table-cell">
+                          {request_type.split("_").join(" ")}
+                        </td>
+                        <td className="table-cell">
+                          {status.split("_").join(" ")}
+                        </td>
+                        <td className="table-cell">{dateFormat(created_at)}</td>
+                        <td className="table-cell">{user}</td>
+                      </tr>
+                    </Link>
+                  </>
                 );
               })}
             </tbody>
