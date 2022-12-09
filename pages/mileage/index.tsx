@@ -2,10 +2,11 @@ import jwtDecode from 'jwt-decode';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import styles from '../../styles/Home.module.css';
+import { CustomJWT } from '../../types/next-auth';
 export default function MileageLanding() {
     const session = useSession()
-    const user_token: { role: string } = jwtDecode(session?.data?.user.token)
-    const user_role = user_token?.role;
+    const user_token: CustomJWT = jwtDecode(session?.data?.user.token);
+    const admin = user_token?.admin;
     return <main className={styles.landing}>
         <h1>Mileage</h1>
         <div className='hr' />
@@ -15,7 +16,7 @@ export default function MileageLanding() {
         <Link href={'/me/mileage'}>
             <a><h2>Your Active Requests</h2></a>
         </Link>
-        {user_role != 'EMPLOYEE' && <>
+        {admin && <>
             <Link href="/mileage/report/user/null">
                 <a><h2>User Mileage</h2></a>
             </Link>
